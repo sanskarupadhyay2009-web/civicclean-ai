@@ -1,0 +1,394 @@
+.report-page {
+  padding: 140px 8% 80px;
+  color: white;
+  min-height: 100vh;
+}
+
+.report-header {
+  margin-bottom: 45px;
+}
+
+.report-header h1 {
+  font-size: 2.8rem;
+  margin-bottom: 10px;
+}
+
+.report-header p {
+  color: #9ca3af;
+}
+
+.report-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 30px;
+  margin-bottom: 35px;
+}
+
+/* ==========================================================
+   AI SCANNING ZONE
+========================================================== */
+
+.scan-zone {
+  position: relative;
+  overflow: hidden;
+  padding: 40px;
+  border-radius: 28px;
+  background: rgba(20, 14, 35, 0.55);
+  border: 1px solid rgba(139, 92, 246, 0.25);
+  backdrop-filter: blur(20px);
+  margin-bottom: 35px;
+  box-shadow: 0 0 0 1px rgba(139, 92, 246, 0.08),
+    0 30px 90px rgba(88, 28, 220, 0.15);
+}
+
+.scan-zone-grid {
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(rgba(139, 92, 246, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(139, 92, 246, 0.08) 1px, transparent 1px);
+  background-size: 34px 34px;
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.scan-zone-header {
+  position: relative;
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.scan-zone-header h2 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: white;
+  font-size: 1.4rem;
+  margin-bottom: 8px;
+}
+
+.scan-zone-header h2 svg {
+  color: #a78bfa;
+}
+
+.scan-zone-header span {
+  color: #9ca3af;
+  font-size: 0.92rem;
+}
+
+.scan-dropzone {
+  position: relative;
+  z-index: 1;
+  min-height: 260px;
+  border: 2px dashed rgba(168, 139, 250, 0.35);
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 12px;
+  cursor: pointer;
+  overflow: hidden;
+  background: rgba(139, 92, 246, 0.04);
+  transition: 0.25s;
+  color: #a78bfa;
+}
+
+.scan-dropzone:hover,
+.scan-dropzone.dragging {
+  border-color: rgba(168, 139, 250, 0.7);
+  background: rgba(139, 92, 246, 0.08);
+}
+
+.scan-dropzone.has-image {
+  border-style: solid;
+  padding: 10px;
+}
+
+.scan-dropzone-title {
+  color: white;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.scan-dropzone-title span {
+  color: #a78bfa;
+  font-size: 0.9rem;
+}
+
+.scan-preview-image {
+  max-width: 100%;
+  max-height: 320px;
+  border-radius: 14px;
+  object-fit: contain;
+}
+
+.scan-line {
+  position: absolute;
+  left: 6%;
+  right: 6%;
+  height: 2px;
+  top: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    #c4b5fd,
+    #8b5cf6,
+    #c4b5fd,
+    transparent
+  );
+  box-shadow: 0 0 16px 2px rgba(139, 92, 246, 0.6);
+  animation: scanMove 3.2s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes scanMove {
+  0% {
+    top: 8%;
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    top: 92%;
+    opacity: 0;
+  }
+}
+
+.scan-caption {
+  position: relative;
+  text-align: center;
+  color: #6b7280;
+  font-size: 0.82rem;
+  margin: 14px 0 24px;
+}
+
+.scan-features {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.scan-feature {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.scan-feature svg {
+  color: #a78bfa;
+  flex-shrink: 0;
+}
+
+.scan-feature strong {
+  display: block;
+  color: white;
+  font-size: 0.9rem;
+}
+
+.scan-feature span {
+  color: #9ca3af;
+  font-size: 0.78rem;
+}
+
+.scan-zone .report-description {
+  position: relative;
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+.scan-zone .analyze-btn {
+  position: relative;
+  width: 100%;
+  justify-content: center;
+  margin-top: 0;
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  padding: 35px;
+  backdrop-filter: blur(15px);
+}
+
+.upload-card,
+.preview-card {
+  text-align: center;
+}
+
+.upload-card svg,
+.preview-card svg {
+  color: #8b5cf6;
+  margin-bottom: 20px;
+}
+
+.upload-card button,
+.location-card button {
+  margin-top: 20px;
+  padding: 12px 26px;
+  border: none;
+  border-radius: 12px;
+  background: #8b5cf6;
+  color: white;
+  cursor: pointer;
+}
+
+.analysis-card {
+  margin-bottom: 30px;
+}
+
+.analysis-card h2,
+.location-card h2 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 25px;
+}
+
+.analysis-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 20px;
+}
+
+.analysis-grid div {
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 14px;
+}
+
+.analysis-grid span {
+  display: block;
+  color: #9ca3af;
+  margin-bottom: 8px;
+}
+
+.analysis-grid strong {
+  font-size: 1.2rem;
+}
+
+.analysis-recommendation-box {
+  margin-top: 20px;
+  padding: 18px 20px;
+  background: rgba(139, 92, 246, 0.08);
+  border: 1px solid rgba(139, 92, 246, 0.25);
+  border-radius: 14px;
+}
+
+.recommendation-label {
+  display: block;
+  color: #a78bfa;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 8px;
+}
+
+.analysis-recommendation {
+  color: #d1d5db;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.report-error {
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  color: #fca5a5;
+  padding: 14px 20px;
+  border-radius: 12px;
+  margin-bottom: 25px;
+}
+
+.report-description {
+  width: 100%;
+  margin-top: 20px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.03);
+  color: white;
+  resize: vertical;
+  font-family: inherit;
+}
+
+.preview-image {
+  width: 100%;
+  max-height: 260px;
+  object-fit: contain;
+  border-radius: 14px;
+  margin: 15px 0;
+}
+
+.analyze-btn {
+  margin-top: 10px;
+  padding: 12px 26px;
+  border: none;
+  border-radius: 12px;
+  background: #8b5cf6;
+  color: white;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.analyze-btn:disabled,
+.location-card button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+  }
+.map-embed-missing {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+  border-radius: 14px;
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px dashed rgba(239, 68, 68, 0.3);
+  color: #fca5a5;
+  font-size: 0.85rem;
+  margin-top: 15px;
+}
+
+.maps-btn {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 12px 22px;
+  background: #16a34a;
+  color: white;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.maps-btn:hover {
+  transform: translateY(-2px);
+  }

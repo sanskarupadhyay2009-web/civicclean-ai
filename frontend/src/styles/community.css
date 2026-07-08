@@ -1,0 +1,65 @@
+.community-page {
+  min-height: 100vh;
+  padding: 140px 8%;
+  color: white;
+}
+
+.community-header {
+  margin-bottom: 40px;
+}
+
+.community-header h1 {
+  font-size: 2.8rem;
+  margin-bottom: 10px;
+}
+
+.community-header p {
+  color: #9ca3af;
+}
+
+.community-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 25px;
+  margin-bottom: 50px;
+}
+
+.community-card {
+  padding: 30px;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(15px);
+  text-align: center;
+}
+
+.community-card svg {
+  color: #8b5cf6;
+  margin-bottom: 15px;
+}
+
+.community-card h2 {
+  margin-bottom: 10px;
+}
+
+.community-card span {
+  color: #9ca3af;
+}
+
+.community-feed {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 30px;
+}
+
+.community-feed h2 {
+  margin-bottom: 25px;
+}
+
+.feed-item {
+  padding: 18px;
+  margin-bottom: 15px;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 14px;
+}

@@ -1,0 +1,299 @@
+/* ==========================================================
+   FEATURES SECTION
+========================================================== */
+
+.features-section{
+
+    position:relative;
+
+    min-height:100vh;
+
+    padding:60px 0;
+
+}
+
+.features-header{
+
+    width:min(900px,92%);
+
+    margin:auto;
+
+    text-align:center;
+
+    margin-bottom:80px;
+
+}
+
+.features-header span{
+
+    display:inline-block;
+
+    padding:10px 20px;
+
+    border-radius:999px;
+
+    color:#78FFD8;
+
+    background:rgba(16,185,129,.08);
+
+    border:1px solid rgba(16,185,129,.18);
+
+    letter-spacing:2px;
+
+    font-size:.82rem;
+
+    margin-bottom:24px;
+
+}
+
+.features-header h2{
+
+    color:white;
+
+    font-size:clamp(2.8rem,5vw,4.5rem);
+
+    line-height:1.1;
+
+    margin-bottom:24px;
+
+}
+
+.features-header p{
+
+    color:#9fb8b0;
+
+    max-width:700px;
+
+    margin:auto;
+
+    line-height:1.9;
+
+    font-size:1.05rem;
+
+}
+
+/* ==========================================================
+   GRID
+========================================================== */
+
+.features-grid{
+
+    width:min(1400px,92%);
+
+    margin:auto;
+
+    display:grid;
+
+    grid-template-columns:repeat(3,1fr);
+
+    gap:32px;
+
+}
+
+/* ==========================================================
+   CARD
+========================================================== */
+
+.feature-card{
+
+    position:relative;
+
+    overflow:hidden;
+
+    padding:36px;
+
+    border-radius:28px;
+
+    background:rgba(15,22,22,.55);
+
+    backdrop-filter:blur(20px);
+
+    border:1px solid rgba(255,255,255,.06);
+
+    transition:.45s;
+
+    cursor:default;
+
+}
+
+.feature-card::before{
+
+    content:"";
+
+    position:absolute;
+
+    top:0;
+
+    left:-100%;
+
+    width:100%;
+
+    height:3px;
+
+    background:linear-gradient(
+        90deg,
+        transparent,
+        #10B981,
+        #7CFFD8,
+        transparent
+    );
+
+    transition:.8s;
+
+}
+
+.feature-card:hover::before{
+
+    left:100%;
+
+}
+
+.feature-card:hover{
+
+    transform:
+        translateY(-12px)
+        rotateX(2deg);
+
+    border-color:rgba(16,185,129,.25);
+
+    box-shadow:
+
+        0 30px 70px rgba(0,0,0,.35),
+
+        inset 0 0 35px rgba(16,185,129,.06);
+
+}
+
+/* ==========================================================
+   ICON
+========================================================== */
+
+.feature-icon{
+
+    width:72px;
+
+    height:72px;
+
+    border-radius:20px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    margin-bottom:28px;
+
+    color:#78FFD8;
+
+    background:linear-gradient(
+
+        135deg,
+
+        rgba(16,185,129,.18),
+
+        rgba(16,185,129,.05)
+
+    );
+
+    border:1px solid rgba(16,185,129,.20);
+
+    box-shadow:
+
+        0 0 20px rgba(16,185,129,.12);
+
+}
+
+.feature-card h3{
+
+    color:white;
+
+    font-size:1.45rem;
+
+    margin-bottom:18px;
+
+}
+
+.feature-card p{
+
+    color:#a6b7b1;
+
+    line-height:1.8;
+
+}
+
+/* ==========================================================
+   HOVER GLOW
+========================================================== */
+
+.feature-card::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:240px;
+
+    height:240px;
+
+    border-radius:50%;
+
+    top:-120px;
+
+    right:-120px;
+
+    background:
+
+        radial-gradient(circle,
+
+        rgba(16,185,129,.16),
+
+        transparent 70%);
+
+    opacity:0;
+
+    transition:.45s;
+
+}
+
+.feature-card:hover::after{
+
+    opacity:1;
+
+}
+
+/* ==========================================================
+   RESPONSIVE
+========================================================== */
+
+@media(max-width:1150px){
+
+.features-grid{
+
+grid-template-columns:repeat(2,1fr);
+
+}
+
+}
+
+@media(max-width:760px){
+
+.features-grid{
+
+grid-template-columns:1fr;
+
+}
+
+.features-header{
+
+margin-bottom:60px;
+
+}
+
+.feature-card{
+
+padding:28px;
+
+}
+
+}

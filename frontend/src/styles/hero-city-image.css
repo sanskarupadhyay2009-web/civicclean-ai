@@ -1,0 +1,117 @@
+/* ==========================================================
+   HERO CITY IMAGE — real generated artwork as the hero visual
+========================================================== */
+
+.hero-city-image-wrap {
+  position: relative;
+  width: 100%;
+  max-width: 620px;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-city-glow {
+  position: absolute;
+  inset: 6%;
+  z-index: 0;
+  background: radial-gradient(
+    circle at 50% 45%,
+    rgba(139, 92, 246, 0.35),
+    rgba(16, 185, 129, 0.15) 45%,
+    transparent 70%
+  );
+  filter: blur(60px);
+}
+
+.hero-city-img {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 30px 60px rgba(0, 0, 0, 0.55));
+}
+
+@media (max-width: 900px) {
+  .hero-city-image-wrap {
+    max-width: 440px;
+  }
+}
+
+/* ==========================================================
+   HERO CRAFT — ambient flying element (always running)
+========================================================== */
+
+.hero-craft-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.hero-craft {
+  position: absolute;
+  width: 34px;
+  height: 12px;
+  animation: craftFly 13s linear infinite;
+  opacity: 0;
+}
+
+.craft-body {
+  position: absolute;
+  inset: 0;
+  border-radius: 50% 40% 40% 50% / 60% 60% 40% 40%;
+  background: linear-gradient(90deg, #d8e8ff 0%, #7cc8ff 40%, #a855f7 100%);
+  box-shadow: 0 0 10px rgba(124, 200, 255, 0.9),
+    0 0 22px rgba(168, 85, 247, 0.6);
+}
+
+.craft-trail {
+  position: absolute;
+  right: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 90px;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(124, 200, 255, 0.6)
+  );
+}
+
+@keyframes craftFly {
+  0% {
+    left: 4%;
+    top: 30%;
+    opacity: 0;
+    transform: rotate(-4deg) scale(0.85);
+  }
+  10% {
+    opacity: 1;
+  }
+  50% {
+    left: 60%;
+    top: 14%;
+    transform: rotate(-4deg) scale(1);
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    left: 92%;
+    top: 4%;
+    opacity: 0;
+    transform: rotate(-4deg) scale(1.05);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-craft {
+    animation: none !important;
+    display: none;
+  }
+}

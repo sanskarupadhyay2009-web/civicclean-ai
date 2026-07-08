@@ -1,0 +1,731 @@
+/* ===========================================================
+   HERO SECTION
+=========================================================== */
+
+.hero-section{
+
+    position:relative;
+
+    min-height:100vh;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    align-items:center;
+
+    overflow:hidden;
+
+    padding-top:100px;
+
+    padding-bottom:60px;
+
+}
+
+/* ===========================================================
+   CONTAINER
+=========================================================== */
+
+.hero-container{
+
+    width:min(1400px,92%);
+
+    margin:auto;
+
+    display:grid;
+
+    grid-template-columns:1.05fr .95fr;
+
+    align-items:center;
+
+    gap:70px;
+
+}
+
+/* ===========================================================
+   LEFT
+=========================================================== */
+
+.hero-left{
+
+    position:relative;
+
+    z-index:5;
+
+}
+
+.hero-badge{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    padding:10px 18px;
+
+    border-radius:999px;
+
+    background:rgba(18,25,24,.72);
+
+    border:1px solid rgba(0,255,170,.12);
+
+    color:#8EF8CB;
+
+    font-size:.92rem;
+
+    margin-bottom:28px;
+
+    backdrop-filter:blur(18px);
+
+    box-shadow:
+    0 0 25px rgba(16,185,129,.08);
+
+}
+
+.hero-left h1{
+
+    font-size:clamp(3.6rem,6vw,5.8rem);
+
+    line-height:1.03;
+
+    font-weight:800;
+
+    color:white;
+
+    letter-spacing:-2px;
+
+}
+
+.gradient-text{
+
+    display:inline-block;
+
+    background:linear-gradient(
+        90deg,
+        #7CF5C7,
+        #10B981,
+        #54FFE3
+    );
+
+    -webkit-background-clip:text;
+
+    -webkit-text-fill-color:transparent;
+
+}
+
+.hero-description{
+
+    margin-top:30px;
+
+    max-width:640px;
+
+    color:#B6C5C0;
+
+    font-size:1.1rem;
+
+    line-height:1.9;
+
+}
+
+/* ===========================================================
+   BUTTONS
+=========================================================== */
+
+.hero-buttons{
+
+    display:flex;
+
+    gap:18px;
+
+    margin-top:45px;
+
+}
+
+.hero-primary-btn{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    border:none;
+
+    cursor:pointer;
+
+    text-decoration:none;
+
+    padding:18px 34px;
+
+    border-radius:18px;
+
+    background:linear-gradient(
+        135deg,
+        #10B981,
+        #047857
+    );
+
+    color:white;
+
+    font-size:1rem;
+
+    font-weight:600;
+
+    transition:.35s;
+
+    box-shadow:
+    0 15px 45px rgba(16,185,129,.35);
+
+}
+
+.hero-primary-btn:hover{
+
+    transform:
+    translateY(-6px)
+    scale(1.02);
+
+    box-shadow:
+    0 25px 70px rgba(16,185,129,.45);
+
+}
+
+.hero-secondary-btn{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    cursor:pointer;
+
+    border:none;
+
+    text-decoration:none;
+
+    padding:18px 34px;
+
+    border-radius:18px;
+
+    background:rgba(255,255,255,.04);
+
+    color:white;
+
+    font-size:1rem;
+
+    font-weight:600;
+
+    border:1px solid rgba(255,255,255,.08);
+
+    transition:.35s;
+
+}
+
+.hero-secondary-btn:hover{
+
+    background:rgba(255,255,255,.08);
+
+    transform:translateY(-6px);
+
+}
+
+/* ===========================================================
+   TRUST ROW
+=========================================================== */
+
+.hero-trust{
+    margin-top:45px;
+}
+
+.trust-label{
+    display:inline-block;
+    color:#7CFFD8;
+    font-size:.8rem;
+    letter-spacing:1px;
+    text-transform:uppercase;
+    margin-bottom:14px;
+}
+
+.trust-row{
+    display:flex;
+    align-items:center;
+    gap:18px;
+}
+
+.trust-avatars{
+    display:flex;
+}
+
+.trust-avatar{
+    width:44px;
+    height:44px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:white;
+    font-size:.78rem;
+    font-weight:700;
+    border:2px solid #0a120f;
+    margin-left:-12px;
+}
+
+.trust-avatar:first-child{
+    margin-left:0;
+}
+
+.trust-count{
+    background:rgba(16,185,129,.18) !important;
+    color:#7CFFD8;
+    border:2px solid rgba(16,185,129,.35);
+}
+
+.trust-row p{
+    color:#9fb8b0;
+    font-size:.92rem;
+    line-height:1.5;
+    margin:0;
+}
+
+/* ===========================================================
+   STATS
+=========================================================== */
+
+.hero-stats{
+
+    display:flex;
+
+    gap:22px;
+
+    margin-top:35px;
+
+    flex-wrap:wrap;
+
+}
+
+.stat-icon{
+    width:40px;
+    height:40px;
+    border-radius:12px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#7CFFD8;
+    background:rgba(16,185,129,.12);
+    border:1px solid rgba(16,185,129,.2);
+    margin-bottom:14px;
+}
+
+.stat-card{
+
+    flex:1;
+
+    min-width:150px;
+
+    padding:24px;
+
+    border-radius:22px;
+
+    background:rgba(255,255,255,.03);
+
+    border:1px solid rgba(255,255,255,.06);
+
+    backdrop-filter:blur(18px);
+
+    transition:.35s;
+
+}
+
+.stat-card:hover{
+
+    transform:translateY(-8px);
+
+    border-color:rgba(16,185,129,.30);
+
+}
+
+.stat-card h2{
+
+    font-size:1.6rem;
+
+    color:#6DF2BD;
+
+    margin-bottom:10px;
+
+}
+
+.stat-card span{
+
+    color:#9FB3AC;
+
+    font-size:.95rem;
+
+}
+
+/* ===========================================================
+   FULL-WIDTH STATS BAR (below the hero grid)
+=========================================================== */
+
+.hero-stats-bar{
+
+    width:min(1400px,92%);
+
+    margin:56px auto 0;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    gap:12px;
+
+    padding:32px 40px;
+
+    border-radius:26px;
+
+    background:rgba(255,255,255,.03);
+
+    border:1px solid rgba(255,255,255,.07);
+
+    backdrop-filter:blur(18px);
+
+    position:relative;
+
+    z-index:5;
+
+    flex-wrap:wrap;
+
+}
+
+.hero-stat-item{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+
+    flex:1;
+
+    min-width:150px;
+
+    position:relative;
+
+    padding:0 20px;
+
+}
+
+.hero-stat-item:not(:last-child)::after{
+
+    content:"";
+
+    position:absolute;
+
+    right:0;
+
+    top:50%;
+
+    transform:translateY(-50%);
+
+    width:1px;
+
+    height:60%;
+
+    background:rgba(255,255,255,.08);
+
+}
+
+.hero-stat-icon{
+
+    width:44px;
+
+    height:44px;
+
+    border-radius:12px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    background:rgba(16,185,129,.12);
+
+    border:1px solid rgba(16,185,129,.2);
+
+    color:#7CFFD8;
+
+    flex-shrink:0;
+
+}
+
+.hero-stat-item h2{
+
+    font-size:1.4rem;
+
+    color:white;
+
+    margin-bottom:2px;
+
+}
+
+.hero-stat-item span{
+
+    color:#9FB3AC;
+
+    font-size:.82rem;
+
+}
+
+@media(max-width:900px){
+
+.hero-stats-bar{
+
+    flex-direction:column;
+
+    align-items:stretch;
+
+    padding:28px 26px;
+
+}
+
+.hero-stat-item:not(:last-child)::after{
+
+    display:none;
+
+}
+
+}
+
+/* ===========================================================
+   SCROLL INDICATOR
+=========================================================== */
+
+.scroll-indicator{
+
+    position:absolute;
+
+    bottom:26px;
+
+    left:50%;
+
+    transform:translateX(-50%);
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    gap:10px;
+
+    color:#9FB3AC;
+
+    font-size:.8rem;
+
+    letter-spacing:.5px;
+
+    z-index:5;
+
+    pointer-events:none;
+
+}
+
+.scroll-indicator-line{
+
+    width:1px;
+
+    height:40px;
+
+    background:linear-gradient(to bottom, rgba(16,185,129,.9), transparent);
+
+    position:relative;
+
+}
+
+.scroll-indicator-line::after{
+
+    content:"";
+
+    position:absolute;
+
+    top:0;
+
+    left:50%;
+
+    transform:translateX(-50%);
+
+    width:6px;
+
+    height:6px;
+
+    border-radius:50%;
+
+    background:#10B981;
+
+    box-shadow:0 0 10px #10B981;
+
+    animation:scrollDot 2s ease-in-out infinite;
+
+}
+
+@keyframes scrollDot{
+
+    0%{ top:0; opacity:1; }
+
+    100%{ top:100%; opacity:0; }
+
+}
+
+/* ===========================================================
+   RIGHT
+=========================================================== */
+
+.hero-right{
+
+    position:relative;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    min-height:700px;
+
+}
+
+/* ===========================================================
+   GLOW
+=========================================================== */
+
+.hero-glow{
+
+    position:absolute;
+
+    border-radius:50%;
+
+    filter:blur(120px);
+
+    opacity:.18;
+
+    pointer-events:none;
+
+}
+
+.hero-glow-left{
+
+    width:520px;
+
+    height:520px;
+
+    background:#10B981;
+
+    top:-180px;
+
+    left:-160px;
+
+}
+
+.hero-glow-right{
+
+    width:620px;
+
+    height:620px;
+
+    background:#00FFCC;
+
+    bottom:-260px;
+
+    right:-220px;
+
+}
+
+/* ===========================================================
+   RESPONSIVE
+=========================================================== */
+
+@media(max-width:1150px){
+
+.hero-container{
+
+grid-template-columns:1fr;
+
+}
+
+.hero-right{
+
+order:-1;
+
+min-height:520px;
+
+}
+
+.hero-left{
+
+text-align:center;
+
+}
+
+.hero-description{
+
+margin:auto;
+
+margin-top:30px;
+
+}
+
+.hero-buttons{
+
+justify-content:center;
+
+}
+
+.hero-stats{
+
+justify-content:center;
+
+}
+
+}
+
+@media(max-width:760px){
+
+.hero-left h1{
+
+font-size:3rem;
+
+}
+
+.hero-buttons{
+
+flex-direction:column;
+
+}
+
+.hero-stats{
+
+flex-direction:column;
+
+}
+
+.trust-row{
+
+flex-direction:column;
+
+text-align:center;
+
+}
+
+.hero-right{
+
+min-height:420px;
+
+}
+
+                     }
+                     

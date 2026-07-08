@@ -1,0 +1,18 @@
+/* ==========================================================
+   3D SCROLL STACK
+   Home.jsx wraps each section in <StackSection>, which uses
+   framer-motion scroll-linked transforms (scale/rotateX/opacity/y).
+   Those transforms need a perspective on the ancestor to actually
+   render with visible 3D depth — without it, rotateX just looks
+   like a flat squish. This file supplies that.
+========================================================== */
+
+.home-stack {
+  perspective: 1400px;
+}
+
+.stack-section {
+  position: relative;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
