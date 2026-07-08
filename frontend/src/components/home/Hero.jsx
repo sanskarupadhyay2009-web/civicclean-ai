@@ -11,12 +11,10 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
-import HeroCityImage from "./city/HeroCityImage";
 import FloatingCards from "./FloatingCards";
 import ScrollIndicator from "./city/ScrollIndicator";
 
 import "../../styles/home.css";
-import "../../styles/hero-city-image.css";
 
 const stats = [
   { icon: Users, value: "2,458+", label: "Active Citizens" },
