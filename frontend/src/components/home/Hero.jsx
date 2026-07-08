@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
+import CityScene from "./city/CityScene";
 import FloatingCards from "./FloatingCards";
 import ScrollIndicator from "./city/ScrollIndicator";
 
@@ -175,7 +176,7 @@ function Hero() {
             ease: "easeOut",
           }}
         >
-          <HeroCityImage />
+          <CityScene />
 
           <FloatingCards />
         </motion.div>
@@ -220,4 +221,5 @@ function Hero() {
 }
 
 export default Hero;
+
             
