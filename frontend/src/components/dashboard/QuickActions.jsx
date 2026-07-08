@@ -1,14 +1,15 @@
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
     Camera,
     Map,
-    Bot
+    Bot,
+    ArrowRight
 } from "lucide-react";
 
-function QuickActions() {
+const MotionLink = motion(Link);
 
-    const navigate = useNavigate();
+function QuickActions() {
 
     const actions = [
 
@@ -55,15 +56,21 @@ function QuickActions() {
 
                 {actions.map((action, index) => (
 
-                    <motion.div
+                    <MotionLink
 
                         key={index}
+
+                        to={action.path}
 
                         className={`action-card ${action.color}`}
 
                         whileHover={{
                             y: -10,
                             scale: 1.02
+                        }}
+
+                        whileTap={{
+                            scale: 0.97
                         }}
 
                         transition={{
@@ -90,16 +97,13 @@ function QuickActions() {
 
                         </p>
 
-                        <button
-                            type="button"
-                            onClick={() => navigate(action.path)}
-                        >
+                        <span className="action-card-cta">
 
-                            Open →
+                            Open <ArrowRight size={16} />
 
-                        </button>
+                        </span>
 
-                    </motion.div>
+                    </MotionLink>
 
                 ))}
 
@@ -112,3 +116,4 @@ function QuickActions() {
 }
 
 export default QuickActions;
+                            
