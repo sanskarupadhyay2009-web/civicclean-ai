@@ -15,7 +15,8 @@
 .stack-section {
   position: relative;
   transform-style: preserve-3d;
-  will-change: transform;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
 }
 
 /* ==========================================================
@@ -36,7 +37,7 @@
 .scrollfx-orb {
   position: absolute;
   border-radius: 50%;
-  filter: blur(50px);
+  filter: blur(34px);
   will-change: transform, opacity;
 }
 
@@ -70,7 +71,7 @@
 
 @media (max-width: 640px) {
   .scrollfx-orb {
-    filter: blur(34px);
+    filter: blur(22px);
   }
 
   .scrollfx-comet {
@@ -83,4 +84,4 @@
     animation: none !important;
     transition: none !important;
   }
-}
+   }
