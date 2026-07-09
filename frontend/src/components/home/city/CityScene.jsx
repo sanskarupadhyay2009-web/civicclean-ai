@@ -75,17 +75,18 @@ function Windows({ cx, cy, h, variant, c, r }) {
 
   for (let ri = 0; ri < rows; ri++) {
     const yOff = (ri + 0.5) * (h / rows);
+    const delay = ((c + r + ri) * 0.15) % 3;
 
     // Left face windows
     const lx = cx - HW * 0.5;
     const ly = cy + H - h + yOff + HH * 0.25;
     wins.push(
-      <motion.rect
+      <rect
         key={`wL${c}${r}${ri}`}
+        className="win-twinkle"
         x={lx - 3} y={ly - 2} width={5} height={4}
         fill={col} rx={1}
-        animate={{ opacity:[0.3,1,0.3] }}
-        transition={{ duration:2.5+ri*0.3, repeat:Infinity, delay:(c+r+ri)*0.15 }}
+        style={{ "--wd": `${delay}s`, "--wdur": `${2.5 + ri * 0.3}s` }}
       />
     );
 
@@ -93,12 +94,12 @@ function Windows({ cx, cy, h, variant, c, r }) {
     const rx2 = cx + HW * 0.5;
     const ry2 = cy + H - h + yOff + HH * 0.25;
     wins.push(
-      <motion.rect
+      <rect
         key={`wR${c}${r}${ri}`}
+        className="win-twinkle"
         x={rx2 - 2} y={ry2 - 2} width={5} height={4}
         fill={col} rx={1}
-        animate={{ opacity:[0.5,1,0.5] }}
-        transition={{ duration:2+ri*0.2, repeat:Infinity, delay:(c+r+ri)*0.12 }}
+        style={{ "--wd": `${delay * 0.8}s`, "--wdur": `${2 + ri * 0.2}s` }}
       />
     );
   }
@@ -116,11 +117,11 @@ function Tree({ c, r }) {
   return (
     <>
       <polygon points={trunk} fill="#0d3018" />
-      <motion.ellipse
+      <ellipse
+        className="tree-sway"
         cx={topX} cy={topY} rx={10} ry={7}
         fill="#1a5c30" stroke="#2ecc71" strokeWidth={0.5}
-        animate={{ opacity:[0.7,1,0.7] }}
-        transition={{ duration:3+c*0.2, repeat:Infinity, delay:r*0.3 }}
+        style={{ "--td": `${r * 0.3}s`, "--tdur": `${3 + c * 0.2}s` }}
       />
     </>
   );
@@ -263,11 +264,9 @@ function CityScene() {
           const f = faces(c,r,h);
           const col = VARIANTS[v] || VARIANTS[0];
           return (
-            <motion.g key={`b${c}${r}`}
-              initial={{opacity:0, scaleY:0}}
-              animate={{opacity:1, scaleY:1}}
-              transition={{duration:0.6, delay:i*0.015, ease:"easeOut"}}
-              style={{transformOrigin:`${f.cx}px ${f.cy+H}px`}}
+            <g key={`b${c}${r}`}
+              className="bldg-rise"
+              style={{transformOrigin:`${f.cx}px ${f.cy+H}px`, "--bi": `${i*0.015}s`}}
             >
               {/* Right face */}
               <polygon points={f.right} fill={col.right}
@@ -284,14 +283,14 @@ function CityScene() {
               {/* Windows */}
               <Windows cx={f.cx} cy={f.cy} h={h} variant={v} c={c} r={r}/>
               {/* Rooftop beacon */}
-              <motion.circle
+              <circle
+                className="beacon-pulse"
                 cx={f.cx} cy={f.cy-h} r={3}
                 fill={WIN_COLOR[v]}
                 filter="url(#glow)"
-                animate={{opacity:[1,0.2,1], r:[2,4,2]}}
-                transition={{duration:2, repeat:Infinity, delay:(c+r)*0.18}}
+                style={{ "--bd": `${(c+r)*0.18}s` }}
               />
-            </motion.g>
+            </g>
           );
         })}
 
@@ -349,8 +348,8 @@ function CityScene() {
         </g>
 
         {/* ── AMBIENT PARTICLES ── */}
-        {[...Array(12)].map((_,i)=>{
-          const startX = 80+i*45, startY = 100+((i*37)%200);
+        {[...Array(6)].map((_,i)=>{
+          const startX = 80+i*80, startY = 100+((i*37)%200);
           return (
             <motion.circle key={i} r={1.5}
               fill="#7affe0" opacity={0.6}
