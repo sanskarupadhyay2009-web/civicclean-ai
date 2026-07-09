@@ -70,7 +70,10 @@ const WIN_COLOR = ["#3affc0","#45ffc8","#55ffd0","#65ffd8","#7affe0"];
 // ─────────────────────────────────────────────
 function Windows({ cx, cy, h, variant, c, r }) {
   const wins = [];
-  const rows = Math.max(1, Math.floor(h / 22));
+  // Fewer window rows per building — was h/22 (up to ~500 animating
+  // rects across the whole skyline). h/32 keeps the twinkle effect
+  // while cutting the animating element count roughly in half.
+  const rows = Math.max(1, Math.floor(h / 32));
   const col = WIN_COLOR[variant];
 
   for (let ri = 0; ri < rows; ri++) {
@@ -282,12 +285,16 @@ function CityScene() {
                 stroke={WIN_COLOR[v]} strokeWidth={0.5} opacity={0.4}/>
               {/* Windows */}
               <Windows cx={f.cx} cy={f.cy} h={h} variant={v} c={c} r={r}/>
-              {/* Rooftop beacon */}
+              {/* Rooftop beacon — glow filter reserved for the tallest
+                  towers only. Running an SVG feGaussianBlur filter on
+                  all 53 buildings every frame was the single biggest
+                  cause of scroll jank; a plain-fill dot still reads
+                  fine at this size for the smaller buildings. */}
               <circle
                 className="beacon-pulse"
                 cx={f.cx} cy={f.cy-h} r={3}
                 fill={WIN_COLOR[v]}
-                filter="url(#glow)"
+                filter={h > 150 ? "url(#glow)" : undefined}
                 style={{ "--bd": `${(c+r)*0.18}s` }}
               />
             </g>
@@ -324,7 +331,7 @@ function CityScene() {
             transition={{duration:4, repeat:Infinity, ease:"easeInOut"}}
           />
           {/* Dome top sparkle dots */}
-          {[[-40,40],[40,35],[0,18],[80,75],[-80,72],[120,120],[-120,118]].map(([dx,dy],i)=>(
+          {[[-40,40],[40,35],[0,18],[80,75]].map(([dx,dy],i)=>(
             <motion.circle key={i}
               cx={330+dx} cy={20+dy} r={1.5}
               fill="#9affe8"
@@ -347,8 +354,10 @@ function CityScene() {
           />
         </g>
 
-        {/* ── AMBIENT PARTICLES ── */}
-        {[...Array(6)].map((_,i)=>{
+        {/* ── AMBIENT PARTICLES ── (trimmed from 6 to 3 — each one
+             animates SVG cx/cy attributes directly, which is more
+             expensive than a CSS transform, so fewer is better) */}
+        {[...Array(3)].map((_,i)=>{
           const startX = 80+i*80, startY = 100+((i*37)%200);
           return (
             <motion.circle key={i} r={1.5}
