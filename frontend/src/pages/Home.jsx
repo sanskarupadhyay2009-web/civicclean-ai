@@ -4,6 +4,7 @@ import Features from "../components/home/Features";
 import Stats from "../components/home/Stats";
 
 import StackSection from "../components/common/StackSection";
+import ScrollFX from "../components/common/ScrollFX";
 
 import "../styles/hero.css";
 import "../styles/city.css";
@@ -15,6 +16,8 @@ import "../styles/stacksection.css";
 function Home() {
   return (
     <main className="home-stack">
+
+      <ScrollFX />
 
       <StackSection index={0}>
         <Hero />
