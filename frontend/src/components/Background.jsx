@@ -1,16 +1,6 @@
 import { useMemo } from "react";
 
-const DRIFT_WORDS = [
-  "SUSTAINABILITY",
-  "CLEAN AIR",
-  "RECYCLE",
-  "COMMUNITY",
-  "GREEN FUTURE",
-  "ZERO WASTE",
-];
-
 function Background() {
-  // Randomized once per mount so stars don't re-shuffle on re-render.
   const stars = useMemo(
     () =>
       [...Array(90)].map((_, i) => ({
@@ -71,22 +61,6 @@ function Background() {
               animationDelay: `${s.delay}s`,
             }}
           />
-        ))}
-      </div>
-
-      <div className="space-drift-words">
-        {DRIFT_WORDS.map((word, i) => (
-          <span
-            key={word}
-            className="space-drift-word"
-            style={{
-              top: `${10 + i * 16}%`,
-              animationDuration: `${34 + i * 6}s`,
-              animationDelay: `${i * -7}s`,
-            }}
-          >
-            {word}
-          </span>
         ))}
       </div>
     </div>
