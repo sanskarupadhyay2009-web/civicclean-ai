@@ -9,23 +9,23 @@ import {
 const stats = [
   {
     icon: <Activity size={32} />,
-    value: "18K+",
-    title: "Reports Processed"
+    value: "Live",
+    title: "Reports Tracked in Real Time"
   },
   {
     icon: <Brain size={32} />,
-    value: "98.7%",
-    title: "AI Accuracy"
+    value: "AI-Powered",
+    title: "Every Report Analyzed"
   },
   {
     icon: <MapPinned size={32} />,
-    value: "240+",
-    title: "Communities"
+    value: "Open",
+    title: "To Every Community"
   },
   {
     icon: <Users size={32} />,
-    value: "1M+",
-    title: "Citizens Impacted"
+    value: "Citizen-Led",
+    title: "Built by People Who Care"
   }
 ];
 
@@ -41,7 +41,7 @@ function Stats() {
 
         <h2>
 
-          Numbers That Matter
+          What Makes Us Different
 
         </h2>
 
