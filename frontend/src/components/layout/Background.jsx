@@ -1,14 +1,5 @@
 import { useMemo } from "react";
 
-const DRIFT_WORDS = [
-  "SUSTAINABILITY",
-  "CLEAN AIR",
-  "RECYCLE",
-  "COMMUNITY",
-  "GREEN FUTURE",
-  "ZERO WASTE",
-];
-
 function Background() {
   // Randomized once per mount so stars don't re-shuffle on re-render.
   const stars = useMemo(
@@ -36,32 +27,11 @@ function Background() {
     []
   );
 
-  const particles = useMemo(
-    () =>
-      [...Array(26)].map((_, i) => ({
-        id: i,
-        top: 60 + Math.random() * 40,
-        left: Math.random() * 100,
-        size: 2 + Math.random() * 4,
-        duration: 8 + Math.random() * 10,
-        delay: Math.random() * 12,
-      })),
-    []
-  );
-
   return (
     <div aria-hidden="true" className="app-background">
-      <div className="crazy-huewash">
-        <div className="crazy-halo" />
-        <div className="space-nebula space-nebula-1" />
-        <div className="space-nebula space-nebula-2" />
-        <div className="space-nebula space-nebula-3" />
-      </div>
-
-      <div className="crazy-aurora crazy-aurora-1" />
-      <div className="crazy-aurora crazy-aurora-2" />
-
-      <div className="crazy-grid" />
+      <div className="space-nebula space-nebula-1" />
+      <div className="space-nebula space-nebula-2" />
+      <div className="space-nebula space-nebula-3" />
 
       <div className="space-stars">
         {stars.map((star) => (
@@ -95,41 +65,10 @@ function Background() {
         ))}
       </div>
 
-      <div className="space-drift-words">
-        {DRIFT_WORDS.map((word, i) => (
-          <span
-            key={word}
-            className="space-drift-word"
-            style={{
-              top: `${10 + i * 16}%`,
-              animationDuration: `${34 + i * 6}s`,
-              animationDelay: `${i * -7}s`,
-            }}
-          >
-            {word}
-          </span>
-        ))}
-      </div>
-
-      <div className="space-particles">
-        {particles.map((p) => (
-          <span
-            key={p.id}
-            className="crazy-particle"
-            style={{
-              top: `${p.top}%`,
-              left: `${p.left}%`,
-              width: `${p.size}px`,
-              height: `${p.size}px`,
-              animationDuration: `${p.duration}s`,
-              animationDelay: `${p.delay}s`,
-            }}
-          />
-        ))}
-      </div>
     </div>
   );
 }
 
 export default Background;
+          
         
