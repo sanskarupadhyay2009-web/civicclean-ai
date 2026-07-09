@@ -6,8 +6,8 @@ const TOTAL_DURATION_MS = 10000;
 const LOGO_TEXT = "CivicClean AI";
 
 function LoadingScreen() {
-  const [visible, setVisible] = useState(true);
-
+  const [visible, setVisible] = useState(true); 
+  
   useEffect(() => {
     const timer = setTimeout(() => setVisible(false), TOTAL_DURATION_MS);
     return () => clearTimeout(timer);
