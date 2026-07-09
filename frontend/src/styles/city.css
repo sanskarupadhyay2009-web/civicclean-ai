@@ -1,905 +1,119 @@
 /* ==========================================================
-   CITY SCENE
+   CITY SCENE WRAPPER
 ========================================================== */
 
-.city-scene{
-
-    position:relative;
-
-    width:100%;
-
-    max-width:700px;
-
-    height:700px;
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-
-    perspective:1400px;
-
+.city-scene {
+  position: relative;
+  width: 100%;
+  max-width: 680px;
+  height: 540px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* ==========================================================
-   BACKGROUND GLOW
+   SVG CITY
 ========================================================== */
 
-.city-glow{
-
-    position:absolute;
-
-    width:520px;
-
-    height:520px;
-
-    border-radius:50%;
-
-    background:radial-gradient(circle,
-        rgba(16,185,129,.28),
-        rgba(16,185,129,.08),
-        transparent 70%);
-
-    filter:blur(70px);
-
+.city-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  filter: drop-shadow(0 0 60px rgba(16,185,129,0.25));
 }
 
 /* ==========================================================
-   SPHERE
+   FLOATING CARDS
 ========================================================== */
 
-.city-sphere{
-
-    position:absolute;
-
-    width:340px;
-
-    height:340px;
-
-    border-radius:50%;
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-
+.floating-cards {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
 }
 
-.sphere-core{
-
-    width:170px;
-
-    height:170px;
-
-    border-radius:50%;
-
-    background:
-    radial-gradient(circle,
-    rgba(150,255,220,.9),
-    rgba(16,185,129,.45),
-    rgba(16,185,129,.1));
-
-    box-shadow:
-    0 0 70px rgba(16,185,129,.45);
-
+.floating-badge {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 16px;
+  border-radius: 14px;
+  white-space: nowrap;
+  background: rgba(6, 18, 14, 0.82);
+  border: 1px solid rgba(16, 185, 129, 0.28);
+  backdrop-filter: blur(18px);
+  box-shadow:
+    0 16px 40px rgba(0, 0, 0, 0.4),
+    inset 0 0 16px rgba(16, 185, 129, 0.06),
+    0 0 0 1px rgba(16, 185, 129, 0.06);
 }
 
-.sphere-ring{
-
-    position:absolute;
-
-    border-radius:50%;
-
-    border:1px solid rgba(16,185,129,.28);
-
+.badge-connector {
+  position: absolute;
+  right: -5px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #34d399;
+  box-shadow: 0 0 10px #34d399;
 }
 
-.ring-one{
-
-    width:240px;
-
-    height:240px;
-
+.floating-badge:nth-child(2) .badge-connector {
+  right: auto;
+  left: -5px;
 }
 
-.ring-two{
-
-    width:300px;
-
-    height:300px;
-
-    transform:rotateX(75deg);
-
+.floating-badge-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(16, 185, 129, 0.15);
+  color: #7cffd8;
+  border: 1px solid rgba(16, 185, 129, 0.2);
 }
 
-.ring-three{
+.floating-badge-text {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
 
-    width:320px;
+.floating-badge-text strong {
+  color: white;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
 
-    height:320px;
-
-    transform:rotateY(70deg);
-
+.floating-badge-text span {
+  color: #7CB5A0;
+  font-size: 0.76rem;
 }
 
 /* ==========================================================
-   PLATFORM
+   RESPONSIVE
 ========================================================== */
 
-.city-platform-wrapper{
-
-    position:absolute;
-
-    bottom:80px;
-
-    width:460px;
-
-    height:260px;
-
+@media (max-width: 900px) {
+  .city-scene {
+    max-width: 100%;
+    height: 380px;
+  }
 }
 
-.platform-shadow{
-
-    position:absolute;
-
-    width:360px;
-
-    height:60px;
-
-    left:50%;
-
-    bottom:10px;
-
-    transform:translateX(-50%);
-
-    background:rgba(0,0,0,.45);
-
-    border-radius:50%;
-
-    filter:blur(35px);
-
-}
-
-.platform-base{
-
-    position:absolute;
-
-    width:100%;
-
-    height:220px;
-
-    bottom:0;
-
-    border-radius:28px;
-
-    transform:
-
-        rotateX(70deg)
-
-        rotateZ(45deg);
-
-    background:
-
-        linear-gradient(
-
-        135deg,
-
-        rgba(16,185,129,.14),
-
-        rgba(255,255,255,.02));
-
-    border:1px solid rgba(16,185,129,.18);
-
-    overflow:hidden;
-
-}
-
-.platform-border{
-
-    position:absolute;
-
-    inset:0;
-
-    border-radius:28px;
-
-    box-shadow:
-
-        inset 0 0 40px rgba(16,185,129,.25);
-
-}
-
-.platform-glow{
-
-    position:absolute;
-
-    inset:0;
-
-    background:
-
-    radial-gradient(circle,
-
-    rgba(16,185,129,.18),
-
-    transparent 75%);
-
-}
-
-.platform-grid{
-
-    position:absolute;
-
-    inset:22px;
-
-    display:grid;
-
-    grid-template-columns:repeat(9,1fr);
-
-    grid-template-rows:repeat(9,1fr);
-
-    gap:16px;
-
-}
-
-.grid-node{
-
-    width:7px;
-
-    height:7px;
-
-    border-radius:50%;
-
-    background:#62FFD2;
-
-    justify-self:center;
-
-    align-self:center;
-
-    box-shadow:
-
-        0 0 10px #62FFD2;
-
-}
-
-.energy-ring{
-
-    position:absolute;
-
-    width:500px;
-
-    height:500px;
-
-    left:50%;
-
-    top:50%;
-
-    transform:translate(-50%,-50%);
-
-    border-radius:50%;
-
-    border:1px dashed rgba(16,185,129,.18);
-
-}
-
-.platform-pulse{
-
-    position:absolute;
-
-    width:500px;
-
-    height:500px;
-
-    left:50%;
-
-    top:50%;
-
-    transform:translate(-50%,-50%);
-
-    border-radius:50%;
-
-    border:2px solid rgba(16,185,129,.15);
-
-}
-
-/* ==========================================================
-   BUILDINGS
-========================================================== */
-
-.city-buildings{
-
-    position:absolute;
-
-    bottom:145px;
-
-    width:430px;
-
-    height:260px;
-
-}
-
-.building{
-
-    position:absolute;
-
-    bottom:0;
-
-    width:42px;
-
-    border-radius:10px 10px 4px 4px;
-
-    background:
-
-        linear-gradient(
-
-        180deg,
-
-        #2CF0B8,
-
-        #0D4335);
-
-    box-shadow:
-
-        0 0 25px rgba(16,185,129,.35);
-
-}
-
-.building-top{
-
-    position:absolute;
-
-    top:-8px;
-
-    left:50%;
-
-    transform:translateX(-50%);
-
-    width:18px;
-
-    height:8px;
-
-    border-radius:8px;
-
-    background:#8DFFE0;
-
-}
-
-.building-windows{
-
-    display:flex;
-
-    flex-direction:column;
-
-    align-items:center;
-
-    padding-top:18px;
-
-    gap:6px;
-
-}
-
-.window-row{
-
-    display:flex;
-
-    gap:5px;
-
-}
-
-.window{
-
-    width:4px;
-
-    height:6px;
-
-    background:#C8FFF1;
-
-    border-radius:2px;
-
-}
-
-.building-beacon{
-
-    position:absolute;
-
-    top:-12px;
-
-    left:50%;
-
-    transform:translateX(-50%);
-
-    width:8px;
-
-    height:8px;
-
-    border-radius:50%;
-
-    background:#8DFFE0;
-
-    box-shadow:
-
-        0 0 18px #8DFFE0;
-
-}
-
-/* ==========================================================
-   DATA LINKS
-========================================================== */
-
-.city-links{
-
-    position:absolute;
-
-    inset:0;
-
-    overflow:visible;
-
-}
-
-/* ==========================================================
-   SCAN SYSTEM
-========================================================== */
-
-.scan-system{
-
-    position:absolute;
-
-    inset:0;
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-
-    pointer-events:none;
-
-}
-
-.scan-beam{
-
-    position:absolute;
-
-    width:14px;
-
-    height:360px;
-
-    border-radius:50px;
-
-    background:
-
-    linear-gradient(
-
-    transparent,
-
-    rgba(16,185,129,.85),
-
-    transparent);
-
-    filter:blur(4px);
-
-}
-
-.scan-sweep{
-
-    position:absolute;
-
-    width:230px;
-
-    height:3px;
-
-    background:#9DFFE7;
-
-    box-shadow:
-
-    0 0 35px #7CFFD8;
-
-}
-
-.scan-core{
-
-    width:22px;
-
-    height:22px;
-
-    border-radius:50%;
-
-    background:#A9FFE7;
-
-    box-shadow:
-
-    0 0 40px #62FFD2;
-
-}
-
-.scan-ring{
-
-    position:absolute;
-
-    border-radius:50%;
-
-    border:1px solid rgba(16,185,129,.28);
-
-}
-
-.scan-system .ring-one{
-
-    width:180px;
-
-    height:180px;
-
-}
-
-.scan-system .ring-two{
-
-    width:260px;
-
-    height:260px;
-
-}
-
-.scan-pulse{
-
-    position:absolute;
-
-    width:90px;
-
-    height:90px;
-
-    border-radius:50%;
-
-    border:1px solid rgba(16,185,129,.28);
-
-}
-
-.beam-particle{
-
-    position:absolute;
-
-    width:4px;
-
-    height:14px;
-
-    border-radius:20px;
-
-    background:#7CFFD8;
-
-}
-
-.scanner-head{
-
-    position:absolute;
-
-    width:46px;
-
-    height:46px;
-
-    border-radius:50%;
-
-    background:#0E241E;
-
-    border:2px solid rgba(16,185,129,.4);
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-
-}
-
-.scanner-eye{
-
-    width:12px;
-
-    height:12px;
-
-    border-radius:50%;
-
-    background:#62FFD2;
-
-    box-shadow:0 0 18px #62FFD2;
-
-}
-
-/* ==========================================================
-   FLOATING LIGHTS
-========================================================== */
-
-.city-light{
-
-    position:absolute;
-
-    width:12px;
-
-    height:12px;
-
-    border-radius:50%;
-
-    background:#7BFFD9;
-
-    box-shadow:0 0 18px #7BFFD9;
-
-}
-
-.light-one{
-
-    left:20%;
-
-    top:30%;
-
-}
-
-.light-two{
-
-    right:18%;
-
-    top:22%;
-
-}
-
-.light-three{
-
-    right:28%;
-
-    bottom:35%;
-
-}
-
-.city-pulse{
-
-    position:absolute;
-
-    width:520px;
-
-    height:520px;
-
-    border-radius:50%;
-
-    border:1px solid rgba(16,185,129,.18);
-
-}
-
-/* ==========================================================
-   FLOATING HUD CARDS
-========================================================== */
-
-.floating-cards{
-
-    position:absolute;
-
-    inset:0;
-
-    pointer-events:none;
-
-}
-
-.floating-card{
-
-    position:absolute;
-
-    width:180px;
-
-    padding:18px;
-
-    border-radius:20px;
-
-    backdrop-filter:blur(20px);
-
-    background:rgba(12,22,22,.55);
-
-    border:1px solid rgba(16,185,129,.16);
-
-    box-shadow:
-
-        0 20px 45px rgba(0,0,0,.35),
-
-        inset 0 0 20px rgba(16,185,129,.08);
-
-}
-
-.card-top{
-
-    display:flex;
-
-    justify-content:space-between;
-
-    align-items:center;
-
-    margin-bottom:14px;
-
-}
-
-.card-icon{
-
-    width:36px;
-
-    height:36px;
-
-    border-radius:12px;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    background:rgba(16,185,129,.15);
-
-    color:#73FFD8;
-
-}
-
-.status-dot{
-
-    width:10px;
-
-    height:10px;
-
-    border-radius:50%;
-
-    background:#62FFD2;
-
-    box-shadow:0 0 12px #62FFD2;
-
-}
-
-.floating-card small{
-
-    color:#9CB7AF;
-
-    display:block;
-
-    margin-bottom:8px;
-
-}
-
-.floating-card h3{
-
-    color:white;
-
-    font-size:1.4rem;
-
-    margin-bottom:14px;
-
-}
-
-.progress-line{
-
-    height:5px;
-
-    border-radius:20px;
-
-    overflow:hidden;
-
-    background:rgba(255,255,255,.08);
-
-}
-
-.progress-fill{
-
-    height:100%;
-
-    border-radius:20px;
-
-    background:linear-gradient(
-        90deg,
-        #10B981,
-        #7CFFD8
-    );
-
-}
-
-.card-one{
-
-    top:60px;
-
-    right:-20px;
-
-}
-
-.card-two{
-
-    top:220px;
-
-    left:-40px;
-
-}
-
-.card-three{
-
-    bottom:160px;
-
-    right:0;
-
-}
-
-.card-four{
-
-    bottom:40px;
-
-    left:-20px;
-
-}
-
-/* ==========================================================
-   FLOATING BADGES (icon + two-line label)
-========================================================== */
-
-.floating-badge{
-
-    position:absolute;
-
-    display:flex;
-
-    align-items:center;
-
-    gap:14px;
-
-    padding:14px 20px;
-
-    border-radius:18px;
-
-    white-space:nowrap;
-
-    background:rgba(10,20,18,.72);
-
-    border:1px solid rgba(16,185,129,.22);
-
-    backdrop-filter:blur(20px);
-
-    box-shadow:
-        0 18px 40px rgba(0,0,0,.35),
-        inset 0 0 20px rgba(16,185,129,.06);
-
-}
-
-.floating-badge-icon{
-
-    width:38px;
-
-    height:38px;
-
-    border-radius:12px;
-
-    flex-shrink:0;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    background:rgba(16,185,129,.15);
-
-    color:#7CFFD8;
-
-}
-
-.floating-badge-text{
-
-    display:flex;
-
-    flex-direction:column;
-
-    gap:2px;
-
-}
-
-.floating-badge-text strong{
-
-    color:white;
-
-    font-size:.95rem;
-
-    font-weight:600;
-
-}
-
-.floating-badge-text span{
-
-    color:#9CB7AF;
-
-    font-size:.8rem;
-
+@media (max-width: 640px) {
+  .city-scene {
+    height: 300px;
+  }
+
+  .floating-badge {
+    display: none;
+  }
 }
