@@ -4,22 +4,22 @@ import { FileText, Award, BrainCircuit, Leaf } from "lucide-react";
 const stats = [
   {
     icon: <FileText size={26} />,
-    value: "18",
+    value: "—",
     label: "Reports Submitted",
   },
   {
     icon: <Award size={26} />,
-    value: "520",
+    value: "—",
     label: "Community Score",
   },
   {
     icon: <BrainCircuit size={26} />,
-    value: "98.7%",
-    label: "AI Accuracy",
+    value: "AI-Reviewed",
+    label: "Report Analysis",
   },
   {
     icon: <Leaf size={26} />,
-    value: "1.2T",
+    value: "—",
     label: "CO₂ Saved",
   },
 ];
