@@ -18,11 +18,11 @@ import ScrollIndicator from "./city/ScrollIndicator";
 import "../../styles/home.css";
 
 const stats = [
-  { icon: Users, value: "2,458+", label: "Active Citizens" },
-  { icon: ShoppingBag, value: "18,392+", label: "Issues Reported" },
-  { icon: CheckCircle2, value: "14,876+", label: "Issues Resolved" },
-  { icon: Trees, value: "860+", label: "Tons of Waste Cleared" },
-  { icon: Star, value: "4.9/5", label: "Community Rating" },
+  { icon: Users, value: "Community Driven", label: "Built with citizen reports" },
+  { icon: ShoppingBag, value: "Real-Time Reporting", label: "Report issues in seconds" },
+  { icon: CheckCircle2, value: "AI Verified", label: "Every report analyzed by AI" },
+  { icon: Trees, value: "Cleaner Neighborhoods", label: "Track cleanup progress" },
+  { icon: Star, value: "Growing Every Day", label: "Join the movement" },
 ];
 
 function Hero() {
@@ -143,11 +143,10 @@ function Hero() {
                     {initials}
                   </div>
                 ))}
-                <div className="trust-avatar trust-count">2K+</div>
               </div>
 
               <p>
-                Join 2,000+ active citizens
+                Citizens reporting issues
                 <br />
                 making a real difference
               </p>
@@ -223,4 +222,5 @@ function Hero() {
 export default Hero;
 
 
-              
+
+            
