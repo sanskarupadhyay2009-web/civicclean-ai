@@ -1,21 +1,4 @@
-/**
- * HeroCraft
- * ------------------
- * A small glowing craft that continuously drifts across the hero city
- * image, matching the ship in the reference art. Pure CSS animation —
- * always running, no scroll needed, so the scene feels alive even when
- * the page is completely static.
- */
-
-function HeroCraft() {
-  return (
-    <div className="hero-craft-layer" aria-hidden="true">
-      <div className="hero-craft">
-        <span className="craft-body"></span>
-        <span className="craft-trail"></span>
-      </div>
-    </div>
-  );
-}
-
+// Craft is now rendered inside CityScene's SVG via <animateMotion>.
+// This file is a no-op stub kept for import safety.
+function HeroCraft() { return null; }
 export default HeroCraft;
