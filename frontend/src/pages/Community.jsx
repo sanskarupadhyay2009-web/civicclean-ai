@@ -8,22 +8,22 @@ function Community() {
     {
       icon: <Users size={34} />,
       title: "Active Members",
-      value: "2,486",
+      value: "—",
     },
     {
       icon: <Recycle size={34} />,
       title: "Reports Submitted",
-      value: "18,241",
+      value: "—",
     },
     {
       icon: <Leaf size={34} />,
       title: "Areas Cleaned",
-      value: "312",
+      value: "—",
     },
     {
       icon: <Trophy size={34} />,
       title: "Challenges Won",
-      value: "48",
+      value: "—",
     },
   ];
 
