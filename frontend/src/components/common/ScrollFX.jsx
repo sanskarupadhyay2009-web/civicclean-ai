@@ -64,13 +64,15 @@ function ScrollGrid({ smoothY }) {
   );
 }
 
+// Trimmed from 6 orbs to 4 — each one is a large blurred div running
+// its own infinite scale/opacity loop on top of a scroll-linked
+// transform. Six of them (plus 3 comets, plus the city skyline's own
+// filters) was too much concurrent blur/animation work for one page.
 const ORBS = [
-  { top: "4%",  left: "8%",  size: 260, factor: 0.14,  color: "16,185,129",  delay: 0 },
-  { top: "20%", left: "84%", size: 200, factor: -0.22, color: "52,211,153",  delay: 1 },
-  { top: "40%", left: "10%", size: 320, factor: 0.26,  color: "110,231,183", delay: 2 },
-  { top: "58%", left: "78%", size: 240, factor: -0.18, color: "16,185,129",  delay: 0.5 },
-  { top: "76%", left: "18%", size: 280, factor: 0.24,  color: "5,150,105",   delay: 1.5 },
-  { top: "92%", left: "62%", size: 220, factor: -0.3,  color: "52,211,153",  delay: 2.5 },
+  { top: "6%",  left: "8%",  size: 260, factor: 0.14,  color: "16,185,129",  delay: 0 },
+  { top: "34%", left: "84%", size: 220, factor: -0.22, color: "52,211,153",  delay: 1 },
+  { top: "62%", left: "12%", size: 300, factor: 0.24,  color: "110,231,183", delay: 2 },
+  { top: "88%", left: "70%", size: 240, factor: -0.2,  color: "5,150,105",   delay: 1.4 },
 ];
 
 function ScrollFX() {
@@ -87,9 +89,8 @@ function ScrollFX() {
         <ScrollOrb key={i} {...o} smoothY={smoothY} />
       ))}
 
-      <ScrollComet top="16%" delay={0} scrollY={scrollY} />
-      <ScrollComet top="48%" reverse delay={1.8} scrollY={scrollY} />
-      <ScrollComet top="82%" delay={3.2} scrollY={scrollY} />
+      <ScrollComet top="22%" delay={0} scrollY={scrollY} />
+      <ScrollComet top="70%" reverse delay={1.8} scrollY={scrollY} />
     </div>
   );
 }
