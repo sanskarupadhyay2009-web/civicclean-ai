@@ -8,6 +8,8 @@ import {
   Users
 } from "lucide-react";
 
+import { staggerGroup, popItem, cardPop } from "../../utils/motionVariants";
+
 const features = [
   {
     icon: <Brain size={34} />,
@@ -45,22 +47,28 @@ function Features() {
   return (
     <section className="features-section">
 
-      <div className="features-header">
+      <motion.div
+        className="features-header"
+        variants={staggerGroup(0.15)}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, amount: 0.5 }}
+      >
 
-        <span>WHY CIVICCLEAN AI</span>
+        <motion.span variants={popItem}>WHY CIVICCLEAN AI</motion.span>
 
-        <h2>
+        <motion.h2 variants={popItem}>
           Powerful Features Designed
           <br />
           For Smarter Cities
-        </h2>
+        </motion.h2>
 
-        <p>
+        <motion.p variants={popItem}>
           Everything required to detect, monitor and improve
           urban sanitation through Artificial Intelligence.
-        </p>
+        </motion.p>
 
-      </div>
+      </motion.div>
 
       <div className="features-grid">
 
@@ -69,28 +77,30 @@ function Features() {
           <motion.div
             key={index}
             className="feature-card"
-            initial={{
-              opacity: 0,
-              y: 70
-            }}
-            whileInView={{
-              opacity: 1,
-              y: 0
-            }}
-            transition={{
-              duration: 0.6,
-              delay: index * 0.08
-            }}
-            viewport={{
-              once: true
+            variants={cardPop(index)}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, amount: 0.35 }}
+            whileHover={{
+              y: -10,
+              rotateX: 6,
+              rotateZ: index % 2 ? -1.5 : 1.5,
+              scale: 1.03,
+              transition: { duration: 0.35, ease: "easeOut" },
             }}
           >
 
-            <div className="feature-icon">
+            <motion.div
+              className="feature-icon"
+              initial={{ scale: 0, rotate: -120 }}
+              whileInView={{ scale: 1, rotate: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: index * 0.09 + 0.15, ease: [0.34, 1.56, 0.64, 1] }}
+            >
 
               {feature.icon}
 
-            </div>
+            </motion.div>
 
             <h3>
 
