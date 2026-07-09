@@ -12,7 +12,7 @@ import {
 import { Link } from "react-router-dom";
 
 import CityScene from "./city/CityScene";
-import FloatingCards from "./FloatingCards";
+
 import ScrollIndicator from "./city/ScrollIndicator";
 
 import "../../styles/home.css";
@@ -178,7 +178,7 @@ function Hero() {
         >
           <CityScene />
 
-          <FloatingCards />
+
         </motion.div>
       </div>
 
@@ -222,4 +222,5 @@ function Hero() {
 
 export default Hero;
 
-            
+
+              
