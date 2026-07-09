@@ -6,6 +6,8 @@ import {
   Users
 } from "lucide-react";
 
+import { staggerGroup, popItem, cardPop } from "../../utils/motionVariants";
+
 const stats = [
   {
     icon: <Activity size={32} />,
@@ -35,25 +37,31 @@ function Stats() {
 
     <section className="stats-section">
 
-      <div className="stats-header">
+      <motion.div
+        className="stats-header"
+        variants={staggerGroup(0.15)}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, amount: 0.5 }}
+      >
 
-        <span>LIVE IMPACT</span>
+        <motion.span variants={popItem}>LIVE IMPACT</motion.span>
 
-        <h2>
+        <motion.h2 variants={popItem}>
 
           What Makes Us Different
 
-        </h2>
+        </motion.h2>
 
-        <p>
+        <motion.p variants={popItem}>
 
           CivicClean AI is helping citizens and municipalities
           create cleaner and smarter communities through
           Artificial Intelligence.
 
-        </p>
+        </motion.p>
 
-      </div>
+      </motion.div>
 
       <div className="stats-grid">
 
@@ -62,28 +70,28 @@ function Stats() {
           <motion.div
             key={index}
             className="stats-card"
-            initial={{
-              opacity: 0,
-              scale: .85
-            }}
-            whileInView={{
-              opacity: 1,
-              scale: 1
-            }}
-            transition={{
-              duration: .6,
-              delay: index * .1
-            }}
-            viewport={{
-              once: true
+            variants={cardPop(index)}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, amount: 0.4 }}
+            whileHover={{
+              y: -8,
+              scale: 1.04,
+              transition: { duration: 0.3, ease: "easeOut" },
             }}
           >
 
-            <div className="stats-icon">
+            <motion.div
+              className="stats-icon"
+              initial={{ scale: 0, rotate: 130 }}
+              whileInView={{ scale: 1, rotate: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: index * 0.1 + 0.15, ease: [0.34, 1.56, 0.64, 1] }}
+            >
 
               {item.icon}
 
-            </div>
+            </motion.div>
 
             <h3>
 
