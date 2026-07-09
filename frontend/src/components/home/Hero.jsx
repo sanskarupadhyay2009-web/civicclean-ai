@@ -111,47 +111,6 @@ function Hero() {
               Explore Dashboard
             </Link>
           </motion.div>
-
-          {/* Trust row */}
-
-          <motion.div
-            className="hero-trust"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{
-              delay: 0.65,
-              duration: 0.8,
-            }}
-          >
-            <span className="trust-label">Trusted by communities</span>
-
-            <div className="trust-row">
-              <div className="trust-avatars">
-                {["RS", "AK", "IB", "SP"].map((initials, i) => (
-                  <div
-                    key={i}
-                    className="trust-avatar"
-                    style={{
-                      background: [
-                        "linear-gradient(135deg,#10B981,#059669)",
-                        "linear-gradient(135deg,#34D399,#047857)",
-                        "linear-gradient(135deg,#6EE7B7,#10B981)",
-                        "linear-gradient(135deg,#059669,#065F46)",
-                      ][i],
-                    }}
-                  >
-                    {initials}
-                  </div>
-                ))}
-              </div>
-
-              <p>
-                Citizens reporting issues
-                <br />
-                making a real difference
-              </p>
-            </div>
-          </motion.div>
         </motion.div>
 
         {/* ==========================
@@ -220,6 +179,8 @@ function Hero() {
 }
 
 export default Hero;
+
+                      
 
 
 
