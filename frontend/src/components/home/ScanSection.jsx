@@ -2,6 +2,8 @@ import { motion } from "framer-motion";
 import { UploadCloud, ScanLine } from "lucide-react";
 import { useState } from "react";
 
+import { staggerGroup, popItem, flipIn } from "../../utils/motionVariants";
+
 function ScanSection() {
   const [scanning, setScanning] = useState(false);
 
@@ -19,38 +21,39 @@ function ScanSection() {
       {/* LEFT INFO */}
       <motion.div
         className="scan-left"
-        initial={{ opacity: 0, x: -50 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.7 }}
-        viewport={{ once: true }}
+        variants={staggerGroup(0.14)}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, amount: 0.4 }}
       >
 
-        <h2>
+        <motion.h2 variants={popItem}>
           AI Powered <span>Sanitation Scan</span>
-        </h2>
+        </motion.h2>
 
-        <p>
+        <motion.p variants={popItem}>
           Upload an image of any location and our AI will detect
           waste, sanitation issues and environmental risks in real time.
-        </p>
+        </motion.p>
 
-        <div className="scan-features">
+        <motion.div className="scan-features" variants={staggerGroup(0.1)}>
 
-          <div>⚡ Instant Detection</div>
-          <div>🧠 AI Classification</div>
-          <div>📍 Geo-tag Ready</div>
+          <motion.div variants={popItem}>⚡ Instant Detection</motion.div>
+          <motion.div variants={popItem}>🧠 AI Classification</motion.div>
+          <motion.div variants={popItem}>📍 Geo-tag Ready</motion.div>
 
-        </div>
+        </motion.div>
 
       </motion.div>
 
       {/* RIGHT SCAN BOX */}
       <motion.div
         className="scan-right"
-        initial={{ opacity: 0, scale: 0.9 }}
-        whileInView={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.7 }}
-        viewport={{ once: true }}
+        style={{ transformPerspective: 1200 }}
+        variants={flipIn}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, amount: 0.4 }}
       >
 
         <div className={`scan-box ${scanning ? "active" : ""}`}>
@@ -79,3 +82,4 @@ function ScanSection() {
 }
 
 export default ScanSection;
+        
