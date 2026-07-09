@@ -465,7 +465,11 @@
 
 .hero-stat-item h2{
 
-    font-size:1.4rem;
+    font-size:1.02rem;
+
+    line-height:1.25;
+
+    font-weight:700;
 
     color:white;
 
