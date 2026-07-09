@@ -818,40 +818,7 @@ margin:auto;
   inset: 0;
 }
 
-/* ---- Drifting ambient words ---- */
-
-.space-drift-words {
-  position: absolute;
-  inset: 0;
-}
-
-.space-drift-word {
-  position: absolute;
-  left: -40%;
-  white-space: nowrap;
-  font-size: clamp(2.5rem, 6vw, 5rem);
-  font-weight: 800;
-  letter-spacing: 0.3em;
-  color: rgba(124, 255, 216, 0.05);
-  animation-name: driftAcross;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-}
-
-@keyframes driftAcross {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(220vw);
-  }
-}
-
 @media (max-width: 760px) {
-  .space-drift-word {
-    font-size: 2.2rem;
-  }
-
   .space-nebula-1, .space-nebula-2, .space-nebula-3 {
     width: 320px;
     height: 320px;
@@ -864,4 +831,5 @@ margin:auto;
     margin-top: -400px;
   }
        }
+
        
