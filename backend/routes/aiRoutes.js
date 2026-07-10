@@ -72,19 +72,27 @@ router.post("/chat", protect, async (req, res) => {
     const reply = await chatWithGemini(message);
 
     // Save to MongoDB
-    await AIUsage.create({
-      user: req.user._id,
-      name: req.user.name,
-      email: req.user.email,
+try {
+  const usage = await AIUsage.create({
+    user: req.user._id,
+    name: req.user.name,
+    email: req.user.email,
 
-      type: "chat",
+    type: "chat",
 
-      prompt: message,
-      reply,
+    prompt: message,
+    reply,
 
-      ip: req.headers["x-forwarded-for"] || req.socket.remoteAddress,
-      userAgent: req.headers["user-agent"],
-    });
+    ip: req.headers["x-forwarded-for"] || req.socket.remoteAddress,
+    userAgent: req.headers["user-agent"],
+  });
+
+  console.log("✅ AI Usage saved successfully");
+  console.log("Document ID:", usage._id);
+} catch (dbErr) {
+  console.error("❌ Failed to save AI Usage");
+  console.error(dbErr);
+}
 
     res.json({
       success: true,
@@ -144,23 +152,31 @@ router.post(
       );
 
       // Save to MongoDB
-      await AIUsage.create({
-        user: req.user._id,
-        name: req.user.name,
-        email: req.user.email,
+try {
+  const usage = await AIUsage.create({
+    user: req.user._id,
+    name: req.user.name,
+    email: req.user.email,
 
-        type: "image",
+    type: "image",
 
-        prompt: message || "",
-        reply,
+    prompt: message || "",
+    reply,
 
-        imageName: req.file.originalname,
-        imageType: req.file.mimetype,
-        imageSize: req.file.size,
+    imageName: req.file.originalname,
+    imageType: req.file.mimetype,
+    imageSize: req.file.size,
 
-        ip: req.headers["x-forwarded-for"] || req.socket.remoteAddress,
-        userAgent: req.headers["user-agent"],
-      });
+    ip: req.headers["x-forwarded-for"] || req.socket.remoteAddress,
+    userAgent: req.headers["user-agent"],
+  });
+
+  console.log("✅ Image Usage saved successfully");
+  console.log("Document ID:", usage._id);
+} catch (dbErr) {
+  console.error("❌ Failed to save Image Usage");
+  console.error(dbErr);
+}
 
       res.json({
         success: true,
