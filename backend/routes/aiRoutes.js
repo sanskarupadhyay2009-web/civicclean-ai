@@ -2,7 +2,8 @@ const express = require("express");
 const multer = require("multer");
 const router = express.Router();
 
-const protect = require("../middleware/authMiddleware"); // <-- Add this
+const protect = require("../middleware/authMiddleware");
+const AIUsage = require("../models/AIUsage");
 
 console.log("✅ aiRoutes.js loaded");
 
@@ -57,9 +58,9 @@ router.post("/chat", protect, async (req, res) => {
     }
 
     console.log("========== AI REQUEST ==========");
-    console.log("User ID:", req.user?._id);
-    console.log("Name:", req.user?.name);
-    console.log("Email:", req.user?.email);
+    console.log("User ID:", req.user._id);
+    console.log("Name:", req.user.name);
+    console.log("Email:", req.user.email);
     console.log("Message:", message);
     console.log(
       "IP:",
@@ -70,7 +71,20 @@ router.post("/chat", protect, async (req, res) => {
 
     const reply = await chatWithGemini(message);
 
-    console.log("Gemini Reply:", reply);
+    // Save to MongoDB
+    await AIUsage.create({
+      user: req.user._id,
+      name: req.user.name,
+      email: req.user.email,
+
+      type: "chat",
+
+      prompt: message,
+      reply,
+
+      ip: req.headers["x-forwarded-for"] || req.socket.remoteAddress,
+      userAgent: req.headers["user-agent"],
+    });
 
     res.json({
       success: true,
@@ -109,9 +123,9 @@ router.post(
       }
 
       console.log("======= IMAGE ANALYSIS REQUEST =======");
-      console.log("User ID:", req.user?._id);
-      console.log("Name:", req.user?.name);
-      console.log("Email:", req.user?.email);
+      console.log("User ID:", req.user._id);
+      console.log("Name:", req.user.name);
+      console.log("Email:", req.user.email);
       console.log("Prompt:", message);
       console.log("Image:", req.file.originalname);
       console.log("Size:", req.file.size, "bytes");
@@ -128,6 +142,25 @@ router.post(
         req.file.buffer,
         req.file.mimetype
       );
+
+      // Save to MongoDB
+      await AIUsage.create({
+        user: req.user._id,
+        name: req.user.name,
+        email: req.user.email,
+
+        type: "image",
+
+        prompt: message || "",
+        reply,
+
+        imageName: req.file.originalname,
+        imageType: req.file.mimetype,
+        imageSize: req.file.size,
+
+        ip: req.headers["x-forwarded-for"] || req.socket.remoteAddress,
+        userAgent: req.headers["user-agent"],
+      });
 
       res.json({
         success: true,
