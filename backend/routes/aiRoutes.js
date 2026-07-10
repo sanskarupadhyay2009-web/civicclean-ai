@@ -2,6 +2,8 @@ const express = require("express");
 const multer = require("multer");
 const router = express.Router();
 
+const protect = require("../middleware/authMiddleware"); // <-- Add this
+
 console.log("✅ aiRoutes.js loaded");
 
 const {
@@ -9,8 +11,7 @@ const {
   chatWithGeminiImage,
 } = require("../services/geminiService");
 
-// In-memory storage: we only need the image briefly to send to Gemini,
-// no need to save it to disk for a chat attachment.
+// In-memory storage
 const chatImageUpload = multer({
   storage: multer.memoryStorage(),
   limits: { fileSize: 10 * 1024 * 1024 },
@@ -42,7 +43,7 @@ router.get("/test", (req, res) => {
    CHAT ROUTE
 ========================================================== */
 
-router.post("/chat", async (req, res) => {
+router.post("/chat", protect, async (req, res) => {
   console.log("✅ POST /api/ai/chat");
 
   try {
@@ -55,7 +56,17 @@ router.post("/chat", async (req, res) => {
       });
     }
 
-    console.log("User:", message);
+    console.log("========== AI REQUEST ==========");
+    console.log("User ID:", req.user?._id);
+    console.log("Name:", req.user?.name);
+    console.log("Email:", req.user?.email);
+    console.log("Message:", message);
+    console.log(
+      "IP:",
+      req.headers["x-forwarded-for"] || req.socket.remoteAddress
+    );
+    console.log("Time:", new Date().toISOString());
+    console.log("================================");
 
     const reply = await chatWithGemini(message);
 
@@ -77,41 +88,61 @@ router.post("/chat", async (req, res) => {
 });
 
 /* ==========================================================
-   CHAT WITH IMAGE ROUTE (for chat attachments)
+   CHAT WITH IMAGE ROUTE
 ========================================================== */
 
-router.post("/chat-image", chatImageUpload.single("image"), async (req, res) => {
-  console.log("✅ POST /api/ai/chat-image");
+router.post(
+  "/chat-image",
+  protect,
+  chatImageUpload.single("image"),
+  async (req, res) => {
+    console.log("✅ POST /api/ai/chat-image");
 
-  try {
-    const { message } = req.body;
+    try {
+      const { message } = req.body;
 
-    if (!req.file) {
-      return res.status(400).json({
+      if (!req.file) {
+        return res.status(400).json({
+          success: false,
+          message: "Image is required",
+        });
+      }
+
+      console.log("======= IMAGE ANALYSIS REQUEST =======");
+      console.log("User ID:", req.user?._id);
+      console.log("Name:", req.user?.name);
+      console.log("Email:", req.user?.email);
+      console.log("Prompt:", message);
+      console.log("Image:", req.file.originalname);
+      console.log("Size:", req.file.size, "bytes");
+      console.log("Type:", req.file.mimetype);
+      console.log(
+        "IP:",
+        req.headers["x-forwarded-for"] || req.socket.remoteAddress
+      );
+      console.log("Time:", new Date().toISOString());
+      console.log("======================================");
+
+      const reply = await chatWithGeminiImage(
+        message,
+        req.file.buffer,
+        req.file.mimetype
+      );
+
+      res.json({
+        success: true,
+        reply,
+      });
+    } catch (err) {
+      console.error("🔥 AI Chat-Image Route Error");
+      console.error(err);
+
+      res.status(500).json({
         success: false,
-        message: "Image is required",
+        message: err.message,
       });
     }
-
-    const reply = await chatWithGeminiImage(
-      message,
-      req.file.buffer,
-      req.file.mimetype
-    );
-
-    res.json({
-      success: true,
-      reply,
-    });
-  } catch (err) {
-    console.error("🔥 AI Chat-Image Route Error");
-    console.error(err);
-
-    res.status(500).json({
-      success: false,
-      message: err.message,
-    });
   }
-});
+);
 
 module.exports = router;
