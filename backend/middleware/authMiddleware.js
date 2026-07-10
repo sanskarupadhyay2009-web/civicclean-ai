@@ -10,6 +10,7 @@ const protect = async (req, res, next) => {
       req.headers.authorization.startsWith("Bearer")
     ) {
       token = req.headers.authorization.split(" ")[1];
+
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
       const user = await User.findById(decoded.id).select("-password");
@@ -17,24 +18,26 @@ const protect = async (req, res, next) => {
       if (!user) {
         return res.status(401).json({
           success: false,
-          message: "User not found",
+          message: "Your account could not be found. Please log in again.",
         });
       }
 
       req.user = user;
-      next();
-    } else {
-      return res.status(401).json({
-        success: false,
-        message: "Not authorized. No token provided.",
-      });
+      return next();
     }
-  } catch (error) {
-    console.error(error);
 
     return res.status(401).json({
       success: false,
-      message: "Invalid or expired token",
+      message:
+        "Please log in to use the AI Assistant. Sign in to continue chatting and analyzing images.",
+    });
+  } catch (error) {
+    console.error("Authentication Error:", error.message);
+
+    return res.status(401).json({
+      success: false,
+      message:
+        "Your session has expired or is invalid. Please log in again to continue using the AI Assistant.",
     });
   }
 };
