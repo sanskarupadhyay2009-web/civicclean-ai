@@ -15,6 +15,7 @@ import CityScene from "./city/CityScene";
 
 import ScrollIndicator from "./city/ScrollIndicator";
 import GlowText from "../common/GlowText";
+import Magnetic from "../common/Magnetic";
 
 import "../../styles/home.css";
 
@@ -105,15 +106,15 @@ function Hero() {
               duration: 0.8,
             }}
           >
-            <Link to="/report" className="hero-primary-btn">
+            <Magnetic as={Link} to="/report" className="hero-primary-btn">
               <Send size={18} />
               Report an Issue
-            </Link>
+            </Magnetic>
 
-            <Link to="/dashboard" className="hero-secondary-btn">
+            <Magnetic as={Link} to="/dashboard" className="hero-secondary-btn">
               <ThumbsUp size={18} />
               Explore Dashboard
-            </Link>
+            </Magnetic>
           </motion.div>
         </motion.div>
 
@@ -184,9 +185,5 @@ function Hero() {
 
 export default Hero;
 
-                      
 
-
-
-
-                                                              
+                           
