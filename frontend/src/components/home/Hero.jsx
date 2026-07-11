@@ -14,6 +14,7 @@ import { Link } from "react-router-dom";
 import CityScene from "./city/CityScene";
 
 import ScrollIndicator from "./city/ScrollIndicator";
+import GlowText from "../common/GlowText";
 
 import "../../styles/home.css";
 
@@ -62,17 +63,20 @@ function Hero() {
           </motion.div>
 
           <motion.h1
-            initial={{ opacity: 0 }}
+            initial={{ opacity: 1 }}
             animate={{ opacity: 1 }}
-            transition={{
-              delay: 0.25,
-              duration: 0.8,
-            }}
           >
-            Cleaner Cities,
+            <GlowText text="Cleaner Cities," delay={0.25} />
             <br />
-            Better{" "}
-            <span className="gradient-text">Tomorrow</span>
+            <GlowText text="Better " delay={0.55} />
+            <motion.span
+              className="gradient-text"
+              initial={{ opacity: 0, y: 24, filter: "blur(8px)" }}
+              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              transition={{ delay: 0.9, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            >
+              Tomorrow
+            </motion.span>
           </motion.h1>
 
           <motion.p
@@ -184,4 +188,5 @@ export default Hero;
 
 
 
-            
+
+                                                              
