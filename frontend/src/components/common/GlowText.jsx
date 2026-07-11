@@ -1,9 +1,11 @@
 import { motion } from "framer-motion";
 
-// Splits `text` into characters and reveals them one by one, each
-// popping up out of a soft neon blur into a crisp glow — the kind of
-// staggered, glowing letter reveal used on a lot of flashy product
-// landing pages. Triggers once when scrolled into view.
+// Splits `text` into words, then into characters within each word,
+// and reveals them one by one — each letter popping out of a soft
+// neon blur into a crisp glow. Words are kept in their own
+// non-breaking group so the line only ever wraps *between* words,
+// never mid-word, and a real breakable space sits between them so
+// long headings still reflow correctly on narrow screens.
 export function GlowText({
   text,
   className = "",
@@ -13,6 +15,7 @@ export function GlowText({
   color = "16, 185, 129",
 }) {
   const MotionTag = motion[as] || motion.span;
+  const words = text.split(" ");
 
   const container = {
     hidden: {},
@@ -24,19 +27,15 @@ export function GlowText({
   const char = {
     hidden: {
       opacity: 0,
-      y: 24,
-      filter: "blur(8px)",
-      textShadow: `0 0 0px rgba(${color}, 0)`,
+      y: 16,
+      filter: "blur(6px)",
     },
     show: {
       opacity: 1,
       y: 0,
       filter: "blur(0px)",
-      textShadow: [
-        `0 0 18px rgba(${color}, 0.9)`,
-        `0 0 6px rgba(${color}, 0.35)`,
-      ],
-      transition: { duration: 0.55, ease: [0.16, 1, 0.3, 1] },
+      textShadow: `0 0 14px rgba(${color}, 0.55)`,
+      transition: { duration: 0.45, ease: [0.16, 1, 0.3, 1] },
     },
   };
 
@@ -49,19 +48,23 @@ export function GlowText({
       viewport={{ once: true, amount: 0.6 }}
       aria-label={text}
     >
-      {text.split("").map((letter, i) => (
-        <motion.span
-          key={i}
-          className="glow-text-char"
-          variants={char}
-          aria-hidden="true"
-        >
-          {letter === " " ? "\u00A0" : letter}
-        </motion.span>
-      ))}
+      {words.map((word, wi) => (
+        <span className="glow-text-word" key={wi}>
+          {word.split("").map((letter, li) => (
+            <motion.span
+              key={li}
+              className="glow-text-char"
+              variants={char}
+              aria-hidden="true"
+            >
+              {letter}
+            </motion.span>
+          ))}
+        </span>
+      )).reduce((acc, el, i) => (i === 0 ? [el] : [...acc, " ", el]), [])}
     </MotionTag>
   );
 }
 
 export default GlowText;
-
+        
