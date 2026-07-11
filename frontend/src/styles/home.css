@@ -1,0 +1,36 @@
+/* ===========================================================
+   HOME PAGE — AMBIENT FX
+   =========================================================== */
+
+/* Mouse-reactive neon particle network, fixed behind the
+   stacked sections but above the global starfield so both
+   layers blend together. */
+.cyber-particle-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* ===========================================================
+   SCRAMBLE TEXT — cyber glitch-decode reveal
+   =========================================================== */
+.scramble-text {
+  font-family: "Courier New", Courier, monospace;
+  letter-spacing: 0.5px;
+}
+
+/* ===========================================================
+   GLOW TEXT — letter-by-letter neon reveal used on headings
+   =========================================================== */
+.glow-text {
+  display: inline-block;
+}
+
+.glow-text-char {
+  display: inline-block;
+  will-change: transform, opacity, filter;
+}
+
