@@ -5,6 +5,7 @@ import Stats from "../components/home/Stats";
 
 import StackSection from "../components/common/StackSection";
 import ScrollFX from "../components/common/ScrollFX";
+import CyberParticleBackground from "../components/home/CyberParticleBackground";
 
 import "../styles/hero.css";
 import "../styles/city.css";
@@ -12,10 +13,13 @@ import "../styles/scan.css";
 import "../styles/features.css";
 import "../styles/stats.css";
 import "../styles/stacksection.css";
+import "../styles/home.css";
 
 function Home() {
   return (
     <main className="home-stack">
+
+      <CyberParticleBackground />
 
       <ScrollFX />
 
