@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import {
   Brain,
   MapPinned,
@@ -45,6 +45,78 @@ const features = [
   }
 ];
 
+// Card genuinely tilts toward wherever the cursor is over it (not a
+// fixed hover angle), plus a soft radial highlight that follows the
+// pointer — the "spotlight card" pattern used on a lot of dev-tool
+// landing pages (Stripe, Linear, Vercel, etc).
+function FeatureCard({ feature, index }) {
+  const rotateX = useMotionValue(0);
+  const rotateY = useMotionValue(0);
+  const springRotateX = useSpring(rotateX, { stiffness: 220, damping: 22 });
+  const springRotateY = useSpring(rotateY, { stiffness: 220, damping: 22 });
+
+  const glowX = useMotionValue(50);
+  const glowY = useMotionValue(50);
+
+  const handleMouseMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const px = (e.clientX - rect.left) / rect.width;
+    const py = (e.clientY - rect.top) / rect.height;
+
+    rotateY.set((px - 0.5) * 14);
+    rotateX.set((0.5 - py) * 14);
+    glowX.set(px * 100);
+    glowY.set(py * 100);
+  };
+
+  const handleMouseLeave = () => {
+    rotateX.set(0);
+    rotateY.set(0);
+  };
+
+  const glowBackground = useTransform([glowX, glowY], ([gx, gy]) =>
+    `radial-gradient(circle at ${gx}% ${gy}%, rgba(16,185,129,0.16), transparent 60%)`
+  );
+
+  return (
+    <motion.div
+      className="feature-card"
+      variants={cardPop(index)}
+      initial="hidden"
+      whileInView="show"
+      viewport={{ once: true, amount: 0.35 }}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      whileHover={{ y: -8, scale: 1.02 }}
+      style={{
+        rotateX: springRotateX,
+        rotateY: springRotateY,
+        transformPerspective: 900,
+      }}
+    >
+      <motion.div
+        className="feature-card-glow"
+        style={{ background: glowBackground }}
+        aria-hidden="true"
+      />
+
+      <motion.div
+        className="feature-icon"
+        initial={{ scale: 0, rotate: -120 }}
+        whileInView={{ scale: 1, rotate: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6, delay: index * 0.09 + 0.15, ease: [0.34, 1.56, 0.64, 1] }}
+      >
+        {feature.icon}
+      </motion.div>
+
+      <h3>{feature.title}</h3>
+
+      <p>{feature.text}</p>
+    </motion.div>
+  );
+}
+
 function Features() {
   return (
     <section className="features-section">
@@ -77,49 +149,7 @@ function Features() {
       <div className="features-grid">
 
         {features.map((feature, index) => (
-
-          <motion.div
-            key={index}
-            className="feature-card"
-            variants={cardPop(index)}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true, amount: 0.35 }}
-            whileHover={{
-              y: -10,
-              rotateX: 6,
-              rotateZ: index % 2 ? -1.5 : 1.5,
-              scale: 1.03,
-              transition: { duration: 0.35, ease: "easeOut" },
-            }}
-          >
-
-            <motion.div
-              className="feature-icon"
-              initial={{ scale: 0, rotate: -120 }}
-              whileInView={{ scale: 1, rotate: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: index * 0.09 + 0.15, ease: [0.34, 1.56, 0.64, 1] }}
-            >
-
-              {feature.icon}
-
-            </motion.div>
-
-            <h3>
-
-              {feature.title}
-
-            </h3>
-
-            <p>
-
-              {feature.text}
-
-            </p>
-
-          </motion.div>
-
+          <FeatureCard key={index} feature={feature} index={index} />
         ))}
 
       </div>
@@ -129,4 +159,4 @@ function Features() {
 }
 
 export default Features;
-                           
+    
