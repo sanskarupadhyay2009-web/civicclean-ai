@@ -14,40 +14,30 @@
   pointer-events: none;
 }
 
-/* ===========================================================
-   SCRAMBLE TEXT — cyber glitch-decode reveal
-   =========================================================== */
+/* Soft light that follows the cursor across the page — position
+   comes from --cursor-x/--cursor-y, set in CursorGlow.jsx. */
+.cursor-glow {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  background: radial-gradient(
+    380px circle at var(--cursor-x, 50%) var(--cursor-y, 50%),
+    rgba(16, 185, 129, 0.08),
+    transparent 70%
+  );
+}
 .scramble-text {
   font-family: "Courier New", Courier, monospace;
   letter-spacing: 0.5px;
 }
 
 /* ===========================================================
-   GLOW TEXT — letter-by-letter neon reveal used on headings
-
-   Structure: .glow-text (the whole phrase, flows inline like
-   normal text) > .glow-text-word (one word, kept unbreakable)
-   > .glow-text-char (one letter, needs inline-block so the
-   per-letter transform/blur animation actually renders).
-
-   Grouping by word — instead of animating every raw character
-   back to back — means the browser can still wrap the heading
-   at normal word boundaries on narrow screens instead of
-   splitting a word in half wherever it runs out of room.
+   GLOW TEXT — clean whole-phrase scroll reveal (fade + blur-in),
+   no per-letter splitting.
    =========================================================== */
 .glow-text {
-  display: inline;
-  letter-spacing: normal;
-}
-
-.glow-text-word {
   display: inline-block;
-  white-space: nowrap;
-}
-
-.glow-text-char {
-  display: inline-block;
-  letter-spacing: normal;
-  will-change: transform, opacity, filter;
 }
 
