@@ -1,3 +1,4 @@
+
 import Hero from "../components/home/Hero";
 import ScanSection from "../components/home/ScanSection";
 import Features from "../components/home/Features";
@@ -6,6 +7,7 @@ import Stats from "../components/home/Stats";
 import StackSection from "../components/common/StackSection";
 import ScrollFX from "../components/common/ScrollFX";
 import CyberParticleBackground from "../components/home/CyberParticleBackground";
+import CursorGlow from "../components/home/CursorGlow";
 
 import "../styles/hero.css";
 import "../styles/city.css";
@@ -20,6 +22,7 @@ function Home() {
     <main className="home-stack">
 
       <CyberParticleBackground />
+      <CursorGlow />
 
       <ScrollFX />
 
