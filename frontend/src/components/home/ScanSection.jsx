@@ -3,6 +3,8 @@ import { UploadCloud, ScanLine } from "lucide-react";
 import { useState } from "react";
 
 import { staggerGroup, popItem, flipIn } from "../../utils/motionVariants";
+import ScrambleText from "../common/ScrambleText";
+import GlowText from "../common/GlowText";
 
 function ScanSection() {
   const [scanning, setScanning] = useState(false);
@@ -28,7 +30,8 @@ function ScanSection() {
       >
 
         <motion.h2 variants={popItem}>
-          AI Powered <span>Sanitation Scan</span>
+          <GlowText text="AI Powered " />
+          <span><GlowText text="Sanitation Scan" /></span>
         </motion.h2>
 
         <motion.p variants={popItem}>
@@ -82,4 +85,5 @@ function ScanSection() {
 }
 
 export default ScanSection;
-        
+
+                
