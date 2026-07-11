@@ -68,7 +68,7 @@ function Hero() {
           >
             <GlowText text="Cleaner Cities," delay={0.25} />
             <br />
-            <GlowText text="Better " delay={0.55} />
+            <GlowText text="Better" delay={0.55} />{" "}
             <motion.span
               className="gradient-text"
               initial={{ opacity: 0, y: 24, filter: "blur(8px)" }}
