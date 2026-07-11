@@ -9,6 +9,8 @@ import {
 } from "lucide-react";
 
 import { staggerGroup, popItem, cardPop } from "../../utils/motionVariants";
+import ScrambleText from "../common/ScrambleText";
+import GlowText from "../common/GlowText";
 
 const features = [
   {
@@ -55,12 +57,14 @@ function Features() {
         viewport={{ once: true, amount: 0.5 }}
       >
 
-        <motion.span variants={popItem}>WHY CIVICCLEAN AI</motion.span>
+        <motion.span variants={popItem}>
+          <ScrambleText text="WHY CIVICCLEAN AI" speed={28} />
+        </motion.span>
 
         <motion.h2 variants={popItem}>
-          Powerful Features Designed
+          <GlowText text="Powerful Features Designed" />
           <br />
-          For Smarter Cities
+          <GlowText text="For Smarter Cities" delay={0.2} />
         </motion.h2>
 
         <motion.p variants={popItem}>
@@ -125,3 +129,4 @@ function Features() {
 }
 
 export default Features;
+                           
