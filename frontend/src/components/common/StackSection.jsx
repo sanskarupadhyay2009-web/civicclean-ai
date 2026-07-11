@@ -1,6 +1,13 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 
+// Straight overlay stack — no 3D tilt. Each section is pinned with
+// position:sticky (see stacksection.css) and painted in DOM order, so
+// as you scroll, the next section slides straight up and lands flush
+// on top of the one before it, like cards being dealt one over another.
+// The only scroll-linked motion left is a very subtle scale/opacity
+// dip on the outgoing section right as the next one covers it — just
+// enough to sell depth, with zero rotation.
 function StackSection({ children, index = 0 }) {
 
     const ref = useRef(null);
@@ -9,32 +16,20 @@ function StackSection({ children, index = 0 }) {
 
         target: ref,
 
-        offset: ["start end", "end start"]
+        offset: ["start start", "end start"]
 
     });
 
     const scale = useTransform(
         scrollYProgress,
-        [0, 0.5, 1],
-        [0.92, 1, 0.94]
-    );
-
-    const rotateX = useTransform(
-        scrollYProgress,
-        [0, 0.5, 1],
-        [18, 0, -18]
+        [0, 0.85, 1],
+        [1, 1, 0.94]
     );
 
     const opacity = useTransform(
         scrollYProgress,
-        [0, 0.2, 0.8, 1],
-        [0.2, 1, 1, 0.25]
-    );
-
-    const y = useTransform(
-        scrollYProgress,
-        [0, 1],
-        [120, -120]
+        [0, 0.85, 1],
+        [1, 1, 0.65]
     );
 
     return (
@@ -49,13 +44,9 @@ function StackSection({ children, index = 0 }) {
 
                 scale,
 
-                rotateX,
-
                 opacity,
 
-                y,
-
-                zIndex:100-index
+                zIndex: index + 1
 
             }}
 
