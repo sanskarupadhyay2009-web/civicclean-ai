@@ -1,22 +1,39 @@
 /* ==========================================================
-   3D SCROLL STACK
-   Home.jsx wraps each section in <StackSection>, which uses
-   framer-motion scroll-linked transforms (scale/rotateX/opacity/y).
-   Those transforms need a perspective on the ancestor to actually
-   render with visible 3D depth — without it, rotateX just looks
-   like a flat squish. This file supplies that.
+   STRAIGHT OVERLAY STACK
+   Home.jsx wraps each section in <StackSection>. Every section
+   is pinned with position:sticky at the top of the viewport, so
+   as the page scrolls, the next section slides straight up and
+   lands flush over the previous one — no rotation, no tilt, just
+   one page landing over the other like cards being dealt down.
+   A subtle scale/opacity dip (see StackSection.jsx) is the only
+   scroll-linked motion left, purely to sell a bit of depth.
 ========================================================== */
 
 .home-stack {
   position: relative;
-  perspective: 1400px;
 }
 
 .stack-section {
-  position: relative;
-  transform-style: preserve-3d;
+  position: sticky;
+  top: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
   will-change: transform, opacity;
-  backface-visibility: hidden;
+
+  /* Opaque-enough glass panel so the incoming section genuinely
+     covers the one beneath it, while still letting the ambient
+     ScrollFX / particle layers glow through at the edges. */
+  background: linear-gradient(
+    180deg,
+    rgba(4, 9, 8, 0.94) 0%,
+    rgba(6, 14, 12, 0.97) 55%,
+    rgba(4, 9, 8, 0.94) 100%
+  );
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+
+  box-shadow: 0 -50px 90px rgba(0, 0, 0, 0.5);
 }
 
 /* ==========================================================
