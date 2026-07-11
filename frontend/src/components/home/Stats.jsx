@@ -7,6 +7,8 @@ import {
 } from "lucide-react";
 
 import { staggerGroup, popItem, cardPop } from "../../utils/motionVariants";
+import ScrambleText from "../common/ScrambleText";
+import GlowText from "../common/GlowText";
 
 const stats = [
   {
@@ -45,11 +47,13 @@ function Stats() {
         viewport={{ once: true, amount: 0.5 }}
       >
 
-        <motion.span variants={popItem}>LIVE IMPACT</motion.span>
+        <motion.span variants={popItem}>
+          <ScrambleText text="LIVE IMPACT" speed={28} />
+        </motion.span>
 
         <motion.h2 variants={popItem}>
 
-          What Makes Us Different
+          <GlowText text="What Makes Us Different" />
 
         </motion.h2>
 
@@ -118,3 +122,4 @@ function Stats() {
 }
 
 export default Stats;
+              
