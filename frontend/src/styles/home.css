@@ -24,13 +24,30 @@
 
 /* ===========================================================
    GLOW TEXT — letter-by-letter neon reveal used on headings
+
+   Structure: .glow-text (the whole phrase, flows inline like
+   normal text) > .glow-text-word (one word, kept unbreakable)
+   > .glow-text-char (one letter, needs inline-block so the
+   per-letter transform/blur animation actually renders).
+
+   Grouping by word — instead of animating every raw character
+   back to back — means the browser can still wrap the heading
+   at normal word boundaries on narrow screens instead of
+   splitting a word in half wherever it runs out of room.
    =========================================================== */
 .glow-text {
+  display: inline;
+  letter-spacing: normal;
+}
+
+.glow-text-word {
   display: inline-block;
+  white-space: nowrap;
 }
 
 .glow-text-char {
   display: inline-block;
+  letter-spacing: normal;
   will-change: transform, opacity, filter;
 }
 
