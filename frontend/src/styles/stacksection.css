@@ -21,19 +21,20 @@
   flex-direction: column;
   will-change: transform, opacity;
 
-  /* Opaque-enough glass panel so the incoming section genuinely
-     covers the one beneath it, while still letting the ambient
-     ScrollFX / particle layers glow through at the edges. */
+  /* Light frosted-glass tint — just enough so the incoming section
+     reads as a distinct "page" landing over the previous one, while
+     the particle network / starfield / ScrollFX behind it stay
+     clearly visible through it rather than getting blocked out. */
   background: linear-gradient(
     180deg,
-    rgba(4, 9, 8, 0.94) 0%,
-    rgba(6, 14, 12, 0.97) 55%,
-    rgba(4, 9, 8, 0.94) 100%
+    rgba(4, 9, 8, 0.34) 0%,
+    rgba(6, 14, 12, 0.4) 55%,
+    rgba(4, 9, 8, 0.34) 100%
   );
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
 
-  box-shadow: 0 -50px 90px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 -50px 90px rgba(0, 0, 0, 0.35);
 }
 
 /* ==========================================================
