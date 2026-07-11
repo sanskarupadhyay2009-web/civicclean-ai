@@ -148,6 +148,33 @@
 
 }
 
+/* Cursor-tracked spotlight, driven by FeatureCard's mousemove
+   handler in Features.jsx. Sits above the card background but
+   below the actual content. */
+.feature-card-glow{
+
+    position:absolute;
+
+    inset:0;
+
+    z-index:0;
+
+    pointer-events:none;
+
+    border-radius:inherit;
+
+}
+
+.feature-icon,
+.feature-card h3,
+.feature-card p{
+
+    position:relative;
+
+    z-index:1;
+
+}
+
 .feature-card:hover{
 
     transform:
@@ -296,4 +323,5 @@ padding:28px;
 
 }
 
-}
+       }
+   
