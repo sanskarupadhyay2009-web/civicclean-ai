@@ -1,9 +1,10 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
-import { Search, Layers, MapPin } from "lucide-react";
+import { Search, Layers, MapPin, Loader2 } from "lucide-react";
 import L from "leaflet";
 
+import { getReports } from "../services/reportService";
 import HeatmapLayer from "../components/common/HeatmapLayer";
 
 import "leaflet/dist/leaflet.css";
@@ -17,53 +18,96 @@ L.Icon.Default.mergeOptions({
   shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
 });
 
-const CITY_CENTER = { latitude: 26.8467, longitude: 80.9462 };
+// Fallback center (Lucknow) used only when there isn't at least one real
+// report with a location yet, so the map still opens somewhere sensible.
+const DEFAULT_CENTER = { latitude: 26.8467, longitude: 80.9462 };
 
-const REPORTS = [
-  { id: 1, type: "Plastic Waste", area: "Hazratganj", severity: "Medium", latitude: 26.8467, longitude: 80.9462 },
-  { id: 2, type: "Garbage Dump", area: "Gomti Nagar", severity: "High", latitude: 26.8506, longitude: 81.0091 },
-  { id: 3, type: "Electronic Waste", area: "Aliganj", severity: "Low", latitude: 26.8848, longitude: 80.9418 },
-  { id: 4, type: "Mixed Waste", area: "Indira Nagar", severity: "Medium", latitude: 26.8770, longitude: 80.9820 },
-  { id: 5, type: "Organic Waste", area: "Chowk", severity: "High", latitude: 26.8600, longitude: 80.9060 },
-  { id: 6, type: "Plastic Waste", area: "Hazratganj", severity: "Low", latitude: 26.8490, longitude: 80.9430 },
-  { id: 7, type: "Garbage Dump", area: "Gomti Nagar", severity: "Medium", latitude: 26.8540, longitude: 81.0050 },
-];
-
-const HEAT_POINTS = REPORTS.flatMap((r) => {
-  const weight = r.severity === "High" ? 1 : r.severity === "Medium" ? 0.6 : 0.3;
-  return [...Array(6)].map(() => [
-    r.latitude + (Math.random() - 0.5) * 0.006,
-    r.longitude + (Math.random() - 0.5) * 0.006,
-    weight,
-  ]);
-});
+const SEVERITY_WEIGHT = { High: 1, Medium: 0.6, Low: 0.3 };
 
 function FlyToController({ target }) {
   const map = useMap();
 
   if (target) {
-    map.flyTo([target.latitude, target.longitude], 15, { duration: 1.2 });
+    map.flyTo([target.location.latitude, target.location.longitude], 16, {
+      duration: 1.2,
+    });
   }
 
   return null;
 }
 
 function LiveMap() {
+  const [reports, setReports] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
   const [query, setQuery] = useState("");
   const [showHeatmap, setShowHeatmap] = useState(true);
   const [selected, setSelected] = useState(null);
 
+  useEffect(() => {
+    let cancelled = false;
+
+    const fetchReports = async () => {
+      setLoading(true);
+      setError("");
+
+      try {
+        const { data } = await getReports();
+
+        if (!cancelled) {
+          setReports(data.reports || []);
+        }
+      } catch (err) {
+        if (!cancelled) {
+          setError(
+            err?.response?.data?.message ||
+              "Couldn't load live reports right now."
+          );
+        }
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    };
+
+    fetchReports();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   const filteredReports = useMemo(() => {
-    if (!query.trim()) return REPORTS;
+    if (!query.trim()) return reports;
 
     const q = query.trim().toLowerCase();
 
-    return REPORTS.filter(
-      (r) =>
-        r.type.toLowerCase().includes(q) ||
-        r.area.toLowerCase().includes(q)
-    );
-  }, [query]);
+    return reports.filter((r) => {
+      const haystack = [
+        r.wasteType,
+        r.category,
+        r.location?.city,
+        r.location?.address,
+      ]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase();
+
+      return haystack.includes(q);
+    });
+  }, [reports, query]);
+
+  const heatPoints = useMemo(
+    () =>
+      filteredReports.map((r) => [
+        r.location.latitude,
+        r.location.longitude,
+        SEVERITY_WEIGHT[r.severity] || 0.4,
+      ]),
+    [filteredReports]
+  );
+
+  const center = filteredReports[0]?.location || DEFAULT_CENTER;
 
   const handleSelectReport = (report) => {
     setSelected(report);
@@ -102,51 +146,73 @@ function LiveMap() {
         </button>
       </div>
 
+      {error && <div className="report-error">{error}</div>}
+
       <div className="map-layout">
         <div className="map-view">
-          <MapContainer
-            center={[CITY_CENTER.latitude, CITY_CENTER.longitude]}
-            zoom={12}
-            style={{ height: "100%", width: "100%" }}
-          >
-            <TileLayer
-              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            />
+          {loading ? (
+            <div className="map-loading">
+              <Loader2 size={26} className="spin" />
+              Loading live reports...
+            </div>
+          ) : (
+            <MapContainer
+              center={[center.latitude, center.longitude]}
+              zoom={12}
+              style={{ height: "100%", width: "100%" }}
+            >
+              <TileLayer
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              />
 
-            {showHeatmap && <HeatmapLayer points={HEAT_POINTS} />}
+              {showHeatmap && heatPoints.length > 0 && (
+                <HeatmapLayer points={heatPoints} />
+              )}
 
-            {filteredReports.map((r) => (
-              <Marker key={r.id} position={[r.latitude, r.longitude]}>
-                <Popup>
-                  <strong>{r.type}</strong>
-                  <br />
-                  {r.area} &middot; {r.severity} severity
-                </Popup>
-              </Marker>
-            ))}
+              {filteredReports.map((r) => (
+                <Marker
+                  key={r._id}
+                  position={[r.location.latitude, r.location.longitude]}
+                >
+                  <Popup>
+                    <strong>{r.wasteType}</strong>
+                    <br />
+                    {r.location.city || r.location.address || "Unknown area"}
+                    <br />
+                    {r.severity} severity
+                  </Popup>
+                </Marker>
+              ))}
 
-            <FlyToController target={selected} />
-          </MapContainer>
+              <FlyToController target={selected} />
+            </MapContainer>
+          )}
         </div>
 
         <div className="map-sidebar">
           <h3>Recent Reports</h3>
 
-          {filteredReports.length === 0 && (
-            <p className="no-results">No reports match "{query}".</p>
+          {!loading && filteredReports.length === 0 && (
+            <p className="no-results">
+              {reports.length === 0
+                ? "No reports have been submitted yet. Be the first — go to Report Waste!"
+                : `No reports match "${query}".`}
+            </p>
           )}
 
           {filteredReports.map((r) => (
             <button
               type="button"
-              key={r.id}
+              key={r._id}
               className="marker-card"
               onClick={() => handleSelectReport(r)}
             >
               <MapPin size={16} />
-              {r.type}
-              <span>{r.area}</span>
+              {r.wasteType}
+              <span>
+                {r.location.city || r.location.address || "Unknown area"}
+              </span>
             </button>
           ))}
         </div>
