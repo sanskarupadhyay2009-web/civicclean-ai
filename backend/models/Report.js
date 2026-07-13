@@ -20,7 +20,14 @@ const reportSchema = new mongoose.Schema(
 
     category: {
       type: String,
-      enum: ["Recyclable", "Organic", "Hazardous", "Electronic", "Mixed", "Other"],
+      enum: [
+        "Recyclable",
+        "Organic",
+        "Hazardous",
+        "Electronic",
+        "Mixed",
+        "Other",
+      ],
       default: "Other",
     },
 
@@ -50,23 +57,58 @@ const reportSchema = new mongoose.Schema(
     },
 
     location: {
-      latitude: Number,
-      longitude: Number,
-      address: String,
-      city: String,
-      state: String,
-      country: String,
+      latitude: {
+        type: Number,
+        required: true,
+      },
+
+      longitude: {
+        type: Number,
+        required: true,
+      },
+
+      address: {
+        type: String,
+        default: "",
+      },
+
+      city: {
+        type: String,
+        default: "",
+      },
+
+      state: {
+        type: String,
+        default: "",
+      },
+
+      country: {
+        type: String,
+        default: "",
+      },
     },
 
     status: {
       type: String,
-      enum: ["Pending", "Verified", "In Progress", "Resolved", "Rejected"],
+      enum: [
+        "Pending",
+        "Verified",
+        "In Progress",
+        "Resolved",
+        "Rejected",
+      ],
       default: "Pending",
     },
 
-    beforeImage: String,
+    beforeImage: {
+      type: String,
+      default: "",
+    },
 
-    afterImage: String,
+    afterImage: {
+      type: String,
+      default: "",
+    },
 
     upvotes: {
       type: Number,
