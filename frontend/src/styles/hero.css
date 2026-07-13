@@ -53,15 +53,16 @@
 
 .ce-cloud {
   position: absolute;
-  font-size: 2.4rem;
-  opacity: 0.35;
-  filter: grayscale(0.4) brightness(0.9);
+  width: 46px;
+  height: 46px;
+  color: #c9d4cd;
+  opacity: 0.3;
   animation: ceCloudDrift 60s linear infinite;
 }
 
 .ce-cloud-1 { top: 10%; left: -10%; animation-duration: 70s; }
-.ce-cloud-2 { top: 18%; left: -10%; animation-duration: 95s; animation-delay: -20s; font-size: 1.8rem; }
-.ce-cloud-3 { top: 6%; left: -10%; animation-duration: 82s; animation-delay: -45s; font-size: 2.1rem; }
+.ce-cloud-2 { top: 18%; left: -10%; animation-duration: 95s; animation-delay: -20s; width: 34px; height: 34px; }
+.ce-cloud-3 { top: 6%; left: -10%; animation-duration: 82s; animation-delay: -45s; width: 40px; height: 40px; }
 
 @keyframes ceCloudDrift {
   to { transform: translateX(130vw); }
@@ -76,7 +77,7 @@
   z-index: 2;
   display: flex;
   gap: 40px;
-  font-size: 1.4rem;
+  color: #1a1c19;
   pointer-events: none;
   will-change: transform;
 }
@@ -92,16 +93,31 @@
   z-index: 3;
   display: flex;
   justify-content: space-around;
+  align-items: flex-end;
   padding: 0 4%;
   pointer-events: none;
   transform-origin: bottom center;
 }
 
-.ce-hero-trees { font-size: 3.2rem; bottom: 8%; }
-.ce-hero-flowers { font-size: 1.6rem; bottom: 5%; }
+.ce-hero-trees { bottom: 8%; color: var(--ce-forest); }
+.ce-hero-flowers { bottom: 5%; color: var(--ce-emerald-soft); }
+
+.ce-tree-0, .ce-tree-1, .ce-tree-2, .ce-tree-3, .ce-tree-4 {
+  width: clamp(38px, 5vw, 64px);
+  height: clamp(38px, 5vw, 64px);
+  filter: drop-shadow(0 6px 10px rgba(0,0,0,0.4));
+}
 
 .ce-tree-0, .ce-tree-2, .ce-tree-4 { transform: translateY(6px) scale(0.9); }
-.ce-tree-1, .ce-tree-3 { transform: translateY(-10px) scale(1.1); }
+.ce-tree-1, .ce-tree-3 { transform: translateY(-10px) scale(1.15); }
+
+.ce-flower-0, .ce-flower-1, .ce-flower-2, .ce-flower-3, .ce-flower-4, .ce-flower-5 {
+  width: 22px;
+  height: 22px;
+}
+
+.ce-flower-1, .ce-flower-4 { color: #4fc3f7; }
+.ce-flower-2, .ce-flower-5 { color: #f4c95d; }
 
 .ce-hero-grass {
   position: absolute;
@@ -224,5 +240,3 @@
     animation: none !important;
   }
 }
-
-                     
