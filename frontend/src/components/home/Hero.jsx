@@ -1,12 +1,21 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Link } from "react-router-dom";
-import { ArrowRight, Leaf } from "lucide-react";
+import {
+  ArrowRight,
+  Leaf,
+  TreePine,
+  TreeDeciduous,
+  Flower2,
+  Bird,
+  Cloud,
+  ChevronDown,
+} from "lucide-react";
 
 // The hero is a scroll-driven sequence: the page starts grey and
 // polluted, and as the visitor scrolls through the extra height of
 // this section, the sky clears, grass and trees grow in, flowers
-// bloom, birds arrive, and the sun breaks through â€” all tied directly
+// bloom, birds arrive, and the sun breaks through — all tied directly
 // to scroll progress via one shared motion value.
 function Hero() {
   const wrapRef = useRef(null);
@@ -47,16 +56,16 @@ function Hero() {
 
         {/* ---------- Clouds (always drifting, gently) ---------- */}
         <div className="ce-hero-clouds">
-          <span className="ce-cloud ce-cloud-1">â˜ï¸</span>
-          <span className="ce-cloud ce-cloud-2">â˜ï¸</span>
-          <span className="ce-cloud ce-cloud-3">â˜ï¸</span>
+          <Cloud className="ce-cloud ce-cloud-1" />
+          <Cloud className="ce-cloud ce-cloud-2" />
+          <Cloud className="ce-cloud ce-cloud-3" />
         </div>
 
         {/* ---------- Birds ---------- */}
         <motion.div className="ce-hero-birds" style={{ x: birdX, opacity: birdOpacity }}>
-          <span>ðŸ¦</span>
-          <span>ðŸ¦</span>
-          <span>ðŸ¦</span>
+          <Bird size={22} />
+          <Bird size={18} />
+          <Bird size={20} />
         </motion.div>
 
         {/* ---------- Trees ---------- */}
@@ -64,9 +73,11 @@ function Hero() {
           className="ce-hero-trees"
           style={{ opacity: treesOpacity, scale: treesScale }}
         >
-          {["ðŸŒ²", "ðŸŒ³", "ðŸŒ²", "ðŸŒ³", "ðŸŒ²", "ðŸŒ³", "ðŸŒ²"].map((t, i) => (
-            <span key={i} className={`ce-tree ce-tree-${i % 5}`}>{t}</span>
-          ))}
+          {[TreePine, TreeDeciduous, TreePine, TreeDeciduous, TreePine, TreeDeciduous, TreePine].map(
+            (TreeIcon, i) => (
+              <TreeIcon key={i} className={`ce-tree ce-tree-${i % 5}`} />
+            )
+          )}
         </motion.div>
 
         {/* ---------- Flowers ---------- */}
@@ -74,8 +85,8 @@ function Hero() {
           className="ce-hero-flowers"
           style={{ opacity: flowersOpacity, scale: flowersScale }}
         >
-          {["ðŸŒ¸", "ðŸŒ¼", "ðŸŒ·", "ðŸŒ»", "ðŸŒ¸", "ðŸŒ¼", "ðŸŒ·", "ðŸŒ»"].map((f, i) => (
-            <span key={i} className={`ce-flower ce-flower-${i % 6}`}>{f}</span>
+          {[...Array(8)].map((_, i) => (
+            <Flower2 key={i} className={`ce-flower ce-flower-${i % 6}`} />
           ))}
         </motion.div>
 
@@ -105,7 +116,7 @@ function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           >
-            <Leaf size={14} /> AI Powered Â· Community Driven
+            <Leaf size={14} /> AI Powered {"\u00B7"} Community Driven
           </motion.span>
 
           <motion.h1
@@ -126,7 +137,7 @@ function Hero() {
             transition={{ delay: 0.85, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           >
             CivicClean AI helps citizens detect, report and resolve
-            sanitation issues â€” turning grey cities back into green ones.
+            sanitation issues {"\u2014"} turning grey cities back into green ones.
           </motion.p>
 
           <motion.div
@@ -175,7 +186,8 @@ function Hero() {
             animate={{ opacity: 1 }}
             transition={{ delay: 1.6, duration: 0.8 }}
           >
-            Scroll to watch the forest grow â†“
+            <span className="ce-scroll-beam" />
+            <ChevronDown size={22} className="ce-scroll-arrow" />
           </motion.div>
 
         </motion.div>
@@ -185,4 +197,4 @@ function Hero() {
 }
 
 export default Hero;
-          
+        
