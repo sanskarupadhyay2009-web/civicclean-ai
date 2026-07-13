@@ -196,7 +196,7 @@ function LiveMap() {
           {!loading && filteredReports.length === 0 && (
             <p className="no-results">
               {reports.length === 0
-                ? "No reports have been submitted yet. Be the first — go to Report Waste!"
+                ? "No reports have been submitted yet. Be the first \u2014 go to Report Waste!"
                 : `No reports match "${query}".`}
             </p>
           )}
@@ -222,3 +222,4 @@ function LiveMap() {
 }
 
 export default LiveMap;
+            
