@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 import {
   Menu,
   X,
@@ -60,9 +61,14 @@ function Navbar() {
           to="/"
           className="logo"
         >
-          <div className="logo-icon">
-            🌿
-          </div>
+          <motion.div
+            className="logo-icon"
+            initial={{ scale: 0, rotate: -25 }}
+            animate={{ scale: 1, rotate: 0 }}
+            transition={{ duration: 0.7, ease: [0.34, 1.56, 0.64, 1] }}
+          >
+            ðŸŒ¿
+          </motion.div>
 
           <div className="logo-text">
             <span className="logo-title">
@@ -77,7 +83,7 @@ function Navbar() {
 
         {/* Desktop */}
 
-        <ul className="nav-links">
+        <ul className="nav-links ce-vine-nav">
 
           {navItems.map((item) => (
 
@@ -85,6 +91,7 @@ function Navbar() {
 
               <NavLink
                 to={item.path}
+                className="ce-vine-link"
               >
                 {item.title}
               </NavLink>
@@ -223,7 +230,7 @@ function Navbar() {
             className="mobile-report"
             onClick={closeMenu}
           >
-            🌿 Report Issue
+            ðŸŒ¿ Report Issue
           </Link>
 
         </div>
