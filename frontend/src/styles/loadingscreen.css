@@ -19,8 +19,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 88px;
-  line-height: 1;
+  color: #00c853;
   filter: drop-shadow(0 0 30px rgba(0, 200, 83, 0.45));
 }
 
@@ -34,10 +33,11 @@
   display: flex;
   align-items: center;
   gap: 16px;
+  color: #00c853;
 }
 
 .ce-loader-logo-mark {
-  font-size: 56px;
+  filter: drop-shadow(0 0 14px rgba(0, 200, 83, 0.5));
 }
 
 .ce-loader-logo-text {
@@ -85,8 +85,9 @@
 }
 
 @media (max-width: 640px) {
-  .ce-loader-stage {
-    font-size: 64px;
+  .ce-loader-stage svg {
+    width: 52px;
+    height: 52px;
   }
 
   .ce-loader-logo-text {
