@@ -1,6 +1,7 @@
 const Report = require("../models/Report");
 const { analyzeWasteImage } = require("../services/geminiService");
 
+// Analyze a new report
 const analyzeReport = async (req, res) => {
   try {
     if (!req.file) {
@@ -32,8 +33,6 @@ const analyzeReport = async (req, res) => {
       });
     }
 
-    // Gemini occasionally omits or empties this field — always guarantee
-    // a usable recommendation so the UI never shows a blank section.
     if (!analysis.recommendation || !analysis.recommendation.trim()) {
       analysis.recommendation =
         "Dispose of this waste at the nearest designated waste/recycling point, and avoid handling it directly if it appears hazardous.";
@@ -73,6 +72,27 @@ const analyzeReport = async (req, res) => {
   }
 };
 
+// Get all reports (for LiveMap)
+const getReports = async (req, res) => {
+  try {
+    const reports = await Report.find()
+      .populate("user", "name email")
+      .sort({ createdAt: -1 });
+
+    res.status(200).json({
+      success: true,
+      reports,
+    });
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      message: error.message || "Unable to fetch reports.",
+    });
+  }
+};
+
 module.exports = {
   analyzeReport,
+  getReports,
 };
