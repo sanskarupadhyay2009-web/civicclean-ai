@@ -237,6 +237,10 @@
 }
 
 .mobile-report {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   text-align: center;
   padding: 12px;
   border-radius: var(--ce-radius-pill, 999px);
@@ -254,5 +258,5 @@
   .menu-button {
     display: block;
   }
-            }
-              
+   }
+   
