@@ -50,9 +50,14 @@
   padding: 14px 22px;
   border: none;
   border-radius: 14px;
-  background: #8b5cf6;
+  background: rgba(255, 255, 255, 0.06);
   color: white;
   cursor: pointer;
+  transition: 0.25s;
+}
+
+.map-toolbar button.active {
+  background: #8b5cf6;
 }
 
 .map-layout {
@@ -63,19 +68,18 @@
 
 .map-view {
   min-height: 550px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
   border-radius: 24px;
+  overflow: hidden;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(14px);
 }
 
-.map-view svg {
-  color: #8b5cf6;
-  margin-bottom: 20px;
+.map-view .leaflet-container {
+  height: 100%;
+  width: 100%;
+  border-radius: 24px;
+  background: #0b0f0d;
 }
 
 .map-sidebar {
@@ -83,6 +87,8 @@
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 24px;
   padding: 25px;
+  max-height: 550px;
+  overflow-y: auto;
 }
 
 .map-sidebar h3 {
@@ -90,16 +96,40 @@
 }
 
 .marker-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
   padding: 18px;
   border-radius: 16px;
+  border: none;
   background: rgba(255, 255, 255, 0.04);
+  color: white;
   margin-bottom: 15px;
+  cursor: pointer;
+  text-align: left;
+  transition: 0.2s;
+}
+
+.marker-card:hover {
+  background: rgba(139, 92, 246, 0.15);
+}
+
+.marker-card svg {
+  color: #8b5cf6;
+  flex-shrink: 0;
 }
 
 .marker-card span {
   display: block;
-  margin-top: 8px;
+  margin-top: 4px;
   color: #9ca3af;
+  width: 100%;
+}
+
+.no-results {
+  color: #9ca3af;
+  font-size: 0.9rem;
 }
 
 @media (max-width: 900px) {
