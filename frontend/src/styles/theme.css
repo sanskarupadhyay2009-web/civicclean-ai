@@ -1,0 +1,147 @@
+/* ==========================================================
+   CLEAN EARTH — DESIGN SYSTEM
+   Core tokens used across the whole redesign. Import this
+   once, globally, before any other stylesheet.
+========================================================== */
+
+:root {
+  /* ---------- Palette ---------- */
+  --ce-emerald: #00c853;
+  --ce-emerald-soft: #34e37a;
+  --ce-forest: #1b5e20;
+  --ce-forest-deep: #0f3d12;
+  --ce-black: #0b0f0c;
+  --ce-black-soft: #111611;
+  --ce-earth-brown: #6d4c41;
+  --ce-sky: #4fc3f7;
+  --ce-white: #f4fdf6;
+
+  --ce-text-primary: var(--ce-white);
+  --ce-text-muted: #b9c9bd;
+  --ce-text-faint: #7c8f80;
+
+  /* ---------- Gradients ---------- */
+  --ce-gradient-aurora: linear-gradient(120deg, #00c853 0%, #1b5e20 45%, #4fc3f7 100%);
+  --ce-gradient-canopy: linear-gradient(180deg, rgba(0,200,83,0.18), rgba(11,15,12,0) 60%);
+  --ce-gradient-glow: radial-gradient(circle, rgba(0,200,83,0.35), transparent 70%);
+
+  /* ---------- Glass / Neumorphism ---------- */
+  --ce-glass-bg: rgba(20, 30, 22, 0.45);
+  --ce-glass-border: rgba(255, 255, 255, 0.09);
+  --ce-glass-blur: 18px;
+  --ce-neu-shadow-out: 10px 10px 24px rgba(0,0,0,0.45), -8px -8px 20px rgba(255,255,255,0.02);
+  --ce-neu-shadow-in: inset 4px 4px 10px rgba(0,0,0,0.35), inset -4px -4px 10px rgba(255,255,255,0.02);
+
+  /* ---------- Radii ---------- */
+  --ce-radius-sm: 14px;
+  --ce-radius-md: 22px;
+  --ce-radius-lg: 28px;
+  --ce-radius-pill: 999px;
+
+  /* ---------- Spacing scale ---------- */
+  --ce-space-xs: 8px;
+  --ce-space-sm: 16px;
+  --ce-space-md: 32px;
+  --ce-space-lg: 64px;
+  --ce-space-xl: 120px;
+
+  /* ---------- Motion ---------- */
+  --ce-ease-organic: cubic-bezier(0.22, 1, 0.36, 1);
+  --ce-ease-elastic: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ce-dur-fast: 0.35s;
+  --ce-dur-med: 0.7s;
+  --ce-dur-slow: 1.4s;
+
+  /* ---------- Typography ---------- */
+  --ce-font-display: "Sora", "Poppins", sans-serif;
+  --ce-font-body: "Manrope", "Poppins", sans-serif;
+}
+
+/* ---------- Base type ---------- */
+body {
+  background: var(--ce-black);
+  color: var(--ce-text-primary);
+  font-family: var(--ce-font-body);
+}
+
+.ce-display {
+  font-family: var(--ce-font-display);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+/* ---------- Reusable surfaces ---------- */
+.ce-glass {
+  background: var(--ce-glass-bg);
+  border: 1px solid var(--ce-glass-border);
+  backdrop-filter: blur(var(--ce-glass-blur));
+  -webkit-backdrop-filter: blur(var(--ce-glass-blur));
+  border-radius: var(--ce-radius-md);
+  box-shadow: var(--ce-neu-shadow-out);
+}
+
+.ce-glow-border {
+  position: relative;
+}
+
+.ce-glow-border::before {
+  content: "";
+  position: absolute;
+  inset: -1.5px;
+  border-radius: inherit;
+  padding: 1.5px;
+  background: var(--ce-gradient-aurora);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0.55;
+  pointer-events: none;
+  transition: opacity var(--ce-dur-fast) var(--ce-ease-organic);
+}
+
+.ce-glow-border:hover::before {
+  opacity: 1;
+}
+
+/* ---------- Buttons ---------- */
+.ce-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 28px;
+  border-radius: var(--ce-radius-pill);
+  font-family: var(--ce-font-display);
+  font-weight: 600;
+  font-size: 0.95rem;
+  border: none;
+  cursor: pointer;
+  transition: transform var(--ce-dur-fast) var(--ce-ease-elastic),
+    box-shadow var(--ce-dur-fast) var(--ce-ease-organic);
+}
+
+.ce-btn-primary {
+  background: var(--ce-gradient-aurora);
+  color: var(--ce-black);
+  box-shadow: 0 0 0 rgba(0,200,83,0);
+}
+
+.ce-btn-primary:hover {
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 10px 34px rgba(0,200,83,0.4);
+}
+
+.ce-btn-ghost {
+  background: transparent;
+  color: var(--ce-white);
+  border: 1px solid var(--ce-glass-border);
+}
+
+.ce-btn-ghost:hover {
+  transform: translateY(-3px);
+  border-color: var(--ce-emerald);
+  box-shadow: 0 8px 26px rgba(0,200,83,0.22);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+}
