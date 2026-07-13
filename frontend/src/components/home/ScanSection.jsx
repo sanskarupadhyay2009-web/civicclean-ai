@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { UploadCloud, ScanLine } from "lucide-react";
+import { UploadCloud, ScanLine, Zap, BrainCircuit, MapPin } from "lucide-react";
 import { useState } from "react";
 
 import { staggerGroup, popItem, flipIn } from "../../utils/motionVariants";
@@ -41,9 +41,9 @@ function ScanSection() {
 
         <motion.div className="scan-features" variants={staggerGroup(0.1)}>
 
-          <motion.div variants={popItem}>⚡ Instant Detection</motion.div>
-          <motion.div variants={popItem}>🧠 AI Classification</motion.div>
-          <motion.div variants={popItem}>📍 Geo-tag Ready</motion.div>
+          <motion.div variants={popItem}><Zap size={16} /> Instant Detection</motion.div>
+          <motion.div variants={popItem}><BrainCircuit size={16} /> AI Classification</motion.div>
+          <motion.div variants={popItem}><MapPin size={16} /> Geo-tag Ready</motion.div>
 
         </motion.div>
 
@@ -86,4 +86,5 @@ function ScanSection() {
 
 export default ScanSection;
 
-                
+
+              
