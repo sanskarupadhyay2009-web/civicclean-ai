@@ -217,15 +217,54 @@
 
 .ce-hero-scroll-hint {
   margin-top: 30px;
-  font-size: 0.82rem;
-  color: var(--ce-text-faint);
-  letter-spacing: 0.03em;
-  animation: ceScrollHintBob 2.4s ease-in-out infinite;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
 }
 
-@keyframes ceScrollHintBob {
-  0%, 100% { transform: translateY(0); opacity: 0.7; }
-  50% { transform: translateY(6px); opacity: 1; }
+.ce-scroll-beam {
+  position: relative;
+  width: 2px;
+  height: 46px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 2px;
+}
+
+.ce-scroll-beam::after {
+  content: "";
+  position: absolute;
+  top: -60%;
+  left: 0;
+  width: 100%;
+  height: 60%;
+  background: linear-gradient(
+    180deg,
+    transparent,
+    var(--ce-emerald-soft, #34e37a) 55%,
+    var(--ce-sky, #4fc3f7)
+  );
+  filter: drop-shadow(0 0 6px rgba(0, 200, 83, 0.8));
+  animation: ceBeamTravel 1.8s ease-in-out infinite;
+}
+
+@keyframes ceBeamTravel {
+  0% { top: -60%; opacity: 0; }
+  15% { opacity: 1; }
+  85% { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+
+.ce-scroll-arrow {
+  color: var(--ce-emerald-soft, #34e37a);
+  filter: drop-shadow(0 0 8px rgba(0, 200, 83, 0.7));
+  animation: ceArrowBob 1.8s ease-in-out infinite;
+}
+
+@keyframes ceArrowBob {
+  0%, 100% { transform: translateY(0); opacity: 0.6; }
+  50% { transform: translateY(5px); opacity: 1; }
 }
 
 @media (max-width: 720px) {
@@ -236,7 +275,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .ce-cloud, .ce-firefly, .ce-hero-scroll-hint {
+  .ce-cloud, .ce-firefly, .ce-scroll-beam::after, .ce-scroll-arrow {
     animation: none !important;
   }
-}
+   }
+   
