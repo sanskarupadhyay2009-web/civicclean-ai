@@ -7,6 +7,7 @@ import {
   ArrowRight,
   LogOut,
   User,
+  Leaf,
 } from "lucide-react";
 
 import { useAuth } from "../context/AuthContext";
@@ -67,7 +68,7 @@ function Navbar() {
             animate={{ scale: 1, rotate: 0 }}
             transition={{ duration: 0.7, ease: [0.34, 1.56, 0.64, 1] }}
           >
-            ðŸŒ¿
+            <Leaf size={20} />
           </motion.div>
 
           <div className="logo-text">
@@ -230,7 +231,7 @@ function Navbar() {
             className="mobile-report"
             onClick={closeMenu}
           >
-            ðŸŒ¿ Report Issue
+            <Leaf size={16} /> Report Issue
           </Link>
 
         </div>
@@ -242,3 +243,4 @@ function Navbar() {
 }
 
 export default Navbar;
+      
