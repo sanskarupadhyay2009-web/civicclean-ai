@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Users, Trophy, Leaf, Recycle } from "lucide-react";
+import { Users, Trophy, Leaf, Recycle, Sparkles } from "lucide-react";
 
 import "../styles/community.css";
 
@@ -8,22 +8,22 @@ function Community() {
     {
       icon: <Users size={34} />,
       title: "Active Members",
-      value: "—",
+      value: "\u2014",
     },
     {
       icon: <Recycle size={34} />,
       title: "Reports Submitted",
-      value: "—",
+      value: "\u2014",
     },
     {
       icon: <Leaf size={34} />,
       title: "Areas Cleaned",
-      value: "—",
+      value: "\u2014",
     },
     {
       icon: <Trophy size={34} />,
       title: "Challenges Won",
-      value: "—",
+      value: "\u2014",
     },
   ];
 
@@ -50,10 +50,10 @@ function Community() {
 
       <section className="community-feed">
         <h2>Recent Community Activity</h2>
-        <div className="feed-item">🌱 Rahul reported plastic waste in Gomti Nagar.</div>
-        <div className="feed-item">🧹 Clean-up drive completed in Hazratganj.</div>
-        <div className="feed-item">♻️ 45 kg recyclable waste collected today.</div>
-        <div className="feed-item">🏆 Lucknow reached Community Level 8.</div>
+        <div className="feed-item"><Leaf size={16} /> Rahul reported plastic waste in Gomti Nagar.</div>
+        <div className="feed-item"><Sparkles size={16} /> Clean-up drive completed in Hazratganj.</div>
+        <div className="feed-item"><Recycle size={16} /> 45 kg recyclable waste collected today.</div>
+        <div className="feed-item"><Trophy size={16} /> Lucknow reached Community Level 8.</div>
       </section>
     </main>
   );
