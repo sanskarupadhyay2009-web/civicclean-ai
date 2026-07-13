@@ -12,7 +12,7 @@ import {
 import { useRef, useState } from "react";
 
 import { analyzeReport } from "../services/reportService";
-import GoogleMapEmbed from "../components/common/GoogleMapEmbed";
+import LeafletMap from "../components/common/LeafletMap";
 
 import "../styles/report.css";
 
@@ -326,20 +326,27 @@ function ReportWaste() {
       Longitude: {location.longitude.toFixed(5)}
     </small>
 
-    <GoogleMapEmbed
+    <LeafletMap
       latitude={location.latitude}
       longitude={location.longitude}
       zoom={17}
       height={280}
+      markers={[
+        {
+          latitude: location.latitude,
+          longitude: location.longitude,
+          label: "Reported location",
+        },
+      ]}
     />
 
     <a
-      href={`https://www.google.com/maps?q=${location.latitude},${location.longitude}`}
+      href={`https://www.openstreetmap.org/?mlat=${location.latitude}&mlon=${location.longitude}#map=17/${location.latitude}/${location.longitude}`}
       target="_blank"
       rel="noopener noreferrer"
       className="maps-btn"
     >
-      Open in Google Maps
+      Open in OpenStreetMap
     </a>
   </>
 ) : (
@@ -355,3 +362,4 @@ function ReportWaste() {
 }
 
 export default ReportWaste;
+        
