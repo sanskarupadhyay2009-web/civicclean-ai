@@ -38,6 +38,18 @@ const analyzeReport = async (req, res) => {
         "Dispose of this waste at the nearest designated waste/recycling point, and avoid handling it directly if it appears hazardous.";
     }
 
+    // Validate location
+    const latitude = Number(req.body.latitude);
+    const longitude = Number(req.body.longitude);
+
+    if (Number.isNaN(latitude) || Number.isNaN(longitude)) {
+      return res.status(400).json({
+        success: false,
+        message:
+          "Location not found. Please allow location permission and try again.",
+      });
+    }
+
     const report = await Report.create({
       user: req.user._id,
       imageUrl,
@@ -48,13 +60,14 @@ const analyzeReport = async (req, res) => {
       recommendation: analysis.recommendation,
       hazard: analysis.hazard,
       description: req.body.description || "",
+
       location: {
-        latitude: req.body.latitude,
-        longitude: req.body.longitude,
-        address: req.body.address,
-        city: req.body.city,
-        state: req.body.state,
-        country: req.body.country,
+        latitude,
+        longitude,
+        address: req.body.address || "",
+        city: req.body.city || "",
+        state: req.body.state || "",
+        country: req.body.country || "",
       },
     });
 
