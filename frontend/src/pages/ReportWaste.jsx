@@ -362,4 +362,3 @@ function ReportWaste() {
 }
 
 export default ReportWaste;
-        
