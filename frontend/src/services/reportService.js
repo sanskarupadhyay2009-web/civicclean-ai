@@ -15,6 +15,7 @@ API.interceptors.request.use((config) => {
   return config;
 });
 
+// Analyze report
 export const analyzeReport = async ({ image, description, location }) => {
   const formData = new FormData();
   formData.append("image", image);
@@ -32,8 +33,12 @@ export const analyzeReport = async ({ image, description, location }) => {
     if (location.country) formData.append("country", location.country);
   }
 
-  // Let the browser set the multipart/form-data boundary itself.
   return API.post("/reports/analyze", formData);
+};
+
+// Fetch all reports (used by LiveMap.jsx)
+export const getReports = async () => {
+  return API.get("/reports");
 };
 
 export default API;
