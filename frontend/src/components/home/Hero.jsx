@@ -1,189 +1,188 @@
-import { motion } from "framer-motion";
-import {
-  Sparkles,
-  Send,
-  ThumbsUp,
-  Users,
-  ShoppingBag,
-  CheckCircle2,
-  Trees,
-  Star,
-} from "lucide-react";
+import { useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { Link } from "react-router-dom";
+import { ArrowRight, Leaf } from "lucide-react";
 
-import CityScene from "./city/CityScene";
-
-import ScrollIndicator from "./city/ScrollIndicator";
-import GlowText from "../common/GlowText";
-import Magnetic from "../common/Magnetic";
-
-import "../../styles/home.css";
-
-const stats = [
-  { icon: Users, value: "Community Driven", label: "Built with citizen reports" },
-  { icon: ShoppingBag, value: "Real-Time Reporting", label: "Report issues in seconds" },
-  { icon: CheckCircle2, value: "AI Verified", label: "Every report analyzed by AI" },
-  { icon: Trees, value: "Cleaner Neighborhoods", label: "Track cleanup progress" },
-  { icon: Star, value: "Growing Every Day", label: "Join the movement" },
-];
-
+// The hero is a scroll-driven sequence: the page starts grey and
+// polluted, and as the visitor scrolls through the extra height of
+// this section, the sky clears, grass and trees grow in, flowers
+// bloom, birds arrive, and the sun breaks through â€” all tied directly
+// to scroll progress via one shared motion value.
 function Hero() {
+  const wrapRef = useRef(null);
+
+  const { scrollYProgress } = useScroll({
+    target: wrapRef,
+    offset: ["start start", "end end"],
+  });
+
+  const skyGrayOpacity = useTransform(scrollYProgress, [0, 0.55], [1, 0]);
+  const skyBlueOpacity = useTransform(scrollYProgress, [0.15, 0.65], [0, 1]);
+  const sunOpacity = useTransform(scrollYProgress, [0.5, 0.85], [0, 1]);
+
+  const grassScale = useTransform(scrollYProgress, [0.08, 0.35], [0, 1]);
+  const treesOpacity = useTransform(scrollYProgress, [0.18, 0.48], [0, 1]);
+  const treesScale = useTransform(scrollYProgress, [0.18, 0.5], [0.25, 1]);
+  const flowersOpacity = useTransform(scrollYProgress, [0.38, 0.62], [0, 1]);
+  const flowersScale = useTransform(scrollYProgress, [0.38, 0.65], [0.3, 1]);
+
+  const birdX = useTransform(scrollYProgress, [0.45, 0.88], ["-15vw", "115vw"]);
+  const birdOpacity = useTransform(
+    scrollYProgress,
+    [0.45, 0.55, 0.78, 0.88],
+    [0, 1, 1, 0]
+  );
+
+  const contentY = useTransform(scrollYProgress, [0.7, 1], [0, -70]);
+  const contentFade = useTransform(scrollYProgress, [0.82, 1], [1, 0]);
+
   return (
-    <section className="hero-section">
-      {/* Background Glow */}
+    <section ref={wrapRef} className="ce-hero-wrap">
+      <div className="ce-hero-sticky">
 
-      <div className="hero-glow hero-glow-left"></div>
-      <div className="hero-glow hero-glow-right"></div>
+        {/* ---------- Sky ---------- */}
+        <motion.div className="ce-hero-sky ce-hero-sky-gray" style={{ opacity: skyGrayOpacity }} />
+        <motion.div className="ce-hero-sky ce-hero-sky-blue" style={{ opacity: skyBlueOpacity }} />
+        <motion.div className="ce-hero-sunrays" style={{ opacity: sunOpacity }} />
 
-      <div className="container hero-container">
-        {/* ==========================
-            LEFT CONTENT
-        =========================== */}
+        {/* ---------- Clouds (always drifting, gently) ---------- */}
+        <div className="ce-hero-clouds">
+          <span className="ce-cloud ce-cloud-1">â˜ï¸</span>
+          <span className="ce-cloud ce-cloud-2">â˜ï¸</span>
+          <span className="ce-cloud ce-cloud-3">â˜ï¸</span>
+        </div>
 
+        {/* ---------- Birds ---------- */}
+        <motion.div className="ce-hero-birds" style={{ x: birdX, opacity: birdOpacity }}>
+          <span>ðŸ¦</span>
+          <span>ðŸ¦</span>
+          <span>ðŸ¦</span>
+        </motion.div>
+
+        {/* ---------- Trees ---------- */}
         <motion.div
-          className="hero-left"
-          initial={{ opacity: 0, x: -70 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{
-            duration: 0.9,
-            ease: "easeOut",
-          }}
+          className="ce-hero-trees"
+          style={{ opacity: treesOpacity, scale: treesScale }}
         >
-          <motion.div
-            className="hero-badge"
-            initial={{ opacity: 0, y: -25 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{
-              delay: 0.15,
-              duration: 0.6,
-            }}
-          >
-            <Sparkles size={16} />
+          {["ðŸŒ²", "ðŸŒ³", "ðŸŒ²", "ðŸŒ³", "ðŸŒ²", "ðŸŒ³", "ðŸŒ²"].map((t, i) => (
+            <span key={i} className={`ce-tree ce-tree-${i % 5}`}>{t}</span>
+          ))}
+        </motion.div>
 
-            <span>AI Powered. Community Driven.</span>
-          </motion.div>
+        {/* ---------- Flowers ---------- */}
+        <motion.div
+          className="ce-hero-flowers"
+          style={{ opacity: flowersOpacity, scale: flowersScale }}
+        >
+          {["ðŸŒ¸", "ðŸŒ¼", "ðŸŒ·", "ðŸŒ»", "ðŸŒ¸", "ðŸŒ¼", "ðŸŒ·", "ðŸŒ»"].map((f, i) => (
+            <span key={i} className={`ce-flower ce-flower-${i % 6}`}>{f}</span>
+          ))}
+        </motion.div>
+
+        {/* ---------- Grass ---------- */}
+        <motion.div className="ce-hero-grass" style={{ scaleY: grassScale }} />
+
+        {/* ---------- Fireflies (dusk feel near the end) ---------- */}
+        <div className="ce-hero-fireflies">
+          {[...Array(10)].map((_, i) => (
+            <span
+              key={i}
+              className="ce-firefly"
+              style={{
+                left: `${8 + i * 9}%`,
+                animationDelay: `${i * 0.4}s`,
+              }}
+            />
+          ))}
+        </div>
+
+        {/* ---------- Content ---------- */}
+        <motion.div className="ce-hero-content" style={{ y: contentY, opacity: contentFade }}>
+
+          <motion.span
+            className="ce-hero-badge"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <Leaf size={14} /> AI Powered Â· Community Driven
+          </motion.span>
 
           <motion.h1
-            initial={{ opacity: 1 }}
-            animate={{ opacity: 1 }}
+            className="ce-hero-title ce-display"
+            initial={{ opacity: 0, y: 40, filter: "blur(12px)" }}
+            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            transition={{ delay: 0.5, duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
           >
-            <GlowText text="Cleaner Cities," delay={0.25} />
+            Together We Can Build
             <br />
-            <GlowText text="Better" delay={0.55} />{" "}
-            <motion.span
-              className="gradient-text"
-              initial={{ opacity: 0, y: 24, filter: "blur(8px)" }}
-              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              transition={{ delay: 0.9, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-            >
-              Tomorrow
-            </motion.span>
+            A <span>Cleaner Tomorrow</span>
           </motion.h1>
 
           <motion.p
-            className="hero-description"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{
-              delay: 0.4,
-              duration: 0.8,
-            }}
+            className="ce-hero-sub"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.85, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           >
-            CivicClean AI uses artificial intelligence and real-time data to
-            detect, analyze, and resolve cleanliness issues across your city.
-            Together, we can build cleaner, greener, and healthier
-            communities.
+            CivicClean AI helps citizens detect, report and resolve
+            sanitation issues â€” turning grey cities back into green ones.
           </motion.p>
 
-          {/* CTA */}
-
           <motion.div
-            className="hero-buttons"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{
-              delay: 0.55,
-              duration: 0.8,
+            className="ce-hero-actions"
+            initial="hidden"
+            animate="show"
+            variants={{
+              hidden: {},
+              show: { transition: { staggerChildren: 0.15, delayChildren: 1.1 } },
             }}
           >
-            <Magnetic as={Link} to="/report" className="hero-primary-btn">
-              <Send size={18} />
-              Report an Issue
-            </Magnetic>
+            <motion.div
+              variants={{
+                hidden: { opacity: 0, scale: 0.15 },
+                show: {
+                  opacity: 1,
+                  scale: 1,
+                  transition: { duration: 0.7, ease: [0.34, 1.56, 0.64, 1] },
+                },
+              }}
+            >
+              <Link to="/report" className="ce-btn ce-btn-primary ce-glow-border">
+                <Leaf size={16} /> Report an Issue
+              </Link>
+            </motion.div>
 
-            <Magnetic as={Link} to="/dashboard" className="hero-secondary-btn">
-              <ThumbsUp size={18} />
-              Explore Dashboard
-            </Magnetic>
+            <motion.div
+              variants={{
+                hidden: { opacity: 0, scale: 0.15 },
+                show: {
+                  opacity: 1,
+                  scale: 1,
+                  transition: { duration: 0.7, ease: [0.34, 1.56, 0.64, 1] },
+                },
+              }}
+            >
+              <Link to="/dashboard" className="ce-btn ce-btn-ghost">
+                Explore Dashboard <ArrowRight size={16} />
+              </Link>
+            </motion.div>
           </motion.div>
-        </motion.div>
 
-        {/* ==========================
-             RIGHT — CITY VISUAL
-        =========================== */}
-
-        <motion.div
-          className="hero-right"
-          initial={{
-            opacity: 0,
-            x: 80,
-            scale: 0.9,
-          }}
-          animate={{
-            opacity: 1,
-            x: 0,
-            scale: 1,
-          }}
-          transition={{
-            duration: 1,
-            ease: "easeOut",
-          }}
-        >
-          <CityScene />
-
+          <motion.div
+            className="ce-hero-scroll-hint"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.6, duration: 0.8 }}
+          >
+            Scroll to watch the forest grow â†“
+          </motion.div>
 
         </motion.div>
       </div>
-
-      {/* ==========================
-           FULL-WIDTH STATS BAR
-      =========================== */}
-
-      <motion.div
-        className="hero-stats-bar"
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{
-          delay: 0.8,
-          duration: 0.8,
-        }}
-      >
-        {stats.map((stat, i) => {
-          const Icon = stat.icon;
-
-          return (
-            <div className="hero-stat-item" key={i}>
-              <div className="hero-stat-icon">
-                <Icon size={20} />
-              </div>
-
-              <div>
-                <h2>{stat.value}</h2>
-                <span>{stat.label}</span>
-              </div>
-            </div>
-          );
-        })}
-      </motion.div>
-
-      {/* Scroll */}
-
-      <ScrollIndicator />
     </section>
   );
 }
 
 export default Hero;
-
-
-                           
+          
