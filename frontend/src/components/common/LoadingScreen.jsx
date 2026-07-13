@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Sprout, Leaf, TreeDeciduous, Globe } from "lucide-react";
 
 const STAGES = ["seed", "rain", "sprout", "tree", "logo", "done"];
 const STAGE_DURATIONS = [500, 900, 900, 900, 700]; // ms per stage before advancing
@@ -54,7 +55,7 @@ function LoadingScreen() {
                   exit={{ scale: 0.6, opacity: 0 }}
                   transition={{ duration: 0.5, ease: [0.34, 1.56, 0.64, 1] }}
                 >
-                  ðŸŒ±
+                  <Sprout size={72} strokeWidth={1.4} />
                 </motion.div>
               )}
 
@@ -67,7 +68,7 @@ function LoadingScreen() {
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
                 >
-                  ðŸŒ¿
+                  <Leaf size={72} strokeWidth={1.4} />
                 </motion.div>
               )}
 
@@ -80,7 +81,7 @@ function LoadingScreen() {
                   exit={{ opacity: 0, scale: 1.15 }}
                   transition={{ duration: 0.8, ease: [0.34, 1.56, 0.64, 1] }}
                 >
-                  ðŸŒ³
+                  <TreeDeciduous size={80} strokeWidth={1.3} />
                 </motion.div>
               )}
 
@@ -92,7 +93,7 @@ function LoadingScreen() {
                   animate={{ scale: 1, opacity: 1, rotate: 0 }}
                   transition={{ duration: 0.6, ease: [0.34, 1.56, 0.64, 1] }}
                 >
-                  <span className="ce-loader-logo-mark">ðŸŒ</span>
+                  <Globe size={44} className="ce-loader-logo-mark" strokeWidth={1.6} />
                   <span className="ce-loader-logo-text">CivicClean AI</span>
                 </motion.div>
               )}
@@ -107,4 +108,4 @@ function LoadingScreen() {
 }
 
 export default LoadingScreen;
-                  
+          
