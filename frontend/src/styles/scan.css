@@ -3,35 +3,21 @@
 ========================================================== */
 
 .scan-section{
-
     position:relative;
-
     min-height:100vh;
-
     display:flex;
-
     justify-content:center;
-
     align-items:center;
-
-    padding:60px 0;
-
+    padding:var(--ce-space-xl) 0;
 }
 
 .scan-container{
-
     width:min(1400px,92%);
-
     margin:auto;
-
     display:grid;
-
     grid-template-columns:1fr 1fr;
-
     gap:80px;
-
     align-items:center;
-
 }
 
 /* ==========================================================
@@ -39,204 +25,143 @@
 ========================================================== */
 
 .scan-badge{
-
     display:inline-flex;
-
     align-items:center;
-
     gap:10px;
-
-    padding:10px 18px;
-
-    border-radius:999px;
-
-    background:rgba(16,185,129,.08);
-
-    border:1px solid rgba(16,185,129,.18);
-
-    color:#7CFFD8;
-
-    margin-bottom:24px;
-
+    padding:10px 20px;
+    border-radius:var(--ce-radius-pill);
+    background:rgba(0,200,83,.08);
+    border:1px solid rgba(0,200,83,.2);
+    color:var(--ce-emerald-soft);
+    font-size:.85rem;
+    letter-spacing:.5px;
+    margin-bottom:26px;
 }
 
 .scan-left h2{
-
-    font-size:clamp(3rem,5vw,4.6rem);
-
-    color:#fff;
-
-    line-height:1.05;
-
-    margin-bottom:28px;
-
+    font-family:var(--ce-font-display);
+    font-size:clamp(2.6rem,5vw,4rem);
+    color:var(--ce-text-primary);
+    line-height:1.1;
+    margin-bottom:26px;
 }
 
 .scan-left p{
-
-    color:#9fb7b0;
-
+    color:var(--ce-text-muted);
     line-height:1.9;
-
     font-size:1.05rem;
-
-    max-width:620px;
-
+    max-width:560px;
 }
 
 .scan-features{
-
     display:grid;
-
     grid-template-columns:repeat(2,minmax(180px,1fr));
-
-    gap:18px;
-
-    margin-top:40px;
-
+    gap:16px;
+    margin-top:38px;
 }
 
 .scan-features div{
-
     display:flex;
-
     align-items:center;
-
-    gap:8px;
-
+    gap:10px;
     padding:16px;
+    border-radius:var(--ce-radius-sm);
+    background:var(--ce-glass-bg);
+    backdrop-filter:blur(var(--ce-glass-blur));
+    border:1px solid var(--ce-glass-border);
+    color:var(--ce-text-primary);
+    font-size:.92rem;
+    transition:transform var(--ce-dur-fast) var(--ce-ease-organic),
+               border-color var(--ce-dur-fast) var(--ce-ease-organic);
+}
 
-    border-radius:16px;
-
-    background:rgba(255,255,255,.03);
-
-    border:1px solid rgba(255,255,255,.06);
-
-    color:#d8fff4;
-
-    transition:.35s;
-
+.scan-features div svg{
+    color:var(--ce-emerald-soft);
+    flex-shrink:0;
 }
 
 .scan-features div:hover{
-
     transform:translateY(-6px);
-
-    border-color:rgba(16,185,129,.3);
-
+    border-color:rgba(0,200,83,.3);
 }
 
 /* ==========================================================
-   RIGHT
+   RIGHT — scan box
 ========================================================== */
 
 .scan-right{
-
     display:flex;
-
     justify-content:center;
-
 }
 
 .scan-box{
-
     position:relative;
-
-    width:520px;
-
+    width:min(520px, 100%);
     height:560px;
-
-    border-radius:34px;
-
+    border-radius:var(--ce-radius-lg);
     overflow:hidden;
-
     display:flex;
-
     flex-direction:column;
-
     justify-content:center;
-
     align-items:center;
-
     text-align:center;
-
-    background:rgba(14,22,22,.58);
-
-    backdrop-filter:blur(24px);
-
-    border:1px solid rgba(16,185,129,.18);
-
-    box-shadow:
-
-        0 35px 90px rgba(0,0,0,.45),
-
-        inset 0 0 40px rgba(16,185,129,.05);
-
-    transition:.45s;
-
+    background:var(--ce-glass-bg);
+    backdrop-filter:blur(var(--ce-glass-blur));
+    border:1px solid rgba(0,200,83,.18);
+    box-shadow:0 35px 90px rgba(0,0,0,.45),
+               inset 0 0 40px rgba(0,200,83,.05);
+    transition:transform var(--ce-dur-fast) var(--ce-ease-organic),
+               border-color var(--ce-dur-fast) var(--ce-ease-organic),
+               box-shadow var(--ce-dur-fast) var(--ce-ease-organic);
 }
 
 .scan-box:hover,
 .scan-box.active{
-
-    transform:
-
-        translateY(-10px)
-
-        rotateX(4deg)
-
-        rotateY(-4deg);
-
-    border-color:rgba(16,185,129,.45);
-
-    box-shadow:
-
-        0 35px 90px rgba(0,0,0,.45),
-
-        inset 0 0 60px rgba(16,185,129,.12);
-
+    transform:translateY(-10px) rotateX(4deg) rotateY(-4deg);
+    border-color:rgba(0,200,83,.45);
+    box-shadow:0 35px 90px rgba(0,0,0,.45),
+               inset 0 0 60px rgba(0,200,83,.12);
 }
 
 .scan-box.active{
-    border-color:#a855f7;
-    box-shadow:0 0 40px rgba(168,85,247,0.35);
+    border-color:var(--ce-sky);
+    box-shadow:0 0 40px rgba(79,195,247,.3);
 }
 
-/* Faster laser when active */
 .scan-box.active .scan-laser{
     animation-duration:1.2s;
+    background:linear-gradient(90deg, transparent, var(--ce-sky), transparent);
+    box-shadow:0 0 35px var(--ce-sky);
 }
 
-/* button glow */
 .scan-btn{
-    transition:0.3s;
+    transition:transform var(--ce-dur-fast) var(--ce-ease-organic),
+               box-shadow var(--ce-dur-fast) var(--ce-ease-organic);
 }
 
 .scan-btn:hover{
     transform:scale(1.05);
-    box-shadow:0 0 20px rgba(168,85,247,0.4);
+    box-shadow:0 0 20px rgba(0,200,83,.35);
+}
+
+.scan-btn:disabled{
+    opacity:.7;
+    cursor:default;
+    transform:none;
 }
 
 /* ==========================================================
-   GRID
+   GRID BACKDROP
 ========================================================== */
 
 .scan-grid{
-
     position:absolute;
-
     inset:0;
-
     background-image:
-
-        linear-gradient(rgba(16,185,129,.08) 1px, transparent 1px),
-
-        linear-gradient(90deg, rgba(16,185,129,.08) 1px, transparent 1px);
-
+        linear-gradient(rgba(0,200,83,.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,200,83,.08) 1px, transparent 1px);
     background-size:32px 32px;
-
-    opacity:.55;
-
+    opacity:.5;
 }
 
 /* ==========================================================
@@ -244,49 +169,18 @@
 ========================================================== */
 
 .scan-laser{
-
     position:absolute;
-
     left:0;
-
     right:0;
-
     height:4px;
-
-    background:linear-gradient(
-
-        90deg,
-
-        transparent,
-
-        #7CFFD8,
-
-        transparent
-
-    );
-
-    box-shadow:
-
-        0 0 35px #7CFFD8;
-
+    background:linear-gradient(90deg, transparent, var(--ce-emerald-soft), transparent);
+    box-shadow:0 0 35px var(--ce-emerald-soft);
     animation:scanLaser 3.5s linear infinite;
-
 }
 
 @keyframes scanLaser{
-
-    from{
-
-        top:50px;
-
-    }
-
-    to{
-
-        top:500px;
-
-    }
-
+    from{ top:50px; }
+    to{ top:500px; }
 }
 
 /* ==========================================================
@@ -305,75 +199,41 @@
 }
 
 .scan-box svg{
-
-    color:#7CFFD8;
-
+    color:var(--ce-emerald-soft);
     margin-bottom:24px;
-
-    filter:drop-shadow(0 0 18px rgba(16,185,129,.55));
-
+    filter:drop-shadow(0 0 18px rgba(0,200,83,.5));
 }
 
 .scan-box h3{
-
-    color:white;
-
-    font-size:2rem;
-
+    font-family:var(--ce-font-display);
+    color:var(--ce-text-primary);
+    font-size:1.9rem;
     margin-bottom:10px;
-
 }
 
 .scan-box p{
-
-    color:#b8c8c3;
-
-    margin-bottom:35px;
-
+    color:var(--ce-text-muted);
+    margin-bottom:32px;
 }
 
 .scan-box button{
-
     display:flex;
-
     align-items:center;
-
     justify-content:center;
-
     gap:10px;
-
     border:none;
-
     cursor:pointer;
-
-    padding:14px 24px;
-
-    border-radius:999px;
-
-    background:linear-gradient(135deg, #10B981, #047857);
-
-    color:white;
-
-    font-weight:600;
-
-    transition:.35s;
-
-}
-
-.scan-box button:hover{
-
-    transform:translateY(-4px);
-
-    box-shadow:0 12px 28px rgba(16,185,129,.28);
-
+    padding:14px 26px;
+    border-radius:var(--ce-radius-pill);
+    background:var(--ce-gradient-aurora);
+    color:var(--ce-black);
+    font-weight:700;
 }
 
 .scan-box small{
-
-    margin-top:28px;
-
-    color:#90aba4;
-
+    margin-top:26px;
+    color:var(--ce-text-faint);
+    font-size:.8rem;
 }
 
 /* ==========================================================
@@ -381,54 +241,15 @@
 ========================================================== */
 
 @media(max-width:1100px){
-
-.scan-container{
-
-grid-template-columns:1fr;
-
-}
-
-.scan-left{
-
-text-align:center;
-
-}
-
-.scan-left p{
-
-margin:auto;
-
-}
-
-.scan-box{
-
-width:100%;
-
-max-width:520px;
-
-}
-
+    .scan-container{ grid-template-columns:1fr; }
+    .scan-left{ text-align:center; }
+    .scan-left p{ margin:auto; }
+    .scan-box{ width:100%; max-width:520px; }
 }
 
 @media(max-width:700px){
-
-.scan-features{
-
-grid-template-columns:1fr;
-
+    .scan-features{ grid-template-columns:1fr; }
+    .scan-box{ height:480px; }
+    .scan-left h2{ font-size:2.4rem; }
 }
 
-.scan-box{
-
-height:480px;
-
-}
-
-.scan-left h2{
-
-font-size:2.5rem;
-
-}
-
-   }
-   
