@@ -69,7 +69,7 @@ function makeDisperse(n) {
   for (let i = 0; i < n; i++) {
     const theta = Math.random() * Math.PI * 2;
     const phi = Math.acos(2 * Math.random() - 1);
-    const r = 2.5 + Math.random() * 4.5;
+    const r = 2.2 + Math.random() * 2.6;
     arr[i * 3] = r * Math.sin(phi) * Math.cos(theta);
     arr[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
     arr[i * 3 + 2] = r * Math.cos(phi);
@@ -96,7 +96,8 @@ const VERTEX_SHADER = `
     );
 
     vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
-    gl_PointSize = uSize * (300.0 / -mvPosition.z);
+    float dist = max(-mvPosition.z, 1.2);
+    gl_PointSize = clamp(uSize * (220.0 / dist), 0.6, 22.0);
     gl_Position = projectionMatrix * mvPosition;
     vAlpha = clamp(1.0 - (-mvPosition.z) / 40.0, 0.15, 1.0);
   }
@@ -187,7 +188,7 @@ function ParticleField({ progress }) {
 function CameraRig({ progress }) {
   useFrame(({ camera }) => {
     const p = progress.get();
-    camera.position.z = 9 - p * 3.4;
+    camera.position.z = 9 - p * 2.3;
     if (!prefersReducedMotion) {
       camera.position.x = Math.sin(p * Math.PI * 1.3) * 1.1;
       camera.position.y = Math.cos(p * Math.PI * 0.8) * 0.5;
@@ -268,5 +269,4 @@ function ParticleMorphSection() {
 }
 
 export default ParticleMorphSection;
-               
       
