@@ -102,6 +102,19 @@
 .ce-hero-trees { bottom: 8%; color: var(--ce-forest); }
 .ce-hero-flowers { bottom: 5%; color: var(--ce-emerald-soft); }
 
+.ce-hero-forest-canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.ce-hero-forest-canvas canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
+
 .ce-tree-0, .ce-tree-1, .ce-tree-2, .ce-tree-3, .ce-tree-4 {
   width: clamp(38px, 5vw, 64px);
   height: clamp(38px, 5vw, 64px);
@@ -279,4 +292,5 @@
     animation: none !important;
   }
    }
+
    
