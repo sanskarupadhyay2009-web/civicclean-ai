@@ -1,0 +1,140 @@
+.cs-section {
+  position: relative;
+  overflow: hidden;
+  padding: var(--ce-space-xl) var(--ce-space-md);
+  min-height: 100vh;
+}
+
+.cs-leaves {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.cs-leaf {
+  position: absolute;
+  bottom: 0;
+  color: var(--ce-emerald-soft);
+  opacity: 0.5;
+  filter: drop-shadow(0 0 6px rgba(0, 200, 83, 0.25));
+}
+
+.cs-header {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto var(--ce-space-lg);
+}
+
+.cs-eyebrow {
+  display: inline-block;
+  font-family: var(--ce-font-body);
+  letter-spacing: 0.22em;
+  font-size: 0.75rem;
+  color: var(--ce-sky);
+  margin-bottom: var(--ce-space-sm);
+}
+
+.cs-header h2 {
+  font-family: var(--ce-font-display);
+  font-size: clamp(2rem, 4vw, 3rem);
+  color: var(--ce-text-primary);
+  line-height: 1.2;
+}
+
+.cs-grid {
+  position: relative;
+  z-index: 1;
+  max-width: 1240px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--ce-space-md);
+}
+
+.cs-card {
+  position: relative;
+  background: var(--ce-glass-bg);
+  border: 1px solid var(--ce-glass-border);
+  backdrop-filter: blur(var(--ce-glass-blur));
+  border-radius: var(--ce-radius-md);
+  padding: var(--ce-space-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--ce-space-sm);
+  transition: box-shadow var(--ce-dur-fast) var(--ce-ease-organic);
+}
+
+.cs-card:hover {
+  box-shadow: var(--ce-neu-shadow-out), 0 0 40px rgba(0, 200, 83, 0.12);
+}
+
+/* Organic "blob" avatar — asymmetric border-radius instead of a
+   perfect circle, gently morphing so it never looks static */
+.cs-blob {
+  --blob-hue: #00c853;
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--blob-hue), rgba(11, 15, 12, 0.6));
+  color: var(--ce-white);
+  font-family: var(--ce-font-display);
+  font-weight: 700;
+  font-size: 1.1rem;
+  border-radius: 63% 37% 54% 46% / 55% 45% 55% 45%;
+  animation: csBlobMorph 9s ease-in-out infinite;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+@keyframes csBlobMorph {
+  0%, 100% { border-radius: 63% 37% 54% 46% / 55% 45% 55% 45%; }
+  33% { border-radius: 45% 55% 62% 38% / 40% 62% 38% 60%; }
+  66% { border-radius: 52% 48% 40% 60% / 60% 40% 60% 40%; }
+}
+
+.cs-quote-icon {
+  color: var(--ce-emerald-soft);
+  opacity: 0.6;
+}
+
+.cs-quote {
+  font-family: var(--ce-font-body);
+  color: var(--ce-text-muted);
+  font-size: 0.95rem;
+  line-height: 1.55;
+  flex: 1;
+}
+
+.cs-meta {
+  display: flex;
+  flex-direction: column;
+  padding-top: var(--ce-space-xs);
+  border-top: 1px solid var(--ce-glass-border);
+}
+
+.cs-name {
+  font-family: var(--ce-font-body);
+  font-weight: 600;
+  color: var(--ce-text-primary);
+  font-size: 0.9rem;
+}
+
+.cs-role {
+  font-family: var(--ce-font-body);
+  color: var(--ce-text-faint);
+  font-size: 0.78rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cs-blob {
+    animation: none;
+  }
+  .cs-leaf {
+    display: none;
+  }
+}

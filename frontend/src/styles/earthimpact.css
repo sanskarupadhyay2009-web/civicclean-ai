@@ -1,0 +1,160 @@
+.earth-section {
+  position: relative;
+  min-height: 100vh;
+  padding: var(--ce-space-xl) var(--ce-space-md);
+  display: flex;
+  align-items: center;
+  background: radial-gradient(ellipse at 70% 30%, rgba(0, 200, 83, 0.08), transparent 60%);
+}
+
+.earth-container {
+  max-width: 1240px;
+  margin: 0 auto;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--ce-space-lg);
+  align-items: center;
+}
+
+.earth-eyebrow {
+  display: inline-block;
+  font-family: var(--ce-font-body);
+  letter-spacing: 0.22em;
+  font-size: 0.75rem;
+  color: var(--ce-emerald-soft);
+  margin-bottom: var(--ce-space-sm);
+}
+
+.earth-copy h2 {
+  font-family: var(--ce-font-display);
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  color: var(--ce-text-primary);
+  line-height: 1.15;
+  margin-bottom: var(--ce-space-sm);
+}
+
+.earth-copy p {
+  font-family: var(--ce-font-body);
+  color: var(--ce-text-muted);
+  font-size: 1.05rem;
+  max-width: 46ch;
+  margin-bottom: var(--ce-space-md);
+}
+
+.earth-metrics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ce-space-md);
+  margin-bottom: var(--ce-space-sm);
+}
+
+.earth-metric {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.earth-metric-value {
+  font-family: var(--ce-font-display);
+  font-size: clamp(1.4rem, 2.4vw, 1.9rem);
+  font-weight: 700;
+  color: var(--ce-emerald);
+  text-shadow: 0 0 18px rgba(0, 200, 83, 0.3);
+}
+
+.earth-metric-label {
+  font-family: var(--ce-font-body);
+  font-size: 0.8rem;
+  color: var(--ce-text-faint);
+  letter-spacing: 0.04em;
+}
+
+.earth-legend {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  font-family: var(--ce-font-body);
+  font-size: 0.8rem;
+  color: var(--ce-text-faint);
+}
+
+.earth-legend-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-left: 14px;
+}
+
+.earth-legend-dot:first-child {
+  margin-left: 0;
+}
+
+.earth-legend-dot-high {
+  background: #baffd6;
+  box-shadow: 0 0 10px 2px rgba(52, 227, 122, 0.7);
+}
+
+.earth-legend-dot-low {
+  background: #1b5e20;
+  box-shadow: 0 0 6px 1px rgba(52, 227, 122, 0.3);
+}
+
+.earth-globe-wrap {
+  position: relative;
+  height: 560px;
+  border-radius: var(--ce-radius-lg);
+  overflow: hidden;
+  background: radial-gradient(ellipse at 50% 50%, rgba(0, 200, 83, 0.05), transparent 70%);
+}
+
+.earth-globe-wrap canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  cursor: grab;
+}
+
+.earth-globe-wrap canvas:active {
+  cursor: grabbing;
+}
+
+.earth-globe-hint {
+  position: absolute;
+  bottom: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--ce-font-body);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  color: var(--ce-text-faint);
+  background: var(--ce-glass-bg);
+  border: 1px solid var(--ce-glass-border);
+  padding: 6px 14px;
+  border-radius: var(--ce-radius-pill);
+  pointer-events: none;
+  opacity: 0.8;
+}
+
+@media (max-width: 960px) {
+  .earth-container {
+    grid-template-columns: 1fr;
+  }
+
+  .earth-globe-wrap {
+    height: 420px;
+    order: -1;
+  }
+}
+
+@media (max-width: 480px) {
+  .earth-globe-wrap {
+    height: 340px;
+  }
+
+  .earth-metrics {
+    gap: var(--ce-space-sm);
+  }
+}
