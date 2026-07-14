@@ -7,7 +7,6 @@ import EarthImpact from "../components/home/EarthImpact";
 import CommunityStories from "../components/home/CommunityStories";
 
 import StackSection from "../components/common/StackSection";
-import CinematicField from "../components/home/CinematicField";
 import CursorGlow from "../components/home/CursorGlow";
 
 import "../styles/hero.css";
@@ -22,7 +21,6 @@ function Home() {
   return (
     <main className="home-stack">
 
-      <CinematicField />
       <CursorGlow />
 
       <StackSection index={0}>
