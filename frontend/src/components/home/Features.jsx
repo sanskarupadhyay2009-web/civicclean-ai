@@ -1,16 +1,28 @@
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { motion, useMotionValue, useSpring, useTransform, useScroll } from "framer-motion";
+import { useRef } from "react";
 import {
   Brain,
   MapPinned,
   Camera,
   BarChart3,
   ShieldCheck,
-  Users
+  Users,
+  Clock,
+  Trash2,
+  Activity,
+  Building2,
 } from "lucide-react";
 
 import { staggerGroup, popItem, cardPop } from "../../utils/motionVariants";
 import ScrambleText from "../common/ScrambleText";
 import GlowText from "../common/GlowText";
+import TickingCounter from "../common/TickingCounter";
+
+const ticker = [
+  { icon: <Trash2 size={20} />, target: 24582, label: "Issues Detected" },
+  { icon: <Activity size={20} />, target: 18947, label: "Reports Resolved" },
+  { icon: <Building2 size={20} />, target: 132, label: "Cities Monitored" },
+];
 
 const features = [
   {
@@ -118,8 +130,24 @@ function FeatureCard({ feature, index }) {
 }
 
 function Features() {
+  const sectionRef = useRef(null);
+
+  // Drives the clock hand: as the person scrolls through the whole
+  // Features section, the hand sweeps continuously (3 full turns),
+  // instead of a fixed hover-triggered spin. This is the same
+  // "rotate tied directly to scroll position" pattern used on a lot
+  // of product/dashboard landing pages (Apple, Linear, etc) to make
+  // an element feel like it's live-tracking the page, not just
+  // decorative.
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"],
+  });
+  const clockRotation = useTransform(scrollYProgress, [0, 1], [0, 1080]);
+  const secondHandRotation = useTransform(scrollYProgress, [0, 1], [0, 2160]);
+
   return (
-    <section className="features-section">
+    <section className="features-section" ref={sectionRef}>
 
       <motion.div
         className="features-header"
@@ -146,6 +174,46 @@ function Features() {
 
       </motion.div>
 
+      <motion.div
+        className="features-ticker"
+        variants={staggerGroup(0.12)}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, amount: 0.4 }}
+      >
+
+        <motion.div className="ticker-item live-clock-item" variants={popItem}>
+          <div className="live-clock">
+            <Clock size={22} className="live-clock-face" />
+            <motion.span
+              className="live-clock-hand live-clock-hand-min"
+              style={{ rotate: clockRotation }}
+            />
+            <motion.span
+              className="live-clock-hand live-clock-hand-sec"
+              style={{ rotate: secondHandRotation }}
+            />
+          </div>
+          <div className="ticker-text">
+            <h3>Live</h3>
+            <span>Real-Time Monitoring</span>
+          </div>
+        </motion.div>
+
+        {ticker.map((item, index) => (
+          <motion.div className="ticker-item" key={index} variants={popItem}>
+            <div className="ticker-icon">{item.icon}</div>
+            <div className="ticker-text">
+              <h3>
+                <TickingCounter target={item.target} />
+              </h3>
+              <span>{item.label}</span>
+            </div>
+          </motion.div>
+        ))}
+
+      </motion.div>
+
       <div className="features-grid">
 
         {features.map((feature, index) => (
@@ -159,4 +227,5 @@ function Features() {
 }
 
 export default Features;
+
     
