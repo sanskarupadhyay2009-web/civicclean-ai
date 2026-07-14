@@ -136,11 +136,17 @@ function ConnectionArcs() {
       const curve = new THREE.QuadraticBezierCurve3(start, mid, end);
       const curvePoints = curve.getPoints(48);
       const geometry = new THREE.BufferGeometry().setFromPoints(curvePoints);
-      geometry.computeLineDistances();
-      const lineLength = curvePoints.reduce(
-        (sum, p, i) => (i === 0 ? 0 : sum + p.distanceTo(curvePoints[i - 1])),
-        0
-      );
+
+      // computeLineDistances() only exists on THREE.Line objects, not on
+      // a bare BufferGeometry — set the "lineDistance" attribute directly
+      // instead, which is what LineDashedMaterial actually reads from.
+      const distances = [0];
+      for (let i = 1; i < curvePoints.length; i++) {
+        distances.push(distances[i - 1] + curvePoints[i].distanceTo(curvePoints[i - 1]));
+      }
+      geometry.setAttribute("lineDistance", new THREE.Float32BufferAttribute(distances, 1));
+
+      const lineLength = distances[distances.length - 1];
       return { geometry, lineLength };
     });
   }, [points]);
@@ -172,8 +178,6 @@ function ConnectionArcs() {
   );
 }
 
-// lineDashedMaterial requires computeLineDistances() to be called on
-// the line's geometry once — a tiny wrapper handles that on mount.
 function OrbitParticles({ count = 90 }) {
   const ref = useRef();
 
