@@ -4,13 +4,13 @@ import { Link } from "react-router-dom";
 import {
   ArrowRight,
   Leaf,
-  TreePine,
-  TreeDeciduous,
   Flower2,
   Bird,
   Cloud,
   ChevronDown,
 } from "lucide-react";
+
+import ForestScene from "./ForestScene";
 
 // The hero is a scroll-driven sequence: the page starts grey and
 // polluted, and as the visitor scrolls through the extra height of
@@ -30,8 +30,6 @@ function Hero() {
   const sunOpacity = useTransform(scrollYProgress, [0.5, 0.85], [0, 1]);
 
   const grassScale = useTransform(scrollYProgress, [0.08, 0.35], [0, 1]);
-  const treesOpacity = useTransform(scrollYProgress, [0.18, 0.48], [0, 1]);
-  const treesScale = useTransform(scrollYProgress, [0.18, 0.5], [0.25, 1]);
   const flowersOpacity = useTransform(scrollYProgress, [0.38, 0.62], [0, 1]);
   const flowersScale = useTransform(scrollYProgress, [0.38, 0.65], [0.3, 1]);
 
@@ -68,17 +66,8 @@ function Hero() {
           <Bird size={20} />
         </motion.div>
 
-        {/* ---------- Trees ---------- */}
-        <motion.div
-          className="ce-hero-trees"
-          style={{ opacity: treesOpacity, scale: treesScale }}
-        >
-          {[TreePine, TreeDeciduous, TreePine, TreeDeciduous, TreePine, TreeDeciduous, TreePine].map(
-            (TreeIcon, i) => (
-              <TreeIcon key={i} className={`ce-tree ce-tree-${i % 5}`} />
-            )
-          )}
-        </motion.div>
+        {/* ---------- Forest (real 3D, Three.js) ---------- */}
+        <ForestScene progress={scrollYProgress} />
 
         {/* ---------- Flowers ---------- */}
         <motion.div
@@ -197,4 +186,5 @@ function Hero() {
 }
 
 export default Hero;
-        
+
+          
