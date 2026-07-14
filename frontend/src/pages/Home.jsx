@@ -1,8 +1,9 @@
-
 import Hero from "../components/home/Hero";
 import ScanSection from "../components/home/ScanSection";
 import Features from "../components/home/Features";
 import Stats from "../components/home/Stats";
+import EarthImpact from "../components/home/EarthImpact";
+import CommunityStories from "../components/home/CommunityStories";
 
 import StackSection from "../components/common/StackSection";
 import ScrollFX from "../components/common/ScrollFX";
@@ -40,6 +41,14 @@ function Home() {
 
       <StackSection index={3}>
         <Stats />
+      </StackSection>
+
+      <StackSection index={4}>
+        <EarthImpact />
+      </StackSection>
+
+      <StackSection index={5}>
+        <CommunityStories />
       </StackSection>
 
     </main>
