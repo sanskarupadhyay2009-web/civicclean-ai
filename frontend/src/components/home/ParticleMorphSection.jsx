@@ -174,8 +174,8 @@ function ParticleField({ progress }) {
         uniforms={{
           uMorph: { value: 0 },
           uTime: { value: 0 },
-          uSize: { value: isSmallScreen ? 2.4 : 3.2 },
-          uColor: { value: new THREE.Color("#4be3a0") },
+          uSize: { value: isSmallScreen ? 3 : 4 },
+          uColor: { value: new THREE.Color("#6effc4") },
         }}
         vertexShader={VERTEX_SHADER}
         fragmentShader={FRAGMENT_SHADER}
@@ -271,3 +271,4 @@ function ParticleMorphSection() {
 }
 
 export default ParticleMorphSection;
+      
