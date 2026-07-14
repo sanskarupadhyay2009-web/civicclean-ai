@@ -20,6 +20,18 @@
   z-index: 0;
 }
 
+.pm-canvas-wrap::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at 50% 45%,
+    transparent 35%,
+    rgba(5, 7, 10, 0.55) 100%
+  );
+}
+
 .pm-canvas-wrap canvas {
   display: block;
   width: 100% !important;
