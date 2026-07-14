@@ -1,5 +1,5 @@
-import { useMemo, useRef } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { useMemo, useRef, useEffect } from "react";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import * as THREE from "three";
 
@@ -223,6 +223,37 @@ function SlowSpin({ children }) {
   return <group ref={ref}>{children}</group>;
 }
 
+// The scene's furthest visible geometry (outer orbit particles) sits
+// at roughly this radius from center. The camera needs to back off
+// far enough that this fits within BOTH the vertical and horizontal
+// field of view — the previous fixed distance only accounted for a
+// vertical fit at one specific aspect ratio, so anything narrower
+// (portrait phones, the mobile-stacked layout) clipped the sides.
+const SCENE_RADIUS = 4.3;
+
+function ResponsiveCameraFit() {
+  const { camera, size } = useThree();
+
+  useEffect(() => {
+    if (!size.width || !size.height) return;
+
+    const aspect = size.width / size.height;
+    const vFov = (camera.fov * Math.PI) / 180;
+    const vHalfTan = Math.tan(vFov / 2);
+    const hHalfTan = vHalfTan * aspect;
+
+    // Distance required so SCENE_RADIUS fits inside whichever axis is
+    // tighter (vertical on narrow/portrait, horizontal on ultra-wide).
+    const limitingHalfTan = Math.min(vHalfTan, hHalfTan);
+    const requiredDistance = (SCENE_RADIUS / limitingHalfTan) * 1.08; // 8% breathing room
+
+    camera.position.z = Math.max(requiredDistance, 6);
+    camera.updateProjectionMatrix();
+  }, [size, camera]);
+
+  return null;
+}
+
 function EarthImpactGlobe() {
   const isSmallScreen = typeof window !== "undefined" && window.innerWidth < 768;
 
@@ -232,6 +263,8 @@ function EarthImpactGlobe() {
       gl={{ alpha: true, antialias: true }}
       camera={{ position: [0, 0.6, 7], fov: 42 }}
     >
+      <ResponsiveCameraFit />
+
       <ambientLight intensity={0.6} />
       <pointLight position={[6, 4, 6]} intensity={1.1} color="#baffd6" />
 
