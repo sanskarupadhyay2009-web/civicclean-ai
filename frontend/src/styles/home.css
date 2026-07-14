@@ -41,3 +41,27 @@
   display: inline-block;
 }
 
+/* ===========================================================
+   CINEMATIC FIELD — persistent ambient background canvas
+   =========================================================== */
+.cinematic-field {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  background: #05070a;
+}
+
+.cinematic-field canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.cinematic-field-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 40%, transparent 0%, rgba(0, 0, 0, 0.65) 100%);
+}
+
