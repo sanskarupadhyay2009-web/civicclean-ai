@@ -1,7 +1,7 @@
 import { useRef, useMemo, useEffect } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { EffectComposer, Bloom, DepthOfField } from "@react-three/postprocessing";
+import { EffectComposer, Bloom } from "@react-three/postprocessing";
 import * as THREE from "three";
 
 import { GlowText } from "../common/GlowText";
@@ -14,7 +14,7 @@ const prefersReducedMotion =
   window.matchMedia &&
   window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-const COUNT = isSmallScreen ? 1400 : 4200;
+const COUNT = isSmallScreen ? 900 : 2600;
 
 // ─────────────────────────────────────────────
 //  Shape generators — every shape returns the same
@@ -232,14 +232,11 @@ function ParticleMorphSection() {
 
             <EffectComposer disableNormalPass>
               <Bloom
-                luminanceThreshold={0.12}
-                luminanceSmoothing={0.9}
-                intensity={isSmallScreen ? 0.6 : 1.15}
+                luminanceThreshold={0.15}
+                luminanceSmoothing={0.85}
+                intensity={isSmallScreen ? 0.4 : 0.7}
                 mipmapBlur
               />
-              {!isSmallScreen && !prefersReducedMotion && (
-                <DepthOfField focusDistance={0.015} focalLength={0.05} bokehScale={2.4} height={480} />
-              )}
             </EffectComposer>
           </Canvas>
         </div>
@@ -271,4 +268,5 @@ function ParticleMorphSection() {
 }
 
 export default ParticleMorphSection;
+               
       
