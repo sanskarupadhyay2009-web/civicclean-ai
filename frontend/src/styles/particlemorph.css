@@ -1,0 +1,118 @@
+.pm-track {
+  position: relative;
+  height: 280vh;
+  background: #05070a;
+}
+
+.pm-sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pm-canvas-wrap {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.pm-canvas-wrap canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.pm-intro {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  max-width: 640px;
+  padding: 0 24px;
+  pointer-events: none;
+}
+
+.pm-eyebrow {
+  display: inline-block;
+  font-family: var(--ce-font-body);
+  letter-spacing: 0.22em;
+  font-size: 0.75rem;
+  color: var(--ce-emerald-soft);
+  margin-bottom: var(--ce-space-sm);
+}
+
+.pm-intro h2 {
+  font-family: var(--ce-font-display);
+  font-size: clamp(2rem, 4.5vw, 3.4rem);
+  color: var(--ce-text-primary);
+  line-height: 1.18;
+  margin-bottom: var(--ce-space-sm);
+  text-shadow: 0 0 32px rgba(75, 227, 160, 0.25);
+}
+
+.pm-intro p {
+  font-family: var(--ce-font-body);
+  color: var(--ce-text-muted);
+  font-size: 1rem;
+  max-width: 48ch;
+  margin: 0 auto;
+}
+
+.pm-reveal-card {
+  position: absolute;
+  z-index: 3;
+  text-align: center;
+  max-width: 460px;
+  padding: 34px 40px;
+  border-radius: var(--ce-radius-lg);
+  background: var(--ce-glass-bg);
+  border: 1px solid var(--ce-glass-border);
+  backdrop-filter: blur(var(--ce-glass-blur));
+  box-shadow: var(--ce-neu-shadow-out), 0 0 60px rgba(75, 227, 160, 0.15);
+}
+
+.pm-reveal-eyebrow {
+  display: block;
+  font-family: var(--ce-font-body);
+  letter-spacing: 0.18em;
+  font-size: 0.7rem;
+  color: var(--ce-sky);
+  margin-bottom: 10px;
+}
+
+.pm-reveal-card h3 {
+  font-family: var(--ce-font-display);
+  font-size: clamp(1.3rem, 2.6vw, 1.7rem);
+  color: var(--ce-text-primary);
+  margin-bottom: 8px;
+}
+
+.pm-reveal-card p {
+  font-family: var(--ce-font-body);
+  color: var(--ce-text-muted);
+  font-size: 0.92rem;
+}
+
+@media (max-width: 640px) {
+  .pm-track {
+    height: 240vh;
+  }
+
+  .pm-reveal-card {
+    padding: 24px 26px;
+    max-width: 320px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pm-track {
+    height: auto;
+  }
+  .pm-sticky {
+    position: relative;
+    height: 90vh;
+  }
+}
