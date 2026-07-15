@@ -17,28 +17,18 @@
   position: sticky;
   top: 0;
   min-height: 100vh;
-  display: flex;
-  /* Horizontal inset only — this is what gives the floating-card look
-     (rounded corners, gap on the sides). Padding was previously on
-     all 4 sides, which shrank the card's height below the 100vh that
-     Hero (and every other section) expects, and overflow:hidden below
-     was silently clipping the excess — including the forest canvas.
-     Keeping top/bottom at 0 means the available height always exactly
-     matches what each section's own min-height:100vh rule wants. */
-  padding: 0 clamp(8px, 1.4vw, 18px);
   will-change: transform, opacity;
 }
 
-/* The actual "card" — rounded corners, a real gradient border (via
-   the background-origin/clip trick, no extra wrapper element needed),
-   and a molded/embossed shadow (soft outer drop shadow + a bright
-   inset top edge + dark inset bottom edge, like a pressed metal or
-   glass panel rather than a flat rectangle). */
+/* The actual "card" — positioned absolutely against .stack-section
+   (a sticky element is itself a positioned containing block, so this
+   is safe) with a horizontal-only inset. This sizing is now fully
+   deterministic — top:0, bottom:0 means the card is always exactly
+   as tall as .stack-section's 100vh, no flexbox stretch/shrink
+   ambiguity involved — which is what caused the wider breakage. */
 .stack-card {
-  position: relative;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
+  position: absolute;
+  inset: 0 clamp(8px, 1.4vw, 18px);
   overflow: hidden;
   border-radius: clamp(18px, 2.6vw, 34px);
   border: 1.5px solid transparent;
@@ -78,12 +68,6 @@
    perfectly against a flex column parent — this is what guarantees
    the forest canvas (and everything else absolutely positioned inside
    Hero) always has a real, non-zero area to render into. */
-.stack-card > * {
-  flex: 1 1 auto;
-  min-height: 0;
-  width: 100%;
-}
-
 @keyframes cardShine {
   0%, 100% { background-position: 0 0, 0% 40%; }
   50% { background-position: 0 0, 100% 60%; }
@@ -161,4 +145,4 @@
     transition: none !important;
   }
    }
-   
+                              
