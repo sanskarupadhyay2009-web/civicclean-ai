@@ -12,6 +12,7 @@ export function AuthProvider({ children }) {
       const token = localStorage.getItem("token");
 
       if (!token) {
+        setUser(null);
         setLoading(false);
         return;
       }
@@ -20,7 +21,10 @@ export function AuthProvider({ children }) {
         const { data } = await getCurrentUser();
         setUser(data.user);
       } catch (error) {
+        console.warn("Session expired or invalid token. Logging out.");
+
         localStorage.removeItem("token");
+        setUser(null);
       } finally {
         setLoading(false);
       }
@@ -34,23 +38,4 @@ export function AuthProvider({ children }) {
     setUser(userData);
   };
 
-  const logoutUser = () => {
-    localStorage.removeItem("token");
-    setUser(null);
-  };
-
-  return (
-    <AuthContext.Provider
-      value={{
-        user,
-        loading,
-        loginUser,
-        logoutUser,
-      }}
-    >
-      {children}
-    </AuthContext.Provider>
-  );
-}
-
-export const useAuth = () => useContext(AuthContext);
+  const logoutUser = ()
