@@ -3,6 +3,8 @@ import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import * as THREE from "three";
 
+import { useInViewport } from "../../hooks/useInViewport";
+
 /**
  * EarthImpact 3D globe
  * ------------------------
@@ -256,36 +258,40 @@ function ResponsiveCameraFit() {
 
 function EarthImpactGlobe() {
   const isSmallScreen = typeof window !== "undefined" && window.innerWidth < 768;
+  const [wrapRef, inView] = useInViewport();
 
   return (
-    <Canvas
-      dpr={isSmallScreen ? 1 : [1, 1.5]}
-      gl={{ alpha: true, antialias: true }}
-      camera={{ position: [0, 0.6, 7], fov: 42 }}
-    >
-      <ResponsiveCameraFit />
+    <div ref={wrapRef} style={{ width: "100%", height: "100%" }}>
+      <Canvas
+        dpr={isSmallScreen ? 1 : [1, 1.5]}
+        gl={{ alpha: true, antialias: true }}
+        camera={{ position: [0, 0.6, 7], fov: 42 }}
+        frameloop={inView ? "always" : "never"}
+      >
+        <ResponsiveCameraFit />
 
-      <ambientLight intensity={0.6} />
-      <pointLight position={[6, 4, 6]} intensity={1.1} color="#baffd6" />
+        <ambientLight intensity={0.6} />
+        <pointLight position={[6, 4, 6]} intensity={1.1} color="#baffd6" />
 
-      <SlowSpin>
-        <GlobeCore />
-        <Hotspots />
-        <ConnectionArcs />
-      </SlowSpin>
+        <SlowSpin>
+          <GlobeCore />
+          <Hotspots />
+          <ConnectionArcs />
+        </SlowSpin>
 
-      <OrbitParticles count={isSmallScreen ? 40 : 90} />
+        <OrbitParticles count={isSmallScreen ? 40 : 90} />
 
-      <OrbitControls
-        enableZoom={false}
-        enablePan={false}
-        autoRotate
-        autoRotateSpeed={0.5}
-        rotateSpeed={0.5}
-        minPolarAngle={Math.PI / 3}
-        maxPolarAngle={Math.PI - Math.PI / 3}
-      />
-    </Canvas>
+        <OrbitControls
+          enableZoom={false}
+          enablePan={false}
+          autoRotate
+          autoRotateSpeed={0.5}
+          rotateSpeed={0.5}
+          minPolarAngle={Math.PI / 3}
+          maxPolarAngle={Math.PI - Math.PI / 3}
+        />
+      </Canvas>
+    </div>
   );
 }
 
