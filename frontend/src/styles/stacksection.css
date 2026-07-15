@@ -25,7 +25,13 @@
    is safe) with a horizontal-only inset. This sizing is now fully
    deterministic — top:0, bottom:0 means the card is always exactly
    as tall as .stack-section's 100vh, no flexbox stretch/shrink
-   ambiguity involved — which is what caused the wider breakage. */
+   ambiguity involved — which is what caused the wider breakage.
+
+   Styled as a futuristic HUD/robotic panel: the box-shadow stack
+   below draws two faint stepped "plates" receding behind the main
+   card (::before/::after add the corner brackets + scan sweep on
+   top of it), so the whole thing reads as one panel sitting on a
+   layered mechanical housing rather than a flat rounded rectangle. */
 .stack-card {
   position: absolute;
   inset: 0 clamp(8px, 1.4vw, 18px);
@@ -59,7 +65,97 @@
     0 46px 90px -30px rgba(0, 0, 0, 0.6),
     0 -20px 60px -30px rgba(0, 0, 0, 0.4),
     inset 0 1px 0 rgba(255, 255, 255, 0.16),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.4);
+    inset 0 -1px 0 rgba(0, 0, 0, 0.4),
+    0 14px 0 -9px rgba(14, 22, 20, 0.65),
+    0 14px 26px -14px rgba(0, 0, 0, 0.55),
+    0 26px 0 -18px rgba(9, 15, 14, 0.5),
+    0 26px 34px -20px rgba(0, 0, 0, 0.45);
+}
+
+/* Glowing corner brackets — classic HUD/targeting-panel accents,
+   drawn with background gradients so no extra markup is needed.
+   Diagonal corners alternate the two brand accent hues, echoing the
+   border shine gradient above. */
+.stack-card::before {
+  content: "";
+  position: absolute;
+  inset: 16px;
+  z-index: 3;
+  pointer-events: none;
+  background-repeat: no-repeat;
+  background-image:
+    linear-gradient(to right, rgba(126, 255, 235, 0.95), transparent),
+    linear-gradient(to bottom, rgba(126, 255, 235, 0.95), transparent),
+    radial-gradient(circle, rgba(126, 255, 235, 0.9) 0 40%, transparent 70%),
+    linear-gradient(to left, rgba(185, 138, 255, 0.9), transparent),
+    linear-gradient(to bottom, rgba(185, 138, 255, 0.9), transparent),
+    radial-gradient(circle, rgba(185, 138, 255, 0.85) 0 40%, transparent 70%),
+    linear-gradient(to right, rgba(185, 138, 255, 0.9), transparent),
+    linear-gradient(to top, rgba(185, 138, 255, 0.9), transparent),
+    radial-gradient(circle, rgba(185, 138, 255, 0.85) 0 40%, transparent 70%),
+    linear-gradient(to left, rgba(126, 255, 235, 0.95), transparent),
+    linear-gradient(to top, rgba(126, 255, 235, 0.95), transparent),
+    radial-gradient(circle, rgba(126, 255, 235, 0.9) 0 40%, transparent 70%);
+  background-size:
+    30px 2px, 2px 30px, 4px 4px,
+    30px 2px, 2px 30px, 4px 4px,
+    30px 2px, 2px 30px, 4px 4px,
+    30px 2px, 2px 30px, 4px 4px;
+  background-position:
+    top left, top left, top left,
+    top right, top right, top right,
+    bottom right, bottom right, bottom right,
+    bottom left, bottom left, bottom left;
+  opacity: 0.85;
+  animation: bracketPulse 4.5s ease-in-out infinite;
+}
+
+/* Slow scan sweep — a thin glowing line travels down the panel on a
+   loop, the way a HUD readout "scans" a display. Kept subtle so it
+   never fights the actual content underneath. */
+.stack-card::after {
+  content: "";
+  position: absolute;
+  left: 6%;
+  right: 6%;
+  height: 1.5px;
+  top: 0;
+  z-index: 3;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(126, 255, 235, 0.85),
+    rgba(185, 138, 255, 0.85),
+    transparent
+  );
+  box-shadow: 0 0 14px 2px rgba(126, 255, 235, 0.45);
+  opacity: 0;
+  animation: scanSweep 7s ease-in-out infinite;
+}
+
+@keyframes bracketPulse {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 0.95; }
+}
+
+@keyframes scanSweep {
+  0% { top: 0; opacity: 0; }
+  6% { opacity: 0.7; }
+  48% { top: 100%; opacity: 0.7; }
+  56% { opacity: 0; }
+  100% { top: 0; opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stack-card::before {
+    animation: none;
+    opacity: 0.7;
+  }
+  .stack-card::after {
+    animation: none;
+    opacity: 0;
+  }
 }
 
 /* Belt-and-braces: force whatever section is dropped inside the card
@@ -145,4 +241,5 @@
     transition: none !important;
   }
    }
-                              
+
+                                 
