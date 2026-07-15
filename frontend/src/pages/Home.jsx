@@ -22,9 +22,14 @@ function Home() {
 
       <CursorGlow />
 
-      <StackSection index={0}>
-        <Hero />
-      </StackSection>
+      {/* Not wrapped in StackSection — same reason as ParticleMorphSection
+          below: Hero pins itself internally via position:sticky across
+          its own 260vh scroll track (.ce-hero-wrap / .ce-hero-sticky) to
+          drive the grey-to-green forest transformation. StackSection's
+          card is min-height:100vh with overflow:hidden, which would clip
+          that track down to a single viewport and cut the animation off
+          before it can finish — which is exactly what was happening. */}
+      <Hero />
 
       <StackSection index={1}>
         <ScanSection />
