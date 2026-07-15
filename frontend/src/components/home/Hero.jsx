@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 
 import ForestScene from "./ForestScene";
+import Magnetic from "../common/Magnetic";
 
 // The hero is a scroll-driven sequence: the page starts grey and
 // polluted, and as the visitor scrolls through the extra height of
@@ -148,9 +149,9 @@ function Hero() {
                 },
               }}
             >
-              <Link to="/report" className="ce-btn ce-btn-primary ce-glow-border">
+              <Magnetic as={Link} to="/report" className="ce-btn ce-btn-primary ce-glow-border">
                 <Leaf size={16} /> Report an Issue
-              </Link>
+              </Magnetic>
             </motion.div>
 
             <motion.div
@@ -186,5 +187,6 @@ function Hero() {
 }
 
 export default Hero;
+
 
           
