@@ -5,6 +5,7 @@ import { EffectComposer, Bloom, Vignette, ChromaticAberration } from "@react-thr
 import * as THREE from "three";
 
 import { GlowText } from "../common/GlowText";
+import { useInViewport } from "../../hooks/useInViewport";
 
 import "../../styles/particlemorph.css";
 
@@ -278,6 +279,7 @@ function CameraRig({ progress }) {
 // ─────────────────────────────────────────────
 function ParticleMorphSection() {
   const sectionRef = useRef(null);
+  const [canvasRef, inView] = useInViewport();
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -293,11 +295,12 @@ function ParticleMorphSection() {
   return (
     <div ref={sectionRef} className="pm-track">
       <div className="pm-sticky">
-        <div className="pm-canvas-wrap">
+        <div ref={canvasRef} className="pm-canvas-wrap">
           <Canvas
             dpr={isSmallScreen ? 1 : [1, 1.5]}
             gl={{ alpha: true, antialias: true }}
             camera={{ position: [0, 0, 9], fov: 48 }}
+            frameloop={inView ? "always" : "never"}
           >
             <ParticleField progress={scrollYProgress} />
             <CameraRig progress={scrollYProgress} />
