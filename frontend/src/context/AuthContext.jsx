@@ -38,4 +38,26 @@ export function AuthProvider({ children }) {
     setUser(userData);
   };
 
-  const logoutUser = ()
+  const logoutUser = () => {
+    localStorage.removeItem("token");
+    setUser(null);
+  };
+
+  return (
+    <AuthContext.Provider
+      value={{
+        user,
+        loading,
+        loginUser,
+        logoutUser,
+        setUser,
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
+}
+
+export function useAuth() {
+  return useContext(AuthContext);
+}
