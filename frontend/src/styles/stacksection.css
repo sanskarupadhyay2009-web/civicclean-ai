@@ -18,23 +18,62 @@
   top: 0;
   min-height: 100vh;
   display: flex;
-  flex-direction: column;
+  padding: clamp(8px, 1.4vw, 18px);
   will-change: transform, opacity;
+}
 
-  /* Light frosted-glass tint — just enough so the incoming section
-     reads as a distinct "page" landing over the previous one, while
-     the particle network / starfield / ScrollFX behind it stay
-     clearly visible through it rather than getting blocked out. */
-  background: linear-gradient(
-    180deg,
-    rgba(4, 9, 8, 0.34) 0%,
-    rgba(6, 14, 12, 0.4) 55%,
-    rgba(4, 9, 8, 0.34) 100%
-  );
+/* The actual "card" — rounded corners, a real gradient border (via
+   the background-origin/clip trick, no extra wrapper element needed),
+   and a molded/embossed shadow (soft outer drop shadow + a bright
+   inset top edge + dark inset bottom edge, like a pressed metal or
+   glass panel rather than a flat rectangle). */
+.stack-card {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: clamp(18px, 2.6vw, 34px);
+  border: 1.5px solid transparent;
+
+  background-image:
+    linear-gradient(
+      180deg,
+      rgba(4, 9, 8, 0.42) 0%,
+      rgba(6, 14, 12, 0.5) 55%,
+      rgba(4, 9, 8, 0.42) 100%
+    ),
+    linear-gradient(
+      120deg,
+      rgba(255, 255, 255, 0.55) 0%,
+      rgba(110, 255, 235, 0.3) 30%,
+      rgba(185, 138, 255, 0.32) 62%,
+      rgba(255, 255, 255, 0.1) 100%
+    );
+  background-origin: padding-box, border-box;
+  background-clip: padding-box, border-box;
+  background-size: 100% 100%, 260% 260%;
+  animation: cardShine 12s ease-in-out infinite;
+
   backdrop-filter: blur(3px);
   -webkit-backdrop-filter: blur(3px);
 
-  box-shadow: 0 -50px 90px rgba(0, 0, 0, 0.35);
+  box-shadow:
+    0 46px 90px -30px rgba(0, 0, 0, 0.6),
+    0 -20px 60px -30px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.4);
+}
+
+@keyframes cardShine {
+  0%, 100% { background-position: 0 0, 0% 40%; }
+  50% { background-position: 0 0, 100% 60%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stack-card {
+    animation: none;
+  }
 }
 
 /* ==========================================================
@@ -102,4 +141,5 @@
     animation: none !important;
     transition: none !important;
   }
-}
+   }
+                              
