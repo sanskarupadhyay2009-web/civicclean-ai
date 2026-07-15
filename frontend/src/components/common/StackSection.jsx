@@ -5,9 +5,13 @@ import { useRef } from "react";
 // position:sticky (see stacksection.css) and painted in DOM order, so
 // as you scroll, the next section slides straight up and lands flush
 // on top of the one before it, like cards being dealt one over another.
-// The only scroll-linked motion left is a very subtle scale/opacity
-// dip on the outgoing section right as the next one covers it — just
-// enough to sell depth, with zero rotation.
+//
+// The outer <motion.section> owns the scroll mechanics only (sticky
+// positioning, scroll measurement) so it stays full-bleed and the
+// useScroll math is never thrown off. The inner .stack-card is the
+// actual visual "card" — rounded corners, shiny gradient border,
+// molded shadow — and carries the subtle scale/opacity dip as the
+// next card comes in to cover it.
 function StackSection({ children, index = 0 }) {
 
     const ref = useRef(null);
@@ -42,17 +46,29 @@ function StackSection({ children, index = 0 }) {
 
             style={{
 
-                scale,
-
-                opacity,
-
                 zIndex: index + 1
 
             }}
 
         >
 
-            {children}
+            <motion.div
+
+                className="stack-card"
+
+                style={{
+
+                    scale,
+
+                    opacity
+
+                }}
+
+            >
+
+                {children}
+
+            </motion.div>
 
         </motion.section>
 
@@ -61,3 +77,4 @@ function StackSection({ children, index = 0 }) {
 }
 
 export default StackSection;
+        
