@@ -2,6 +2,8 @@ import { useRef, useMemo, useEffect } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 
+import { useInViewport } from "../../hooks/useInViewport";
+
 /**
  * ForestScene
  * ------------------
@@ -233,12 +235,15 @@ function FogRig({ progress }) {
 }
 
 function ForestScene({ progress }) {
+  const [wrapRef, inView] = useInViewport();
+
   return (
-    <div className="ce-hero-forest-canvas">
+    <div ref={wrapRef} className="ce-hero-forest-canvas">
       <Canvas
         dpr={[1, 1.5]}
         camera={{ position: [0, 3.4, 15], fov: 45 }}
         gl={{ antialias: true, alpha: true }}
+        frameloop={inView ? "always" : "never"}
       >
         <FogRig progress={progress} />
         <SceneLighting progress={progress} />
