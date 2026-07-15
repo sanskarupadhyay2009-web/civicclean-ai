@@ -18,7 +18,14 @@
   top: 0;
   min-height: 100vh;
   display: flex;
-  padding: clamp(8px, 1.4vw, 18px);
+  /* Horizontal inset only — this is what gives the floating-card look
+     (rounded corners, gap on the sides). Padding was previously on
+     all 4 sides, which shrank the card's height below the 100vh that
+     Hero (and every other section) expects, and overflow:hidden below
+     was silently clipping the excess — including the forest canvas.
+     Keeping top/bottom at 0 means the available height always exactly
+     matches what each section's own min-height:100vh rule wants. */
+  padding: 0 clamp(8px, 1.4vw, 18px);
   will-change: transform, opacity;
 }
 
@@ -63,6 +70,18 @@
     0 -20px 60px -30px rgba(0, 0, 0, 0.4),
     inset 0 1px 0 rgba(255, 255, 255, 0.16),
     inset 0 -1px 0 rgba(0, 0, 0, 0.4);
+}
+
+/* Belt-and-braces: force whatever section is dropped inside the card
+   (Hero, Scan, Features, Stats, Earth) to actually fill it via flex,
+   rather than trusting each section's own min-height:100vh to line up
+   perfectly against a flex column parent — this is what guarantees
+   the forest canvas (and everything else absolutely positioned inside
+   Hero) always has a real, non-zero area to render into. */
+.stack-card > * {
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
 }
 
 @keyframes cardShine {
@@ -142,4 +161,4 @@
     transition: none !important;
   }
    }
-                              
+   
