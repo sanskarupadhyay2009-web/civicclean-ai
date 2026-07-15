@@ -226,13 +226,13 @@ body::after{
 
 ::-webkit-scrollbar{
 
-    width:10px;
+    width:11px;
 
 }
 
 ::-webkit-scrollbar-track{
 
-    background:#04100D;
+    background:var(--ce-black-soft, #04100D);
 
 }
 
@@ -240,20 +240,56 @@ body::after{
 
     background:linear-gradient(
 
-    var(--primary),
+    var(--ce-emerald-soft, var(--primary)),
 
-    var(--primary-dark)
+    var(--ce-forest, var(--primary-dark))
 
     );
 
     border-radius:100px;
 
+    border:2px solid var(--ce-black-soft, #04100D);
+
+    box-shadow:0 0 8px rgba(0, 200, 83, 0.35);
+
 }
 
 ::-webkit-scrollbar-thumb:hover{
 
-    background:var(--primary-light);
+    background:var(--ce-emerald, var(--primary-light));
 
+    box-shadow:0 0 14px rgba(0, 200, 83, 0.55);
+
+}
+
+* {
+
+    scrollbar-width: thin;
+
+    scrollbar-color: var(--ce-emerald-soft, var(--primary)) var(--ce-black-soft, #04100D);
+
+}
+
+/* ===========================================================
+   SCROLL PROGRESS BAR
+   =========================================================== */
+
+.scroll-progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    transform-origin: 0% 50%;
+    background: linear-gradient(
+        90deg,
+        var(--ce-emerald-soft, #34e37a),
+        var(--ce-sky, #4fc3f7),
+        var(--ce-emerald, #00c853)
+    );
+    box-shadow: 0 0 10px rgba(0, 200, 83, 0.55);
+    z-index: 999;
+    pointer-events: none;
 }
 
 /* ===========================================================
