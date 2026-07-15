@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 
 import { GlowText } from "../common/GlowText";
 import TickingCounter from "../common/TickingCounter";
+import { ScrambleText } from "../common/ScrambleText";
 import EarthImpactGlobe from "./EarthImpactGlobe";
 
 import "../../styles/earthimpact.css";
@@ -17,7 +18,9 @@ function EarthImpact() {
           viewport={{ once: true, amount: 0.4 }}
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
         >
-          <span className="earth-eyebrow">GLOBAL IMPACT</span>
+          <span className="earth-eyebrow">
+            <ScrambleText text="GLOBAL IMPACT" />
+          </span>
 
           <h2>
             <GlowText text="One Planet," /> <br />
@@ -75,3 +78,4 @@ function EarthImpact() {
 }
 
 export default EarthImpact;
+            
