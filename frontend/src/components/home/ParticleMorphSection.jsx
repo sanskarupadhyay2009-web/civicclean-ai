@@ -1,7 +1,7 @@
 import { useRef, useMemo, useEffect } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { EffectComposer, Bloom } from "@react-three/postprocessing";
+import { EffectComposer, Bloom, Vignette, ChromaticAberration } from "@react-three/postprocessing";
 import * as THREE from "three";
 
 import { GlowText } from "../common/GlowText";
@@ -16,20 +16,57 @@ const prefersReducedMotion =
 
 const COUNT = isSmallScreen ? 900 : 2600;
 
+// A small, warm-to-cool palette so the field reads as a living nebula
+// rather than a flat mono-colour dot cloud — mirrors the reference:
+// icy whites + gold sparks drifting through emerald/teal/violet dust.
+const PALETTE = [
+  new THREE.Color("#eafff4"), // hot white core sparks
+  new THREE.Color("#ffd98a"), // warm gold accents
+  new THREE.Color("#4be3a0"), // brand emerald
+  new THREE.Color("#39c6ff"), // sky cyan
+  new THREE.Color("#8a7bff"), // violet dust
+];
+
+// Deterministic PRNG so the field layout never reshuffles on re-render.
+function mulberry32(seed) {
+  return function () {
+    seed |= 0;
+    seed = (seed + 0x6d2b79f5) | 0;
+    let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+const rand = mulberry32(2024);
+
 // ─────────────────────────────────────────────
 //  Shape generators — every shape returns the same
 //  particle count, so any two can be morphed
 //  between directly by lerping matching indices.
+//  Clustered around several "hot spots" (instead of
+//  a uniform sphere) so the field reads as organic
+//  clumps and streams, like dust caught in gravity
+//  wells — matching the reference nebula.
 // ─────────────────────────────────────────────
+function clusterCenters(n, spread) {
+  return Array.from({ length: n }, () => ({
+    x: (rand() - 0.5) * spread,
+    y: (rand() - 0.5) * spread,
+    z: (rand() - 0.5) * spread * 0.6,
+  }));
+}
+
 function makeCloud(n, radius) {
   const arr = new Float32Array(n * 3);
+  const centers = clusterCenters(5, radius * 0.9);
   for (let i = 0; i < n; i++) {
-    const r = radius * Math.cbrt(Math.random());
-    const theta = Math.random() * Math.PI * 2;
-    const phi = Math.acos(2 * Math.random() - 1);
-    arr[i * 3] = r * Math.sin(phi) * Math.cos(theta);
-    arr[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
-    arr[i * 3 + 2] = r * Math.cos(phi);
+    const c = centers[i % centers.length];
+    const localR = radius * 0.42 * Math.cbrt(rand());
+    const theta = rand() * Math.PI * 2;
+    const phi = Math.acos(2 * rand() - 1);
+    arr[i * 3] = c.x + localR * Math.sin(phi) * Math.cos(theta);
+    arr[i * 3 + 1] = c.y + localR * Math.sin(phi) * Math.sin(theta);
+    arr[i * 3 + 2] = c.z + localR * Math.cos(phi);
   }
   return arr;
 }
@@ -41,40 +78,59 @@ function makeTorusKnot(n, radius, tube, p = 2, q = 3) {
     const x = (radius + tube * Math.cos(q * t)) * Math.cos(p * t);
     const y = (radius + tube * Math.cos(q * t)) * Math.sin(p * t);
     const z = tube * Math.sin(q * t);
-    const jitter = 0.18;
-    arr[i * 3] = x + (Math.random() - 0.5) * jitter;
-    arr[i * 3 + 1] = y + (Math.random() - 0.5) * jitter;
-    arr[i * 3 + 2] = z + (Math.random() - 0.5) * jitter;
+    const jitter = 0.22;
+    arr[i * 3] = x + (rand() - 0.5) * jitter;
+    arr[i * 3 + 1] = y + (rand() - 0.5) * jitter;
+    arr[i * 3 + 2] = z + (rand() - 0.5) * jitter;
   }
   return arr;
 }
 
 function makeBlob(n, radius) {
   const arr = new Float32Array(n * 3);
+  const centers = clusterCenters(4, radius * 0.7);
   for (let i = 0; i < n; i++) {
-    const theta = Math.random() * Math.PI * 2;
-    const phi = Math.acos(2 * Math.random() - 1);
-    const noise =
-      Math.sin(theta * 3) * Math.cos(phi * 4) * 0.3 + Math.sin(theta * 7 + phi * 2) * 0.15;
-    const r = radius * (1 + noise * 0.4);
+    const c = centers[i % centers.length];
+    const theta = rand() * Math.PI * 2;
+    const phi = Math.acos(2 * rand() - 1);
+    const noise = Math.sin(theta * 3) * Math.cos(phi * 4) * 0.3 + Math.sin(theta * 7 + phi * 2) * 0.15;
+    const r = radius * 0.55 * (1 + noise * 0.4);
+    arr[i * 3] = c.x + r * Math.sin(phi) * Math.cos(theta);
+    arr[i * 3 + 1] = c.y + r * Math.sin(phi) * Math.sin(theta);
+    arr[i * 3 + 2] = c.z + r * Math.cos(phi);
+  }
+  return arr;
+}
+
+// Particles drift outward and gently downward — like they're being
+// pulled toward the section beneath, ready to reassemble there.
+function makeDisperse(n) {
+  const arr = new Float32Array(n * 3);
+  for (let i = 0; i < n; i++) {
+    const theta = rand() * Math.PI * 2;
+    const phi = Math.acos(2 * rand() - 1);
+    const r = 2.4 + rand() * 3.2;
     arr[i * 3] = r * Math.sin(phi) * Math.cos(theta);
-    arr[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
+    arr[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta) - 1.4;
     arr[i * 3 + 2] = r * Math.cos(phi);
   }
   return arr;
 }
 
-function makeDisperse(n) {
-  const arr = new Float32Array(n * 3);
+function makeAttributeArrays(n) {
+  const size = new Float32Array(n);
+  const color = new Float32Array(n * 3);
+  const seed = new Float32Array(n);
   for (let i = 0; i < n; i++) {
-    const theta = Math.random() * Math.PI * 2;
-    const phi = Math.acos(2 * Math.random() - 1);
-    const r = 2.2 + Math.random() * 2.6;
-    arr[i * 3] = r * Math.sin(phi) * Math.cos(theta);
-    arr[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
-    arr[i * 3 + 2] = r * Math.cos(phi);
+    // Mostly fine dust, with occasional bigger "spark" particles.
+    size[i] = rand() < 0.12 ? 1.6 + rand() * 1.6 : 0.35 + rand() * 0.7;
+    const c = PALETTE[Math.floor(rand() * PALETTE.length)];
+    color[i * 3] = c.r;
+    color[i * 3 + 1] = c.g;
+    color[i * 3 + 2] = c.b;
+    seed[i] = rand() * Math.PI * 2;
   }
-  return arr;
+  return { size, color, seed };
 }
 
 const VERTEX_SHADER = `
@@ -83,19 +139,28 @@ const VERTEX_SHADER = `
   uniform float uSize;
   attribute vec3 positionStart;
   attribute vec3 positionEnd;
+  attribute float aSize;
   attribute vec3 aColor;
-  attribute float aShape;
-  attribute float aSizeMul;
-  attribute float aTwinklePhase;
+  attribute float aSeed;
   varying float vAlpha;
   varying vec3 vColor;
-  varying float vShape;
 
+  // Curl/swirl amount peaks mid-transition — particles never travel
+  // in a straight line, they arc and spiral toward their destination.
   void main() {
     vec3 pos = mix(positionStart, positionEnd, uMorph);
 
-    float phase = dot(pos, vec3(12.9898, 78.233, 37.719));
-    pos += 0.045 * vec3(
+    float swirl = sin(uMorph * 3.14159265);
+    float ang = swirl * (1.3 + 0.6 * sin(aSeed));
+    float ca = cos(ang);
+    float sa = sin(ang);
+    vec3 swirled = vec3(pos.x * ca - pos.z * sa, pos.y, pos.x * sa + pos.z * ca);
+    pos = mix(pos, swirled, 0.55);
+    pos += normalize(pos + 0.001) * swirl * 0.6;
+
+    float phase = aSeed + dot(pos, vec3(12.9898, 78.233, 37.719)) * 0.02;
+    float turbulence = 0.05 + swirl * 0.16;
+    pos += turbulence * vec3(
       sin(uTime * 0.6 + phase),
       cos(uTime * 0.5 + phase * 1.3),
       sin(uTime * 0.4 + phase * 0.7)
@@ -103,41 +168,24 @@ const VERTEX_SHADER = `
 
     vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
     float dist = max(-mvPosition.z, 1.2);
-    float twinkle = 0.65 + 0.35 * sin(uTime * 1.4 + aTwinklePhase);
-
-    gl_PointSize = clamp(uSize * aSizeMul * twinkle * (220.0 / dist), 0.6, 26.0);
+    gl_PointSize = clamp(uSize * aSize * (220.0 / dist), 0.5, 34.0);
     gl_Position = projectionMatrix * mvPosition;
-
-    vAlpha = clamp(1.0 - (-mvPosition.z) / 40.0, 0.15, 1.0) * twinkle;
+    vAlpha = clamp(1.0 - (-mvPosition.z) / 40.0, 0.15, 1.0);
     vColor = aColor;
-    vShape = aShape;
   }
 `;
 
 const FRAGMENT_SHADER = `
   varying float vAlpha;
   varying vec3 vColor;
-  varying float vShape;
 
   void main() {
     vec2 uv = gl_PointCoord - vec2(0.5);
-    float alpha = 0.0;
-
-    if (vShape < 0.5) {
-      // soft round dot
-      float d = length(uv);
-      alpha = smoothstep(0.5, 0.05, d);
-    } else if (vShape < 1.5) {
-      // small square
-      vec2 a = abs(uv);
-      alpha = step(a.x, 0.32) * step(a.y, 0.32);
-    } else {
-      // diamond / sparkle
-      float d = abs(uv.x) + abs(uv.y);
-      alpha = smoothstep(0.5, 0.12, d);
-    }
-
-    gl_FragColor = vec4(vColor, alpha * vAlpha);
+    float d = length(uv);
+    float core = smoothstep(0.5, 0.0, d);
+    float glow = smoothstep(0.5, 0.15, d) * 0.6;
+    float alpha = (core + glow) * vAlpha;
+    gl_FragColor = vec4(vColor, alpha);
   }
 `;
 
@@ -145,45 +193,12 @@ const FRAGMENT_SHADER = `
 //  PARTICLE FIELD — morphs through 4 shapes across
 //  3 scroll segments, then disperses for the reveal.
 // ─────────────────────────────────────────────
-const TECHKRITI_PALETTE = [
-  "#b98aff", // violet
-  "#ff9ecb", // pink
-  "#fff3d6", // cream
-  "#7ea6ff", // blue
-  "#ffffff", // white
-];
-
 function ParticleField({ progress }) {
   const shapes = useMemo(
     () => [makeCloud(COUNT, 3.2), makeTorusKnot(COUNT, 2.1, 0.75), makeBlob(COUNT, 2.5), makeDisperse(COUNT)],
     []
   );
-
-  // Per-particle identity — color, shape, size, twinkle phase — stays
-  // fixed for a given particle across every morph segment, so as the
-  // cluster reshapes it still reads as the "same" scattered confetti
-  // rather than resetting its palette each time.
-  const identity = useMemo(() => {
-    const color = new Float32Array(COUNT * 3);
-    const shape = new Float32Array(COUNT);
-    const sizeMul = new Float32Array(COUNT);
-    const twinklePhase = new Float32Array(COUNT);
-    const c = new THREE.Color();
-
-    for (let i = 0; i < COUNT; i++) {
-      c.set(TECHKRITI_PALETTE[Math.floor(Math.random() * TECHKRITI_PALETTE.length)]);
-      color[i * 3] = c.r;
-      color[i * 3 + 1] = c.g;
-      color[i * 3 + 2] = c.b;
-      shape[i] = Math.floor(Math.random() * 3);
-      // Mostly tiny specks, ~7% noticeably larger "feature" stars —
-      // matches the reference's sparse-with-standouts composition.
-      sizeMul[i] = Math.random() < 0.07 ? 1.9 + Math.random() * 1.3 : 0.45 + Math.random() * 0.55;
-      twinklePhase[i] = Math.random() * Math.PI * 2;
-    }
-
-    return { color, shape, sizeMul, twinklePhase };
-  }, []);
+  const attrs = useMemo(() => makeAttributeArrays(COUNT), []);
 
   const geomRef = useRef();
   const matRef = useRef();
@@ -194,12 +209,11 @@ function ParticleField({ progress }) {
     geo.setAttribute("position", new THREE.BufferAttribute(shapes[0].slice(), 3));
     geo.setAttribute("positionStart", new THREE.BufferAttribute(shapes[0].slice(), 3));
     geo.setAttribute("positionEnd", new THREE.BufferAttribute(shapes[1].slice(), 3));
-    geo.setAttribute("aColor", new THREE.BufferAttribute(identity.color, 3));
-    geo.setAttribute("aShape", new THREE.BufferAttribute(identity.shape, 1));
-    geo.setAttribute("aSizeMul", new THREE.BufferAttribute(identity.sizeMul, 1));
-    geo.setAttribute("aTwinklePhase", new THREE.BufferAttribute(identity.twinklePhase, 1));
+    geo.setAttribute("aSize", new THREE.BufferAttribute(attrs.size, 1));
+    geo.setAttribute("aColor", new THREE.BufferAttribute(attrs.color, 3));
+    geo.setAttribute("aSeed", new THREE.BufferAttribute(attrs.seed, 1));
     segmentRef.current = 0;
-  }, [shapes, identity]);
+  }, [shapes, attrs]);
 
   useFrame((state) => {
     const p = progress.get();
@@ -233,7 +247,7 @@ function ParticleField({ progress }) {
         uniforms={{
           uMorph: { value: 0 },
           uTime: { value: 0 },
-          uSize: { value: isSmallScreen ? 3 : 4 },
+          uSize: { value: isSmallScreen ? 3.4 : 4.6 },
         }}
         vertexShader={VERTEX_SHADER}
         fragmentShader={FRAGMENT_SHADER}
@@ -290,11 +304,13 @@ function ParticleMorphSection() {
 
             <EffectComposer disableNormalPass>
               <Bloom
-                luminanceThreshold={0.35}
-                luminanceSmoothing={0.6}
-                intensity={isSmallScreen ? 0.35 : 0.55}
+                luminanceThreshold={0.1}
+                luminanceSmoothing={0.9}
+                intensity={isSmallScreen ? 0.55 : 1.05}
                 mipmapBlur
               />
+              <ChromaticAberration offset={[0.0006, 0.0012]} />
+              <Vignette eskil={false} offset={0.18} darkness={0.75} />
             </EffectComposer>
           </Canvas>
         </div>
@@ -314,7 +330,13 @@ function ParticleMorphSection() {
 
         <motion.div
           className="pm-reveal-card"
-          style={{ opacity: cardOpacity, scale: cardScale, filter: cardFilter }}
+          style={{
+            x: "-50%",
+            y: "-50%",
+            opacity: cardOpacity,
+            scale: cardScale,
+            filter: cardFilter,
+          }}
         >
           <span className="pm-reveal-eyebrow">SEE IT IN ACTION</span>
           <h3>From Signal to Solution</h3>
@@ -326,4 +348,3 @@ function ParticleMorphSection() {
 }
 
 export default ParticleMorphSection;
-                       
