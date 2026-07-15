@@ -5,6 +5,7 @@ import { EffectComposer, Bloom, Vignette, ChromaticAberration } from "@react-thr
 import * as THREE from "three";
 
 import { GlowText } from "../common/GlowText";
+import { ScrambleText } from "../common/ScrambleText";
 import { useInViewport } from "../../hooks/useInViewport";
 
 import "../../styles/particlemorph.css";
@@ -319,7 +320,9 @@ function ParticleMorphSection() {
         </div>
 
         <motion.div className="pm-intro" style={{ opacity: introOpacity }}>
-          <span className="pm-eyebrow">ORGANIC INTELLIGENCE</span>
+          <span className="pm-eyebrow">
+            <ScrambleText text="ORGANIC INTELLIGENCE" />
+          </span>
           <h2>
             <GlowText text="Chaos," color="255, 255, 255" /> <br />
             <GlowText text="Made Clear" color="75, 227, 160" delay={0.15} />
@@ -351,3 +354,4 @@ function ParticleMorphSection() {
 }
 
 export default ParticleMorphSection;
+  
