@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 
 import { useAuth } from "../context/AuthContext";
+import Magnetic from "./common/Magnetic";
 
 import "../styles/navbar.css";
 
@@ -141,7 +142,8 @@ function Navbar() {
             </>
           )}
 
-          <Link
+          <Magnetic
+            as={Link}
             to="/report"
             className="report-btn"
           >
@@ -149,7 +151,7 @@ function Navbar() {
 
             <ArrowRight size={18} />
 
-          </Link>
+          </Magnetic>
 
         </div>
 
@@ -243,4 +245,5 @@ function Navbar() {
 }
 
 export default Navbar;
-      
+
+              
