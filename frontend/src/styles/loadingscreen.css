@@ -1,96 +1,244 @@
-/* ==========================================================
-   CINEMATIC LOADER — seed → rain → sprout → tree → logo
-========================================================== */
-
-.ce-loader {
+.intro-screen {
   position: fixed;
   inset: 0;
   z-index: 999999;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: radial-gradient(circle at 50% 30%, #142418 0%, #0b0f0c 70%);
   overflow: hidden;
+  background: #05100b;
 }
 
-.ce-loader-stage {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #00c853;
-  filter: drop-shadow(0 0 30px rgba(0, 200, 83, 0.45));
-}
-
-.ce-loader-seed,
-.ce-loader-sprout,
-.ce-loader-tree {
-  transform-origin: bottom center;
-}
-
-.ce-loader-logo {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  color: #00c853;
-}
-
-.ce-loader-logo-mark {
-  filter: drop-shadow(0 0 14px rgba(0, 200, 83, 0.5));
-}
-
-.ce-loader-logo-text {
-  font-family: "Sora", "Poppins", sans-serif;
-  font-weight: 700;
-  font-size: 1.6rem;
-  letter-spacing: -0.01em;
-  background: linear-gradient(120deg, #00c853, #4fc3f7);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
-.ce-loader-ground {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 120px;
-  background: linear-gradient(180deg, transparent, rgba(0, 200, 83, 0.14));
-  z-index: 1;
-}
-
-/* Rain */
-.ce-loader-rain {
+.intro-bg {
   position: absolute;
   inset: 0;
-  z-index: 1;
+  background: linear-gradient(180deg, #030a06 0%, #0a1f16 45%, #052e1c 100%);
+  animation: introBgShift 10s ease-in-out forwards;
+}
+
+@keyframes introBgShift {
+  0% {
+    filter: brightness(0.7);
+  }
+  60% {
+    filter: brightness(1);
+  }
+  100% {
+    filter: brightness(1.15);
+  }
+}
+
+/* ================= PARTICLES ================= */
+
+.intro-particles {
+  position: absolute;
+  inset: 0;
   pointer-events: none;
 }
 
-.ce-raindrop {
+.intro-particle {
   position: absolute;
-  top: -10%;
-  width: 2px;
-  height: 60px;
-  background: linear-gradient(180deg, transparent, rgba(79, 195, 247, 0.55));
-  animation: ceRainFall linear infinite;
+  bottom: -10px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #6ee7b7;
+  box-shadow: 0 0 8px 2px rgba(110, 231, 183, 0.6);
+  animation-name: introFloatUp;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  opacity: 0;
 }
 
-@keyframes ceRainFall {
+@keyframes introFloatUp {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.9;
+  }
+  100% {
+    transform: translateY(-90vh);
+    opacity: 0;
+  }
+}
+
+/* ================= STAGE ================= */
+
+.intro-stage {
+  position: relative;
+  width: min(560px, 88%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.intro-ground {
+  position: absolute;
+  bottom: 46px;
+  left: -40px;
+  right: -40px;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(52, 211, 153, 0.5),
+    transparent
+  );
+}
+
+/* ================= SPROUT ================= */
+
+.intro-sprout {
+  position: absolute;
+  bottom: 46px;
+  width: 70px;
+  height: 100px;
+}
+
+.intro-sprout-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.intro-stem {
+  stroke-dasharray: 90;
+  stroke-dashoffset: 90;
+  animation: introStemGrow 1.4s ease-out 0.3s forwards;
+}
+
+@keyframes introStemGrow {
   to {
-    transform: translateY(120vh);
+    stroke-dashoffset: 0;
   }
 }
 
-@media (max-width: 640px) {
-  .ce-loader-stage svg {
-    width: 52px;
-    height: 52px;
-  }
+.intro-leaf {
+  transform-origin: 50px 60px;
+  opacity: 0;
+  transform: scale(0);
+  animation: introLeafPop 0.6s ease-out forwards;
+}
 
-  .ce-loader-logo-text {
-    font-size: 1.2rem;
+.intro-leaf-1 {
+  animation-delay: 1.1s;
+}
+
+.intro-leaf-2 {
+  animation-delay: 1.4s;
+}
+
+@keyframes introLeafPop {
+  0% {
+    opacity: 0;
+    transform: scale(0);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
   }
 }
+
+/* ================= BOT + BIN ================= */
+
+.intro-bin {
+  position: absolute;
+  bottom: 46px;
+  right: -10px;
+  color: #7cffd8;
+  opacity: 0;
+  animation: introFadeIn 0.5s ease-out 3.2s forwards;
+}
+
+@keyframes introFadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+.intro-bot {
+  position: absolute;
+  bottom: 60px;
+  left: 0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #a78bfa;
+}
+
+.intro-trash {
+  color: #f3d38a;
+}
+
+.intro-cleaned-tag {
+  position: absolute;
+  bottom: 95px;
+  right: 10px;
+  font-size: 0.8rem;
+  color: #7cffd8;
+  font-weight: 600;
+}
+
+/* ================= LOGO ================= */
+
+.intro-logo {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-top: 130px;
+  font-size: clamp(1.8rem, 5vw, 2.6rem);
+  font-weight: 800;
+  color: white;
+  letter-spacing: -0.5px;
+}
+
+.intro-logo-letter {
+  display: inline-block;
+}
+
+.intro-logo-leaf {
+  color: #34d399;
+  margin-left: 10px;
+}
+
+/* ================= TAGLINE ================= */
+
+.intro-tagline {
+  margin-top: 18px;
+  color: #9fb8b0;
+  font-size: 1rem;
+  letter-spacing: 0.5px;
+}
+
+/* ================= PROGRESS ================= */
+
+.intro-progress-track {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(280px, 70%);
+  height: 3px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+
+.intro-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #10b981, #7cffd8);
+}
+
+@media (max-width: 560px) {
+  .intro-logo {
+    margin-top: 110px;
+  }
+
+  .intro-sprout {
+    width: 56px;
+    height: 80px;
+  }
+   }
+   
