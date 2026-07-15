@@ -4,7 +4,6 @@ import ParticleMorphSection from "../components/home/ParticleMorphSection";
 import Features from "../components/home/Features";
 import Stats from "../components/home/Stats";
 import EarthImpact from "../components/home/EarthImpact";
-import CommunityStories from "../components/home/CommunityStories";
 
 import StackSection from "../components/common/StackSection";
 import CursorGlow from "../components/home/CursorGlow";
@@ -47,10 +46,6 @@ function Home() {
 
       <StackSection index={4}>
         <EarthImpact />
-      </StackSection>
-
-      <StackSection index={5}>
-        <CommunityStories />
       </StackSection>
 
     </main>
