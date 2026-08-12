@@ -53,4 +53,3 @@ export const deleteReport = async (id) => {
 };
 
 export default API;
-    
