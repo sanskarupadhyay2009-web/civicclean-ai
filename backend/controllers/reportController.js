@@ -85,10 +85,11 @@ const analyzeReport = async (req, res) => {
   }
 };
 
-// Get all reports (for LiveMap)
+// Get all reports (for LiveMap) — excludes anything a user has removed
+// from the map, but those documents still exist in the database.
 const getReports = async (req, res) => {
   try {
-    const reports = await Report.find()
+    const reports = await Report.find({ hiddenFromMap: { $ne: true } })
       .populate("user", "name email")
       .sort({ createdAt: -1 });
 
@@ -127,9 +128,11 @@ const getMyReports = async (req, res) => {
   }
 };
 
-// Delete a report — only its owner or an admin can remove it. This is
-// what actually takes a point off the live map/heatmap, since the map
-// is generated straight from whatever Report documents still exist.
+// "Delete" a report from the user's point of view — only its owner or
+// an admin can do this. IMPORTANT: this never removes the document
+// from MongoDB. It only sets hiddenFromMap, which takes it off the
+// live map/heatmap. The full record is kept permanently for records/
+// audit purposes.
 const deleteReport = async (req, res) => {
   try {
     const report = await Report.findById(req.params.id);
@@ -149,18 +152,22 @@ const deleteReport = async (req, res) => {
       });
     }
 
-    await report.deleteOne();
+    report.hiddenFromMap = true;
+    report.hiddenAt = new Date();
+    report.hiddenBy = req.user._id;
+
+    await report.save();
 
     res.status(200).json({
       success: true,
-      message: "Report deleted.",
+      message: "Report removed from the map.",
       id: req.params.id,
     });
   } catch (error) {
     console.error(error);
 
     res.status(500).json({
-      message: error.message || "Unable to delete report.",
+      message: error.message || "Unable to remove report.",
     });
   }
 };
@@ -171,4 +178,5 @@ module.exports = {
   getMyReports,
   deleteReport,
 };
-    
+
+        
