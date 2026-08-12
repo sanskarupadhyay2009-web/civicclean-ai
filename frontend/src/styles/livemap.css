@@ -1,4 +1,4 @@
-.map-page {
+  .map-page {
   min-height: 100vh;
   padding: 140px 8%;
   color: white;
@@ -125,6 +125,67 @@
   margin-bottom: 20px;
 }
 
+.marker-card-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 15px;
+}
+
+.marker-card-row .marker-card {
+  margin-bottom: 0;
+  flex: 1;
+}
+
+.marker-delete-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border-radius: 12px;
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  background: rgba(239, 68, 68, 0.08);
+  color: #f87171;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.marker-delete-btn:hover {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: rgba(239, 68, 68, 0.5);
+}
+
+.marker-delete-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.popup-delete-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  background: rgba(239, 68, 68, 0.08);
+  color: #dc2626;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.popup-delete-btn:hover {
+  background: rgba(239, 68, 68, 0.18);
+}
+
+.popup-delete-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 .marker-card {
   display: flex;
   align-items: center;
@@ -167,3 +228,4 @@
     grid-template-columns: 1fr;
   }
   }
+  
