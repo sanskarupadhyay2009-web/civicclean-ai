@@ -41,4 +41,16 @@ export const getReports = async () => {
   return API.get("/reports");
 };
 
+// Fetch only the logged-in user's own reports (dashboard stat, "My Reports")
+export const getMyReports = async () => {
+  return API.get("/reports/mine");
+};
+
+// Delete a report — removes it from the database, which is what takes
+// its point off the live map/heatmap.
+export const deleteReport = async (id) => {
+  return API.delete(`/reports/${id}`);
+};
+
 export default API;
+    
