@@ -1,10 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
-import { Search, Layers, MapPin, Loader2 } from "lucide-react";
+import { Search, Layers, MapPin, Loader2, Trash2 } from "lucide-react";
 import L from "leaflet";
 
-import { getReports } from "../services/reportService";
+import { getReports, deleteReport } from "../services/reportService";
+import { useAuth } from "../context/AuthContext";
 import HeatmapLayer from "../components/common/HeatmapLayer";
 
 import "leaflet/dist/leaflet.css";
@@ -38,9 +39,12 @@ function FlyToController({ target }) {
 }
 
 function LiveMap() {
+  const { user } = useAuth();
+
   const [reports, setReports] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [deletingId, setDeletingId] = useState(null);
 
   const [query, setQuery] = useState("");
   const [showHeatmap, setShowHeatmap] = useState(true);
@@ -111,6 +115,31 @@ function LiveMap() {
     setSelected(report);
   };
 
+  const canDelete = (report) =>
+    user && (user.role === "admin" || report.user?._id === user._id || report.user === user._id);
+
+  const handleDelete = async (report, e) => {
+    e.stopPropagation();
+
+    if (!window.confirm("Remove this report from the map? This can't be undone.")) {
+      return;
+    }
+
+    setDeletingId(report._id);
+
+    try {
+      await deleteReport(report._id);
+      setReports((prev) => prev.filter((r) => r._id !== report._id));
+      if (selected?._id === report._id) setSelected(null);
+    } catch (err) {
+      setError(
+        err?.response?.data?.message || "Couldn't delete that report. Try again."
+      );
+    } finally {
+      setDeletingId(null);
+    }
+  };
+
   return (
     <main className="map-page">
       <motion.div
@@ -179,6 +208,20 @@ function LiveMap() {
                     {r.location.city || r.location.address || "Unknown area"}
                     <br />
                     {r.severity} severity
+                    {canDelete(r) && (
+                      <>
+                        <br />
+                        <button
+                          type="button"
+                          className="popup-delete-btn"
+                          disabled={deletingId === r._id}
+                          onClick={(e) => handleDelete(r, e)}
+                        >
+                          <Trash2 size={13} />
+                          {deletingId === r._id ? "Removing..." : "Delete report"}
+                        </button>
+                      </>
+                    )}
                   </Popup>
                 </Marker>
               ))}
@@ -200,18 +243,35 @@ function LiveMap() {
           )}
 
           {filteredReports.map((r) => (
-            <button
-              type="button"
-              key={r._id}
-              className="marker-card"
-              onClick={() => handleSelectReport(r)}
-            >
-              <MapPin size={16} />
-              {r.wasteType}
-              <span>
-                {r.location.city || r.location.address || "Unknown area"}
-              </span>
-            </button>
+            <div key={r._id} className="marker-card-row">
+              <button
+                type="button"
+                className="marker-card"
+                onClick={() => handleSelectReport(r)}
+              >
+                <MapPin size={16} />
+                {r.wasteType}
+                <span>
+                  {r.location.city || r.location.address || "Unknown area"}
+                </span>
+              </button>
+
+              {canDelete(r) && (
+                <button
+                  type="button"
+                  className="marker-delete-btn"
+                  title="Delete this report"
+                  disabled={deletingId === r._id}
+                  onClick={(e) => handleDelete(r, e)}
+                >
+                  {deletingId === r._id ? (
+                    <Loader2 size={15} className="spin" />
+                  ) : (
+                    <Trash2 size={15} />
+                  )}
+                </button>
+              )}
+            </div>
           ))}
         </div>
       </div>
@@ -220,3 +280,4 @@ function LiveMap() {
 }
 
 export default LiveMap;
+  
