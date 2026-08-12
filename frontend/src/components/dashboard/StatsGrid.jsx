@@ -1,30 +1,54 @@
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { FileText, Award, BrainCircuit, Leaf } from "lucide-react";
 
-const stats = [
-  {
-    icon: <FileText size={26} />,
-    value: "\u2014",
-    label: "Reports Submitted",
-  },
-  {
-    icon: <Award size={26} />,
-    value: "\u2014",
-    label: "Community Score",
-  },
-  {
-    icon: <BrainCircuit size={26} />,
-    value: "AI-Reviewed",
-    label: "Report Analysis",
-  },
-  {
-    icon: <Leaf size={26} />,
-    value: "\u2014",
-    label: "CO\u2082 Saved",
-  },
-];
+import { getMyReports } from "../../services/reportService";
 
 function StatsGrid() {
+  const [reportCount, setReportCount] = useState(null);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    (async () => {
+      try {
+        const { data } = await getMyReports();
+        if (!cancelled) setReportCount(data.count ?? data.reports?.length ?? 0);
+      } catch {
+        // Leave it as the placeholder dash if the request fails —
+        // never show a fabricated number.
+        if (!cancelled) setReportCount(null);
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const stats = [
+    {
+      icon: <FileText size={26} />,
+      value: reportCount === null ? "\u2014" : String(reportCount),
+      label: "Reports Submitted",
+    },
+    {
+      icon: <Award size={26} />,
+      value: "\u2014",
+      label: "Community Score",
+    },
+    {
+      icon: <BrainCircuit size={26} />,
+      value: "AI-Reviewed",
+      label: "Report Analysis",
+    },
+    {
+      icon: <Leaf size={26} />,
+      value: "\u2014",
+      label: "CO\u2082 Saved",
+    },
+  ];
+
   return (
     <section className="stats-grid">
       {stats.map((item, index) => (
@@ -51,3 +75,4 @@ function StatsGrid() {
 }
 
 export default StatsGrid;
+      
