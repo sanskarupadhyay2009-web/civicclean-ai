@@ -105,7 +105,70 @@ const getReports = async (req, res) => {
   }
 };
 
+// Get only the logged-in user's own reports — used for the dashboard's
+// real "Reports Submitted" count and a "My Reports" list.
+const getMyReports = async (req, res) => {
+  try {
+    const reports = await Report.find({ user: req.user._id }).sort({
+      createdAt: -1,
+    });
+
+    res.status(200).json({
+      success: true,
+      count: reports.length,
+      reports,
+    });
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      message: error.message || "Unable to fetch your reports.",
+    });
+  }
+};
+
+// Delete a report — only its owner or an admin can remove it. This is
+// what actually takes a point off the live map/heatmap, since the map
+// is generated straight from whatever Report documents still exist.
+const deleteReport = async (req, res) => {
+  try {
+    const report = await Report.findById(req.params.id);
+
+    if (!report) {
+      return res.status(404).json({
+        message: "Report not found.",
+      });
+    }
+
+    const isOwner = report.user.toString() === req.user._id.toString();
+    const isAdmin = req.user.role === "admin";
+
+    if (!isOwner && !isAdmin) {
+      return res.status(403).json({
+        message: "You can only delete your own reports.",
+      });
+    }
+
+    await report.deleteOne();
+
+    res.status(200).json({
+      success: true,
+      message: "Report deleted.",
+      id: req.params.id,
+    });
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      message: error.message || "Unable to delete report.",
+    });
+  }
+};
+
 module.exports = {
   analyzeReport,
   getReports,
+  getMyReports,
+  deleteReport,
 };
+        
