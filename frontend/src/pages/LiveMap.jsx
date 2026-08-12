@@ -121,7 +121,7 @@ function LiveMap() {
   const handleDelete = async (report, e) => {
     e.stopPropagation();
 
-    if (!window.confirm("Remove this report from the map? This can't be undone.")) {
+    if (!window.confirm("Remove this report from the public map? It'll stay in your account records, just hidden from the map.")) {
       return;
     }
 
@@ -218,7 +218,7 @@ function LiveMap() {
                           onClick={(e) => handleDelete(r, e)}
                         >
                           <Trash2 size={13} />
-                          {deletingId === r._id ? "Removing..." : "Delete report"}
+                          {deletingId === r._id ? "Removing..." : "Remove from map"}
                         </button>
                       </>
                     )}
@@ -280,4 +280,4 @@ function LiveMap() {
 }
 
 export default LiveMap;
-  
+    
