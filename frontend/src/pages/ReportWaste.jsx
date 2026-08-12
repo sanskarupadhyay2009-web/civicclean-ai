@@ -60,57 +60,103 @@ function ReportWaste() {
   };
 
   const handleDetectLocation = () => {
-  if (!navigator.geolocation) {
-    setError("Geolocation is not supported by this browser.");
-    return;
-  }
-
-  setLocating(true);
-  setError("");
-
-  navigator.geolocation.getCurrentPosition(
-    async (pos) => {
-      try {
-        const lat = pos.coords.latitude;
-        const lon = pos.coords.longitude;
-
-        const response = await fetch(
-          `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`
-        );
-
-        const data = await response.json();
-
-        setLocation({
-          latitude: lat,
-          longitude: lon,
-          address: data.display_name,
-          city:
-            data.address.city ||
-            data.address.town ||
-            data.address.village ||
-            "",
-          state: data.address.state || "",
-          country: data.address.country || "",
-        });
-      } catch (err) {
-        setLocation({
-          latitude: pos.coords.latitude,
-          longitude: pos.coords.longitude,
-        });
-      } finally {
-        setLocating(false);
-      }
-    },
-    () => {
-      setError("Unable to detect location.");
-      setLocating(false);
+    if (!navigator.geolocation) {
+      setError("Geolocation is not supported by this browser.");
+      return;
     }
-  );
-};
+
+    setLocating(true);
+    setError("");
+
+    const fetchPosition = () => {
+      navigator.geolocation.getCurrentPosition(
+        async (pos) => {
+          try {
+            const lat = pos.coords.latitude;
+            const lon = pos.coords.longitude;
+
+            const response = await fetch(
+              `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`
+            );
+
+            const data = await response.json();
+
+            setLocation({
+              latitude: lat,
+              longitude: lon,
+              address: data.display_name,
+              city:
+                data.address.city ||
+                data.address.town ||
+                data.address.village ||
+                "",
+              state: data.address.state || "",
+              country: data.address.country || "",
+            });
+          } catch {
+            setLocation({
+              latitude: pos.coords.latitude,
+              longitude: pos.coords.longitude,
+            });
+          } finally {
+            setLocating(false);
+          }
+        },
+        (geoError) => {
+          setLocating(false);
+
+          // PERMISSION_DENIED = 1, POSITION_UNAVAILABLE = 2, TIMEOUT = 3
+          if (geoError.code === 1) {
+            setError(
+              "Location access is blocked for this site. Your browser won't show the permission popup again automatically — tap the lock/info icon next to the address bar, open Site settings, set Location to \"Allow,\" then try again."
+            );
+          } else if (geoError.code === 3) {
+            setError("Location request timed out. Please try again.");
+          } else {
+            setError(
+              "Unable to detect your location. Make sure location services are turned on for your device/browser."
+            );
+          }
+        },
+        { enableHighAccuracy: true, timeout: 12000, maximumAge: 0 }
+      );
+    };
+
+    // Check current permission state first when the API supports it, so
+    // we can give a precise message instead of a generic failure when
+    // the browser has already blocked this site.
+    if (navigator.permissions?.query) {
+      navigator.permissions
+        .query({ name: "geolocation" })
+        .then((status) => {
+          if (status.state === "denied") {
+            setLocating(false);
+            setError(
+              "Location access is blocked for this site. Tap the lock/info icon next to the address bar, open Site settings, set Location to \"Allow,\" then try again."
+            );
+            return;
+          }
+
+          // "granted" or "prompt" — this will show the native popup
+          // if it hasn't been answered yet.
+          fetchPosition();
+        })
+        .catch(fetchPosition); // Permissions API not supported for this query — fall back
+    } else {
+      fetchPosition();
+    }
+  };
 
   const handleAnalyze = async () => {
     if (!imageFile) {
       setError("Please choose an image first.");
+      return;
+    }
+
+    if (!location?.latitude || !location?.longitude) {
+      setError(
+        "Please detect your location first — reports need a location to appear on the map."
+      );
       return;
     }
 
@@ -310,7 +356,7 @@ function ReportWaste() {
         {location ? (
   <>
     <p>
-      <strong>📍 {location.address || "Current Location"}</strong>
+      <strong><MapPin size={15} style={{ display: "inline", verticalAlign: "-2px" }} /> {location.address || "Current Location"}</strong>
     </p>
 
     <p>
@@ -362,3 +408,4 @@ function ReportWaste() {
 }
 
 export default ReportWaste;
+          
